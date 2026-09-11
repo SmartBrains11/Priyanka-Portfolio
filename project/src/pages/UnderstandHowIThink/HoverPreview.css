@@ -1,0 +1,72 @@
+.hover-preview-container {
+  display: inline;
+  position: relative;
+}
+
+.hover-trigger-text {
+  color: #438bff; /* highlight color */
+  cursor: pointer;
+  position: relative;
+  text-decoration: none;
+  background-image: linear-gradient(to right, #2b6fe3, #2b6fe3), linear-gradient(to right, rgba(67, 139, 255, 0.25), rgba(67, 139, 255, 0.25));
+  background-position: 0% 100%, 0% 100%;
+  background-repeat: no-repeat, no-repeat;
+  background-size: 0% 2px, 100% 2px;
+  transition: background-size 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease, text-shadow 0.3s ease;
+  padding-bottom: 2px;
+}
+
+.hover-trigger-text:hover,
+.hover-trigger-text.active {
+  color: #2b6fe3;
+  background-size: 100% 2px, 100% 2px;
+  text-shadow: 0 0 12px rgba(67, 139, 255, 0.2);
+}
+
+.hover-panel {
+  position: fixed;
+  z-index: 1000;
+  width: 340px;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid #e2e6ed;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 16px 40px rgba(32, 38, 56, 0.08), 0 4px 16px rgba(32, 38, 56, 0.04);
+  backdrop-filter: blur(12px);
+  pointer-events: auto;
+  animation: panelFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+@keyframes panelFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hover-panel-title {
+  font: 700 11px/1.4 'DM Sans', sans-serif;
+  letter-spacing: 0.15em;
+  color: #438bff;
+  margin-bottom: 8px;
+}
+
+.hover-panel-list {
+  font: 600 12px/1.6 'Space Grotesk', sans-serif;
+  color: #202638;
+  margin-bottom: 12px;
+}
+
+.hover-panel-body p {
+  font: 400 14px/1.55 'DM Sans', sans-serif;
+  color: #5c6372;
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .hover-panel { width: 280px; padding: 20px; }
+  .hover-panel-list { font-size: 11px; margin-bottom: 10px; }
+  .hover-panel-body p { font-size: 13px; }
+}

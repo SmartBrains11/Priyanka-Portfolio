@@ -1,0 +1,192 @@
+.room-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background-color: white;
+}
+
+.canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.room-ui-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Intro White Screen Overlay */
+.intro-white-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: opacity 1.5s ease-in-out;
+  z-index: 10;
+}
+
+/* Welcome Text */
+.welcome-text {
+  position: absolute;
+  font-family: 'Inter', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: opacity 1.5s ease-in-out;
+  z-index: 20;
+}
+
+/* Top Title Text */
+.top-title-text {
+  position: absolute;
+  top: 8%;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #333;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  backdrop-filter: blur(4px);
+  transition: opacity 1s ease-in-out, transform 0.2s ease, background 0.2s ease;
+  z-index: 20;
+  cursor: pointer;
+}
+
+.top-title-text:hover {
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+/* Interactive Options */
+.intent-options {
+  position: absolute;
+  bottom: 15%;
+  display: flex;
+  gap: 2rem;
+  transition: opacity 1s ease-in-out;
+  z-index: 20;
+}
+
+.intent-button {
+  background: white;
+  border: none;
+  border-radius: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #333;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.intent-button:hover {
+  background: black;
+  color: white;
+}
+
+.clicking-pointer {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 1.2rem;
+  animation: clickAnimation 1.5s infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes clickAnimation {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  20% {
+    transform: scale(0.8) translateY(4px);
+  }
+  40% {
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Hotspot */
+.hotspot-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.hotspot-button:hover {
+  transform: scale(1.1);
+}
+
+.hotspot-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 2px solid #333;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+}
+
+.hotspot-button:hover .hotspot-dot {
+  background-color: white;
+}
+
+.hotspot-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #222;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.hotspot-button:hover .hotspot-title {
+  opacity: 1;
+}
+
+/* Utilities */
+.opacity-0 {
+  opacity: 0;
+}
+.opacity-100 {
+  opacity: 1;
+}
+.pointer-events-none {
+  pointer-events: none;
+}
+.pointer-events-auto {
+  pointer-events: auto;
+}

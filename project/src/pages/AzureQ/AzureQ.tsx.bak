@@ -1,0 +1,822 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { projects, Project } from '@/data/projects';
+import './AzureQ.css';
+
+interface AzureQProps {
+  project: Project;
+  onNavigate: (path: string) => void;
+}
+
+// Visual Placeholder Component
+const Placeholder = ({ id, aspectRatio = '16/9', label }: { id: string; aspectRatio?: string; label?: string }) => (
+  <div className={`azure-placeholder ${id}`} style={{ aspectRatio }}>
+    <span className="placeholder-label">{label || `[${id.toUpperCase().replace(/-/g, ' ')}]`}</span>
+  </div>
+);
+
+export default function AzureQ({ project, onNavigate }: AzureQProps) {
+  const [activeSection, setActiveSection] = useState('overview');
+  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -80% 0px' }
+    );
+
+    sectionRefs.current.forEach((ref) => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const navItems = [
+    { id: 'overview', label: 'Overview' },
+    { id: 'problem', label: 'The Problem' },
+    { id: 'research', label: 'Research' },
+    { id: 'insights', label: 'Insights' },
+    { id: 'journey', label: 'User Journey' },
+    { id: 'ideation', label: 'Ideation & IA' },
+    { id: 'wireframes', label: 'Wireframes' },
+    { id: 'ui', label: 'UI Design' },
+    { id: 'features', label: 'Features' },
+    { id: 'solution', label: 'Final Solution' },
+    { id: 'outcome', label: 'Outcome' },
+    { id: 'learnings', label: 'Learnings' },
+  ];
+
+  const currentIndex = projects.findIndex((p) => p.id === project.id);
+  const previous = projects[currentIndex - 1];
+  const next = projects[currentIndex + 1];
+
+  return (
+    <article className="azure-case-study">
+      <button className="azure-back-link" type="button" onClick={() => onNavigate('/')}>
+        <ChevronLeft size={17} /> Back to Projects
+      </button>
+
+      {/* HERO SECTION */}
+      <header className="azure-hero">
+        <div className="azure-hero-content">
+          <h1>Azure Q</h1>
+          <p className="azure-hero-subtitle">Complete Product Design</p>
+          <h2 className="azure-hero-tagline">500 test cases. One dropdown. No status. No context. We fixed that.</h2>
+          <p className="azure-hero-intro">
+            Redesigning a complex automation testing platform from 0 — transforming a tool QA teams feared into one they actually enjoy using.
+          </p>
+          
+          <div className="azure-metadata">
+            <div className="meta-item">
+              <strong>Role</strong>
+              <span>UI/UX Designer (Solo)</span>
+            </div>
+            <div className="meta-item">
+              <strong>Type</strong>
+              <span>Full Product Redesign</span>
+            </div>
+            <div className="meta-item">
+              <strong>Platform</strong>
+              <span>Web App (B2B / Enterprise)</span>
+            </div>
+            <div className="meta-item">
+              <strong>Source</strong>
+              <span>NoGrunt → AssureQ</span>
+            </div>
+            <div className="meta-item">
+              <strong>Delivered</strong>
+              <span>Test Studio redesign, Test Suites module, Design System, Developer Handoff documentation</span>
+            </div>
+            <div className="meta-item">
+              <strong>Timeline</strong>
+              <span>8 Weeks</span>
+            </div>
+          </div>
+        </div>
+        <Placeholder id="azure-q-hero-dashboard" label="[AZURE Q — HERO DASHBOARD]" aspectRatio="16/9" />
+      </header>
+
+      <div className="azure-layout">
+        {/* Sticky Navigation */}
+        <nav className="azure-sticky-nav">
+          <ul>
+            {navItems.map((item) => (
+              <li key={item.id}>
+                <button
+                  className={activeSection === item.id ? 'active' : ''}
+                  onClick={() => scrollToSection(item.id)}
+                  type="button"
+                >
+                  {item.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <main className="azure-content">
+          
+          {/* PROJECT OVERVIEW */}
+          <section id="overview" ref={(el) => (sectionRefs.current[0] = el)}>
+            <div className="section-header">
+              <span className="section-number">01</span>
+              <h2>Project Overview</h2>
+            </div>
+            <h3>What is AssureQ?</h3>
+            <p>
+              AssureQ is an enterprise automation testing platform used by QA teams to manage test cases and execute testing workflows.
+            </p>
+            <p>
+              Its previous version, NoGrunt, contained all the necessary features but suffered from a confusing user experience that slowed users down. My role was to redesign the platform and make testing simpler, faster, and more intuitive.
+            </p>
+            <div className="azure-role-timeline-wrapper">
+              <div className="azure-role-orbit">
+                <h4>1.2 My Role !!</h4>
+                <div className="orbit-diagram">
+                  <div className="orbit-ring r1"></div>
+                  <div className="orbit-ring r2"></div>
+                  <div className="orbit-ring r3"></div>
+                  <div className="orbit-node n1"><span>User Research</span></div>
+                  <div className="orbit-node n2"><span>Information Architecture</span></div>
+                  <div className="orbit-node n3"><span>Interaction Design</span></div>
+                  <div className="orbit-node n4"><span>Design System</span></div>
+                  <div className="orbit-node n5"><span>High Fidelity UI</span></div>
+                  <div className="orbit-node n6"><span>Developer Handoff</span></div>
+                </div>
+              </div>
+
+              <div className="azure-timeline-chart">
+                <div className="timeline-header">
+                  <h4>1.3 Timeline</h4>
+                  <span>8 Weeks</span>
+                </div>
+                <div className="timeline-grid">
+                  <div className="week-col" style={{gridColumn: 1}}><div className="week-bar">Week - 1</div><span>Discovery</span></div>
+                  <div className="week-col" style={{gridColumn: 2, marginTop: '2.5rem'}}><div className="week-bar">Week - 2</div><span>Research</span></div>
+                  <div className="week-col" style={{gridColumn: 3, marginTop: '5rem'}}><div className="week-bar">Week - 3</div><span>Information Architecture</span></div>
+                  <div className="week-col" style={{gridColumn: 4, marginTop: '7.5rem'}}><div className="week-bar">Week - 4</div><span>User Flows</span></div>
+                  <div className="week-col" style={{gridColumn: 5, marginTop: '10rem'}}><div className="week-bar">Week - 5</div><span>Wireframes &<br/>Exploration</span></div>
+                  <div className="week-col" style={{gridColumn: 6, marginTop: '12.5rem'}}><div className="week-bar">Week - 6</div><span>Visual Design<br/>System</span></div>
+                  <div className="week-col" style={{gridColumn: 7, marginTop: '15rem'}}><div className="week-bar">Week - 7</div><span>Validation &<br/>Iteration</span></div>
+                  <div className="week-col" style={{gridColumn: 8, marginTop: '17.5rem'}}><div className="week-bar">Week - 8</div><span>Handoff &<br/>Documentation</span></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* THE PROBLEM */}
+          <section id="problem" ref={(el) => (sectionRefs.current[1] = el)}>
+            <div className="section-header">
+              <span className="section-number">02</span>
+              <h2>The Challenge</h2>
+            </div>
+            <p className="azure-highlight-text">
+              How might we help QA teams find, organize, and execute test cases faster without overwhelming them with information?
+            </p>
+
+            <h3>Success Metrics</h3>
+            <p>To determine whether the redesign was successful, I defined four measurable goals:</p>
+            <div className="azure-goals">
+              <div className="goal-card"><strong>Goal 1:</strong> Reduce time required to locate a specific test case.</div>
+              <div className="goal-card"><strong>Goal 2:</strong> Improve visibility of hierarchy relationships.</div>
+              <div className="goal-card"><strong>Goal 3:</strong> Reduce navigation confusion.</div>
+              <div className="goal-card"><strong>Goal 4:</strong> Increase user confidence during task execution.</div>
+            </div>
+          </section>
+
+          {/* RESEARCH */}
+          <section id="research" ref={(el) => (sectionRefs.current[2] = el)}>
+            <div className="section-header">
+              <span className="section-number">03</span>
+              <h2>Research & Discovery</h2>
+            </div>
+            <p>Understanding the problem before touching pixels. I started with three types of research of NoGrunt: <strong>stakeholder interviews</strong>, <strong>user observation sessions</strong>, and a <strong>heuristic audit</strong>.</p>
+            
+            <h3>User Personas</h3>
+            <Placeholder id="azure-q-personas-diagram" label="[AZURE Q — USER PERSONAS DIAGRAM]" />
+            <div className="azure-persona-details">
+              <div className="persona">
+                <h4>QA Engineer</h4>
+                <p><strong>Primary user · daily usage</strong></p>
+                <p>Needs to find and run test cases fast. Spends 3-5 minutes locating a single test case, causing execution delays across daily testing workflows. Hates scrolling through dropdown lists with 500+ items.</p>
+              </div>
+              <div className="persona">
+                <h4>Test Lead</h4>
+                <p><strong>Manager · weekly usage</strong></p>
+                <p>Needs overview of suite structure and coverage. Can't see how many test cases are inside suites without drilling in one by one.</p>
+              </div>
+              <div className="persona">
+                <h4>Product Manager</h4>
+                <p><strong>Stakeholder · ad-hoc usage</strong></p>
+                <p>Needs to review test reports and understand pass/fail status without being a QA expert. Current reports are too technical at a glance.</p>
+              </div>
+            </div>
+
+            <blockquote className="azure-quote">
+              "I open the module dropdown, scroll through everything, lose my place, and start again. This happened every single session"
+              <cite>— Observed in 3 out of 5 user sessions, QA Engineer (Prasanthi)</cite>
+            </blockquote>
+
+            <h3>Research Findings</h3>
+            <p>Before redesigning screens, I investigated how information architecture and navigation patterns impacted daily QA workflows.</p>
+            
+            <ul className="azure-findings-list">
+              <li><strong>Users couldn't find test cases quickly.</strong> → test exists somewhere, but finding it takes forever.</li>
+              <li><strong>Users lost track of where they were.</strong> → No breadcrumbs. No hierarchy. No navigation context.</li>
+              <li><strong>Test suites hid critical information.</strong> → Folder cards showed no metadata.</li>
+              <li><strong>Users experienced decision overload.</strong> → 3 large dropdowns. 500+ items. Everything shown simultaneously.</li>
+            </ul>
+
+            <Placeholder id="azure-q-research-findings-visual" label="[AZURE Q — RESEARCH FINDINGS VISUAL]" />
+
+            <h3>Heuristic Audit</h3>
+            <p>The heuristic audit surfaced 4 critical violations across both modules:</p>
+            <ul className="azure-heuristics-list">
+              <li><strong>Visibility of system status:</strong> No test count, no last run date, no status on suite cards.</li>
+              <li><strong>Match between system and mental model:</strong> Dropdown-first navigation doesn't match how QA teams think about test hierarchies.</li>
+              <li><strong>Recognition over recall:</strong> Users had to remember module names and locations with no visible cues.</li>
+              <li><strong>Aesthetic and minimalist design:</strong> Every screen showed all possible actions simultaneously.</li>
+            </ul>
+
+            <h3>Project Constraints</h3>
+            <div className="azure-constraints">
+              <div className="constraint">
+                <h4>Technical Constraints</h4>
+                <p>Existing backend architecture could not be modified. Existing test case relationships had to remain intact. Navigation improvements had to work with current data structures.</p>
+              </div>
+              <div className="constraint">
+                <h4>Business Constraints</h4>
+                <p>Redesign had to avoid disrupting active QA workflows. Solution needed to support both experienced and new QA users. Scope was limited to navigation and discoverability improvements.</p>
+              </div>
+              <div className="constraint">
+                <h4>Design Constraint</h4>
+                <p>Improve usability without increasing interface complexity.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* INSIGHTS */}
+          <section id="insights" ref={(el) => (sectionRefs.current[3] = el)}>
+            <div className="section-header">
+              <span className="section-number">04</span>
+              <h2>Insights & Strategy</h2>
+            </div>
+            
+            <h3>Affinity Map</h3>
+            <p>Turning research observations into actionable design insights.</p>
+            
+            <div className="azure-affinity-map">
+              <div className="affinity-col">
+                <h5>Navigation Friction</h5>
+                <div className="affinity-card">Lost location</div>
+                <div className="affinity-card">No breadcrumbs</div>
+                <div className="affinity-card">Memory reliance</div>
+                <div className="affinity-card">Inconsistent paths</div>
+              </div>
+              <div className="affinity-col">
+                <h5>Discoverability</h5>
+                <div className="affinity-card">Large dropdowns</div>
+                <div className="affinity-card">No search visibility</div>
+                <div className="affinity-card">Hidden metadata</div>
+                <div className="affinity-card">Hard to find TCs</div>
+              </div>
+              <div className="affinity-col">
+                <h5>Hidden Hierarchy</h5>
+                <div className="affinity-card">Flat folder cards</div>
+                <div className="affinity-card">No nested visibility</div>
+                <div className="affinity-card">No counts visible</div>
+                <div className="affinity-card">Poor structure</div>
+              </div>
+              <div className="affinity-col">
+                <h5>Cognitive Overload</h5>
+                <div className="affinity-card">Too many choices</div>
+                <div className="affinity-card">Simultaneous decisions</div>
+                <div className="affinity-card">Context switching</div>
+                <div className="affinity-card">Information overload</div>
+              </div>
+              <div className="affinity-col">
+                <h5>Workflow Efficiency</h5>
+                <div className="affinity-card">Repetitive actions</div>
+                <div className="affinity-card">Extra clicks</div>
+                <div className="affinity-card">Scattered actions</div>
+                <div className="affinity-card">Slower execution</div>
+              </div>
+            </div>
+
+            <blockquote className="azure-quote">
+              "Patterns from the affinity map directly shaped which journey stages we mapped in depth."
+            </blockquote>
+
+            <h3>From Insights to Design Strategy</h3>
+            <div className="azure-strategy-table">
+              <div className="strategy-row header">
+                <div>Research Finding</div>
+                <div>Design Response</div>
+              </div>
+              <div className="strategy-row">
+                <div>Users lost location</div>
+                <div>→ Breadcrumbs</div>
+              </div>
+              <div className="strategy-row">
+                <div>Hidden hierarchy</div>
+                <div>→ Two-panel navigator</div>
+              </div>
+              <div className="strategy-row">
+                <div>Large dropdowns</div>
+                <div>→ Dedicated TC explorer</div>
+              </div>
+              <div className="strategy-row">
+                <div>Decision overload</div>
+                <div>→ Progressive workflow</div>
+              </div>
+              <div className="strategy-row">
+                <div>Hidden metadata</div>
+                <div>→ Context-rich lists</div>
+              </div>
+            </div>
+          </section>
+
+          {/* USER JOURNEY / FLOW */}
+          <section id="journey" ref={(el) => (sectionRefs.current[4] = el)}>
+            <div className="section-header">
+              <span className="section-number">05</span>
+              <h2>Journey & Flow Mapping</h2>
+            </div>
+            
+            <h3>Understanding the Existing Test Execution Workflow</h3>
+            <p>To identify where users experienced friction, I mapped the journey of a QA Engineer while locating and executing a test case in NoGrunt.</p>
+            
+            <div className="azure-journey-table-wrapper">
+              <table className="azure-journey-table">
+                <thead>
+                  <tr>
+                    <th>Stage</th>
+                    <th>User Action</th>
+                    <th>Experience</th>
+                    <th>Cognitive Overload</th>
+                    <th>Opportunity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="journey-row">
+                    <td><strong>Enter Test Studio</strong></td>
+                    <td>Open testing module</td>
+                    <td><span className="exp-badge neutral">Clear starting point</span></td>
+                    <td>None</td>
+                    <td>Maintain simplicity</td>
+                  </tr>
+                  <tr className="journey-row">
+                    <td><strong>Select Application</strong></td>
+                    <td>Choose application from dropdown</td>
+                    <td><span className="exp-badge positive">Easy</span></td>
+                    <td>None</td>
+                    <td>Keep existing pattern</td>
+                  </tr>
+                  <tr className="journey-row">
+                    <td><strong>Select Module</strong></td>
+                    <td>Browse module list</td>
+                    <td><span className="exp-badge neutral">Manageable</span></td>
+                    <td className="warning-text">Long lists in some cases</td>
+                    <td>Better organization</td>
+                  </tr>
+                  <tr className="journey-row">
+                    <td><strong>Find Test Case</strong></td>
+                    <td>Search through 500+ test cases in dropdown</td>
+                    <td><span className="exp-badge negative">Frustrating</span></td>
+                    <td className="warning-text">Poor discoverability, information overload</td>
+                    <td><strong>Dedicated test case explorer</strong></td>
+                  </tr>
+                  <tr className="journey-row">
+                    <td><strong>Verify Selection</strong></td>
+                    <td>Check if selected test case is correct</td>
+                    <td><span className="exp-badge negative">Uncertain</span></td>
+                    <td className="warning-text">No preview or metadata</td>
+                    <td>Show context before selection</td>
+                  </tr>
+                  <tr className="journey-row">
+                    <td><strong>Execute Test Case</strong></td>
+                    <td>Open and start execution</td>
+                    <td><span className="exp-badge neutral">Functional</span></td>
+                    <td className="warning-text">Too many steps before reaching here</td>
+                    <td>Streamline workflow</td>
+                  </tr>
+                  <tr className="journey-row">
+                    <td><strong>Repeat Process</strong></td>
+                    <td>Navigate back and repeat</td>
+                    <td><span className="exp-badge negative">Time consuming</span></td>
+                    <td className="warning-text">Repetitive navigation</td>
+                    <td>Faster access to related test cases</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>User Flows</h3>
+            <p>Mapping the journeys that mattered most. I identified three critical user flows that accounted for 80% of daily usage. Each was redesigned around progressive disclosure — commit to context one step at a time.</p>
+            
+            <div className="flow-block">
+              <h4>User Flow A — (Test Execution)</h4>
+              <p>Help QA teams locate and execute a test case with minimal navigation effort.</p>
+              <Placeholder id="azure-q-user-flow-a" label="[AZURE Q — USER FLOW A]" />
+            </div>
+
+            <div className="flow-block">
+              <h4>User Flow B — (Test Suite Navigation)</h4>
+              <p>Make suite hierarchy visible while reducing unnecessary exploration.</p>
+              <Placeholder id="azure-q-user-flow-b" label="[AZURE Q — USER FLOW B]" />
+            </div>
+          </section>
+
+          {/* IDEATION & IA */}
+          <section id="ideation" ref={(el) => (sectionRefs.current[5] = el)}>
+            <div className="section-header">
+              <span className="section-number">06</span>
+              <h2>Information Architecture</h2>
+            </div>
+            <p>Mapping the system before redesigning it. Before any wireframes, I mapped the complete IA of NoGrunt — every screen, every entity relationship, every nav path. This revealed structural problems I couldn't have found from screenshots alone.</p>
+            
+            <div className="azure-ia-diagram">
+              <div className="ia-root">
+                <div className="ia-node root-node">Overview & Navigation</div>
+              </div>
+              <div className="ia-branches">
+                <div className="ia-branch">
+                  <div className="ia-node">Test Studio</div>
+                  <div className="ia-line"></div>
+                  <div className="ia-node">Select Application & Module</div>
+                  <div className="ia-line"></div>
+                  <div className="ia-node">Test Case Lists</div>
+                  <div className="ia-line"></div>
+                  <div className="ia-node">Test Step Lists</div>
+                </div>
+                <div className="ia-branch">
+                  <div className="ia-node">Test Suites</div>
+                  <div className="ia-line"></div>
+                  <div className="ia-node">Select Application</div>
+                  <div className="ia-line"></div>
+                  <div className="ia-node">Test Suites List</div>
+                  <div className="ia-line"></div>
+                  <div className="ia-node">Test Cases & Nested Suites</div>
+                </div>
+                <div className="ia-branch">
+                  <div className="ia-node">Suite Reports</div>
+                  <div className="ia-line"></div>
+                  <div className="ia-node">Report lists</div>
+                  <div className="ia-line"></div>
+                  <div className="ia-node">Run detail</div>
+                </div>
+                <div className="ia-branch">
+                  <div className="ia-node">Impact Analysis</div>
+                  <div className="ia-line"></div>
+                  <div className="ia-node">Change map</div>
+                  <div className="ia-line"></div>
+                  <div className="ia-node">Affected TCs</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="insight-card">
+              <h4>Key Insight</h4>
+              <ul>
+                <li>The problem wasn't missing features — NoGrunt had everything QA teams needed.</li>
+                <li>The problem was that features were organized around system logic, not user workflows.</li>
+                <li>Users had to learn the system's structure to do their job. The redesign flipped this: structure now follows how QA engineers actually think and work.</li>
+              </ul>
+            </div>
+
+            <h3 className="mt-large">Key Design Decisions</h3>
+            <p>A deeper look into the architectural and user experience choices made during the product development process.</p>
+            
+            <div className="decision-block">
+              <h4>Decision 01: Move TC selection to dedicated screen.</h4>
+              <p><strong>Problem:</strong> 500+ TCs inside dropdown.</p>
+              <p><strong>Reason:</strong> Provides visibility, pagination, filtering, status, and execution context.</p>
+              <div className="alternatives">
+                <p><strong>Alternatives Explored:</strong></p>
+                <ul>
+                  <li>❌ Option A: Searchable Dropdown (Still overwhelming)</li>
+                  <li>❌ Option B: Grouped Dropdown (Doesn't scale)</li>
+                  <li>✅ <strong>Option C: Dedicated Screen (Chosen)</strong></li>
+                </ul>
+              </div>
+              <Placeholder id="azure-q-decision-01-ui" label="[AZURE Q — DECISION 01 UI EXAMPLES]" />
+            </div>
+
+            <div className="decision-block">
+              <h4>Decision 02: Two Panel Suite Navigator.</h4>
+              <p><strong>Problem:</strong> Users couldn't understand suite hierarchy.</p>
+              <p><strong>Reason:</strong> Matches mental model of file explorer.</p>
+              <div className="alternatives">
+                <p><strong>Alternatives Explored:</strong></p>
+                <ul>
+                  <li>❌ Option A: Folder Cards (Hidden structure)</li>
+                  <li>❌ Option B: Tree Table (Complex)</li>
+                  <li>✅ <strong>Option C: Two Panel Layout (Chosen)</strong></li>
+                </ul>
+              </div>
+              <Placeholder id="azure-q-decision-02-ui" label="[AZURE Q — DECISION 02 UI EXAMPLES]" />
+            </div>
+
+            <div className="decision-block">
+              <h4>Decision 03: Status Pills over Text Labels.</h4>
+              <p><strong>Problem:</strong> Test case health was invisible. Users couldn't scan pass/fail without opening each case.</p>
+              <p><strong>Reason:</strong> Instant visual scanning. Color + label = accessible and fast. QA engineers can review 20 cases in seconds.</p>
+              <div className="alternatives">
+                <p><strong>Alternatives Explored:</strong></p>
+                <ul>
+                  <li>❌ Option A: Text labels (Pass/Fail/Running) (Slow to scan)</li>
+                  <li>❌ Option B: Color-coded rows (Accessibility issues)</li>
+                  <li>✅ <strong>Option C: Status Pills (Chosen)</strong></li>
+                </ul>
+              </div>
+              <Placeholder id="azure-q-decision-03-ui" label="[AZURE Q — DECISION 03 UI EXAMPLES]" />
+            </div>
+
+            <div className="decision-block">
+              <h4>Why not other solutions?</h4>
+              <ul>
+                <li><strong>Why We Didn't Use Global Search:</strong> Although search would improve discoverability, it would not solve the underlying hierarchy problem. Users still needed to understand relationships between suites, modules, and test cases.</li>
+                <li><strong>Why We Didn't Keep Dropdown Navigation:</strong> Even with search and grouping, dropdowns continued to hide context and scale poorly as datasets grew.</li>
+                <li><strong>Why Dedicated Views Won:</strong> Dedicated views provided visibility, metadata, filtering, and progressive navigation while remaining scalable.</li>
+              </ul>
+            </div>
+          </section>
+
+          {/* WIREFRAMES */}
+          <section id="wireframes" ref={(el) => (sectionRefs.current[6] = el)}>
+            <div className="section-header">
+              <span className="section-number">07</span>
+              <h2>Wireframes</h2>
+            </div>
+            <Placeholder id="azure-q-wireframes" label="[AZURE Q — WIREFRAMES GALLERY]" aspectRatio="3/4" />
+          </section>
+
+          {/* UI DESIGN & SYSTEM */}
+          <section id="ui" ref={(el) => (sectionRefs.current[7] = el)}>
+            <div className="section-header">
+              <span className="section-number">08</span>
+              <h2>Design System</h2>
+            </div>
+            <p>The problem with the old colours: NoGrunt used dark orange and dark blue heavily across the entire interface. The screens felt visually heavy. What we changed: We shifted to a white-dominant theme with blue and orange used intentionally.</p>
+            <Placeholder id="azure-q-design-system-typography-colors" label="[AZURE Q — TYPOGRAPHY, COLORS & LOGO]" />
+            
+            <h3 className="mt-large">Components & Patterns</h3>
+            <Placeholder id="azure-q-design-system-components" label="[AZURE Q — COMPONENTS PREVIEW]" />
+          </section>
+
+          {/* FEATURES / INTERACTION PRINCIPLES */}
+          <section id="features" ref={(el) => (sectionRefs.current[8] = el)}>
+            <div className="section-header">
+              <span className="section-number">09</span>
+              <h2>Interaction Principles</h2>
+            </div>
+            <p>The 3 principles that guided every design decision:</p>
+            
+            <div className="principles-list">
+              <div className="principle-card">
+                <h4>1. Progressive Disclosure</h4>
+                <p>Show users one decision at a time. App → Module → Test Case → Steps. Each screen has exactly one job.</p>
+              </div>
+              <div className="principle-card">
+                <h4>2. Visible Hierarchy</h4>
+                <p>If a user can't see the structure without clicking, the structure is broken. Every count, every nesting level, every status is surfaced by default.</p>
+              </div>
+              <div className="principle-card">
+                <h4>3. Context-Scoped Actions</h4>
+                <p>Actions available at each screen level match only what's relevant at that moment. No global action menus. No decision overload.</p>
+              </div>
+            </div>
+          </section>
+
+          {/* FINAL SOLUTION */}
+          <section id="solution" ref={(el) => (sectionRefs.current[9] = el)}>
+            <div className="section-header">
+              <span className="section-number">10</span>
+              <h2>Final Solution & Interfaces</h2>
+            </div>
+            
+            <div className="solution-block">
+              <h3>Module 1: Test Studio</h3>
+              <p>The NoGrunt Test Studio crammed Application, Module, and Test Scenario selection into a single screen above a flat list of steps.</p>
+              <Placeholder id="azure-q-test-studio-before-after" label="[AZURE Q — TEST STUDIO: BEFORE VS AFTER VISUAL]" aspectRatio="1/1" />
+              <div className="comparison">
+                <div className="before">
+                  <h4>What was broken (NoGrunt)</h4>
+                  <ul>
+                    <li>3 dropdowns on one screen, no hierarchy</li>
+                    <li>500 TCs in a single unfiltered dropdown</li>
+                    <li>No TC count, no status, no last run info</li>
+                    <li>All nav actions at every level simultaneously</li>
+                    <li>No empty state — blank screen with no filter</li>
+                    <li>Persistent dropdowns waste screen space</li>
+                  </ul>
+                  <p><em>A module with 500+ test cases meant scrolling through 500 items in a dropdown with no status, no last run, no context at all.</em></p>
+                </div>
+                <div className="after">
+                  <h4>What changed (AssureQ)</h4>
+                  <ul>
+                    <li>Progressive flow: App → Module → Test case List → Test Steps List</li>
+                    <li>Dedicated TC List screen with pagination</li>
+                    <li>Context-scoped actions per screen level</li>
+                    <li>Test Step list Screen: Everything shown in context with classified actions menu</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="solution-block">
+              <h3>Module 2: Test Suites</h3>
+              <p>Making hierarchy visible at last. Test suites were flat folder icon cards. You had no idea how many test cases were inside, or whether nested suites existed.</p>
+              <Placeholder id="azure-q-test-suites-before-after" label="[AZURE Q — TEST SUITES: BEFORE VS AFTER VISUAL]" aspectRatio="1/1" />
+              <div className="comparison">
+                <div className="before">
+                  <h4>What was broken (NoGrunt)</h4>
+                  <ul>
+                    <li>In NoGrunt, test suites appeared as simple folder cards, giving no visibility into the number of test cases, nested suites, or overall structure.</li>
+                    <li>Users had to open each suite individually, making test planning slow and inefficient.</li>
+                  </ul>
+                </div>
+                <div className="after">
+                  <h4>What changed (AssureQ)</h4>
+                  <ul>
+                    <li>Two-Panel Test Suite Navigator</li>
+                    <li>Scrollable suite tree for quick navigation</li>
+                    <li>Live detail panel for immediate context</li>
+                    <li>Reduced unnecessary clicks during test planning</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* OUTCOME */}
+          <section id="outcome" ref={(el) => (sectionRefs.current[10] = el)}>
+            <div className="section-header">
+              <span className="section-number">11</span>
+              <h2>Validation & Impact</h2>
+            </div>
+            <p>Testing whether the redesign actually solved the problem. Before finalizing the redesign, I conducted internal usability validation sessions with QA stakeholders to evaluate whether the new workflow reduced navigation effort and improved task completion.</p>
+
+            <div className="validation-task">
+              <strong>TASK GIVEN:</strong> Locate and execute a specific test case (TC-031) within the platform.
+            </div>
+
+            <div className="results-table">
+              <div className="results-header">
+                <div>Metric</div>
+                <div>Before (NoGrunt)</div>
+                <div>After (AssureQ)</div>
+              </div>
+              <div className="results-row">
+                <div>Time To Locate & Execute TC-031</div>
+                <div className="bad">4m 12s</div>
+                <div className="good">58s</div>
+              </div>
+              <div className="results-row">
+                <div>Navigation Steps</div>
+                <div>Multiple dropdown selections</div>
+                <div>Progressive workflow</div>
+              </div>
+              <div className="results-row">
+                <div>Hierarchy Visibility</div>
+                <div>Hidden</div>
+                <div>Visible</div>
+              </div>
+              <div className="results-row">
+                <div>User Confidence</div>
+                <div className="bad">Low</div>
+                <div className="good">High</div>
+              </div>
+            </div>
+
+            <Placeholder id="azure-q-before-after-path" label="[AZURE Q — BEFORE VS AFTER TANGLED PATH VISUAL]" />
+
+            <div className="outcomes-grid">
+              <div className="outcome-col">
+                <h4>Key Observations</h4>
+                <ul>
+                  <li>Users spent significantly less time searching for test cases.</li>
+                  <li>Hierarchical relationships were immediately understandable.</li>
+                  <li>Reduced confusion during navigation and task execution.</li>
+                  <li>Participants completed tasks with greater confidence and fewer errors.</li>
+                  <li>The dedicated Test Case List improved discoverability and workflow clarity.</li>
+                </ul>
+              </div>
+              <div className="outcome-col">
+                <h4>Validation Insight</h4>
+                <p>The redesign confirmed that the primary challenge was not test execution itself, but the effort required to locate and navigate to the correct test case.</p>
+              </div>
+            </div>
+
+            <h3 className="mt-large">User Feedback</h3>
+            <div className="feedback-quotes">
+              <blockquote className="azure-quote">
+                "Finding the right test case became significantly easier."
+                <cite>— QA Engineer</cite>
+              </blockquote>
+              <blockquote className="azure-quote">
+                "The suite hierarchy finally made sense."
+                <cite>— Test Lead</cite>
+              </blockquote>
+              <blockquote className="azure-quote">
+                "The workflow felt more predictable and structured."
+                <cite>— Product Manager</cite>
+              </blockquote>
+            </div>
+
+            <h3 className="mt-large">Key Outcomes</h3>
+            <ul className="outcomes-list">
+              <li>Reduced navigation complexity across modules</li>
+              <li>Improved discoverability of test cases</li>
+              <li>Increased visibility of hierarchy relationships</li>
+              <li>Reduced dependence on memory-based navigation</li>
+              <li>Created a scalable IA foundation for future growth</li>
+            </ul>
+          </section>
+
+          {/* LEARNINGS & REFLECTION */}
+          <section id="learnings" ref={(el) => (sectionRefs.current[11] = el)}>
+            <div className="section-header">
+              <span className="section-number">12</span>
+              <h2>Reflection</h2>
+            </div>
+            
+            <div className="reflection-block">
+              <h3>What This Project Reinforced...</h3>
+              <p>Enterprise complexity rarely lives in the data — it lives in how the data is organized and surfaced.</p>
+              <p>NoGrunt had every feature QA teams needed. The problem was that the system was built around database logic, not human workflows. Users had to learn the system before they could do their job.</p>
+              <p><strong>Progressive disclosure isn't just a UX pattern — it's a trust-building tool.</strong> Every time a user sees exactly what they need and nothing they don't, the product feels like it understands them.</p>
+            </div>
+
+            <div className="reflection-block">
+              <h3>What I'd Explore Next</h3>
+              <ul>
+                <li>AI-powered test case search: surface relevant TCs based on module context and recent runs</li>
+                <li>Cross-module shortcuts for repeated workflows (e.g. quick-run from dashboard)</li>
+                <li>Long-term adoption tracking to measure workflow efficiency at scale</li>
+                <li>Expand usability testing to QA teams across different organization types and sizes</li>
+              </ul>
+            </div>
+
+            <div className="final-takeaway">
+              <h3>Final Takeaway</h3>
+              <p className="azure-highlight-text">
+                Great product experiences are not created by adding more functionality—they are created by helping users reach their goals with less effort and greater confidence.
+              </p>
+            </div>
+          </section>
+
+        </main>
+      </div>
+
+      <footer className="azure-footer">
+        <div className="azure-footer-nav">
+          <div className="footer-col">
+            {previous ? (
+              <button className="nav-btn" type="button" onClick={() => onNavigate(previous.route)}>
+                <ChevronLeft size={24} />
+                <div className="nav-btn-text">
+                  <small>Previous Project</small>
+                  <span>{previous.title}</span>
+                </div>
+              </button>
+            ) : <span />}
+          </div>
+          <div className="footer-col right">
+            {next ? (
+              <button className="nav-btn" type="button" onClick={() => onNavigate(next.route)}>
+                <div className="nav-btn-text">
+                  <small>Next Project</small>
+                  <span>{next.title}</span>
+                </div>
+                <ChevronRight size={24} />
+              </button>
+            ) : (
+              <button className="nav-btn" type="button" onClick={() => onNavigate('/')}>
+                <div className="nav-btn-text">
+                  <small>Return to</small>
+                  <span>Projects</span>
+                </div>
+                <ChevronRight size={24} />
+              </button>
+            )}
+          </div>
+        </div>
+      </footer>
+    </article>
+  );
+}
