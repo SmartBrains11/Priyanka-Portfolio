@@ -172,14 +172,14 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
                   <span>8 Weeks</span>
                 </div>
                 <div className="timeline-grid">
-                  <div className="week-col" style={{gridColumn: 1}}><div className="week-bar">Week - 1</div><span>Discovery</span></div>
-                  <div className="week-col" style={{gridColumn: 2, marginTop: '2.5rem'}}><div className="week-bar">Week - 2</div><span>Research</span></div>
-                  <div className="week-col" style={{gridColumn: 3, marginTop: '5rem'}}><div className="week-bar">Week - 3</div><span>Information Architecture</span></div>
-                  <div className="week-col" style={{gridColumn: 4, marginTop: '7.5rem'}}><div className="week-bar">Week - 4</div><span>User Flows</span></div>
-                  <div className="week-col" style={{gridColumn: 5, marginTop: '10rem'}}><div className="week-bar">Week - 5</div><span>Wireframes &<br/>Exploration</span></div>
-                  <div className="week-col" style={{gridColumn: 6, marginTop: '12.5rem'}}><div className="week-bar">Week - 6</div><span>Visual Design<br/>System</span></div>
-                  <div className="week-col" style={{gridColumn: 7, marginTop: '15rem'}}><div className="week-bar">Week - 7</div><span>Validation &<br/>Iteration</span></div>
-                  <div className="week-col" style={{gridColumn: 8, marginTop: '17.5rem'}}><div className="week-bar">Week - 8</div><span>Handoff &<br/>Documentation</span></div>
+                  <div className="week-col" style={{gridColumn: 1, animationDelay: '0.1s'}}><div className="week-bar">Week - 1</div><span>Discovery</span></div>
+                  <div className="week-col" style={{gridColumn: 2, marginTop: '2.5rem', animationDelay: '0.2s'}}><div className="week-bar">Week - 2</div><span>Research</span></div>
+                  <div className="week-col" style={{gridColumn: 3, marginTop: '5rem', animationDelay: '0.3s'}}><div className="week-bar">Week - 3</div><span>Information Architecture</span></div>
+                  <div className="week-col" style={{gridColumn: 4, marginTop: '7.5rem', animationDelay: '0.4s'}}><div className="week-bar">Week - 4</div><span>User Flows</span></div>
+                  <div className="week-col" style={{gridColumn: 5, marginTop: '10rem', animationDelay: '0.5s'}}><div className="week-bar">Week - 5</div><span>Wireframes &<br/>Exploration</span></div>
+                  <div className="week-col" style={{gridColumn: 6, marginTop: '12.5rem', animationDelay: '0.6s'}}><div className="week-bar">Week - 6</div><span>Visual Design<br/>System</span></div>
+                  <div className="week-col" style={{gridColumn: 7, marginTop: '15rem', animationDelay: '0.7s'}}><div className="week-bar">Week - 7</div><span>Validation &<br/>Iteration</span></div>
+                  <div className="week-col" style={{gridColumn: 8, marginTop: '17.5rem', animationDelay: '0.8s'}}><div className="week-bar">Week - 8</div><span>Handoff &<br/>Documentation</span></div>
                 </div>
               </div>
             </div>
@@ -215,8 +215,13 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
               <span className="section-number">03</span>
               <h2>RESEARCH & DISCOVERY</h2>
             </div>
-            <p>Understanding the problem before touching pixels. I started with three types of research of NoGrunt: <strong>stakeholder interviews</strong>, <strong>user observation sessions</strong>, and a <strong>heuristic audit</strong>.</p>
-            
+            <p className="azure-research-subtitle">Understanding the problem before touching pixels</p>
+            <p className="azure-research-text">I started with three types of research of NoGrunt:</p>
+            <div className="azure-research-pills">
+              <span className="research-pill">stakeholder interviews</span>
+              <span className="research-pill">user observation sessions</span>
+              <span className="research-pill">heuristic audit</span>
+            </div>
             <h3>3.1 USER RESEARCH</h3>
             <p>Before redesigning screens, I investigated how information architecture and navigation patterns impacted daily QA workflows.</p>
             <h4>User Personas</h4>

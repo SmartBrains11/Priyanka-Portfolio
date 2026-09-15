@@ -1,0 +1,338 @@
+.swarga-case-study {
+  background-color: #FFFFFF;
+  color: #18181B;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: clip;
+  padding-bottom: 80px;
+}
+
+.swarga-back-link {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: #71717A;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 100;
+  transition: color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.swarga-back-link:hover {
+  color: #09090B;
+}
+
+.swarga-case-study h1, .swarga-case-study h2, .swarga-case-study h3, .swarga-case-study h4 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 0;
+  color: #09090B;
+}
+
+.swarga-case-study p {
+  line-height: 1.7;
+  color: #52525B;
+  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
+  max-width: 65ch;
+}
+
+/* HERO SECTION */
+.swarga-hero {
+  padding: 6rem 2rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.swarga-hero-video-container {
+  width: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.swarga-hero-video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* LAYOUT */
+.swarga-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .swarga-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* STICKY NAV */
+.swarga-sticky-nav {
+  position: sticky;
+  top: 4rem;
+}
+
+.swarga-sticky-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.swarga-sticky-nav button {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  color: #71717A;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  width: 100%;
+  position: relative;
+}
+
+.swarga-sticky-nav button:hover {
+  color: #3f6e52;
+}
+
+.swarga-sticky-nav button.active {
+  color: #3f6e52;
+  font-weight: 600;
+}
+
+.swarga-sticky-nav button.active::before {
+  content: '';
+  position: absolute;
+  left: -1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #3f6e52;
+}
+
+/* CONTENT */
+.swarga-content {
+  min-width: 0; /* Prevents grid blowout */
+}
+
+.swarga-section {
+  padding-bottom: 6rem;
+}
+
+.swarga-section-eyebrow {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #18181B;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.swarga-section-title {
+  font-family: 'Playfair Display', serif; /* Or similar elegant serif */
+  font-size: 3rem;
+  font-weight: 500;
+  color: #3f6e52; /* Grounded green */
+  margin-bottom: 1.5rem;
+  letter-spacing: 0;
+}
+
+.swarga-section-content {
+  color: #3f3f46;
+}
+
+.swarga-section-content p {
+  margin-bottom: 1rem;
+}
+
+.swarga-placeholder {
+  background-color: #f4f4f5;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.placeholder-label {
+  color: #a1a1aa;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+/* Intro specific styling */
+.intro-text p {
+  font-size: 1.125rem;
+  max-width: none;
+}
+
+/* IDEA SECTION */
+.swarga-idea-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .swarga-idea-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+.swarga-idea-image {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.swarga-idea-text-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: -0.5rem;
+}
+
+.swarga-idea-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #3f6e52;
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.swarga-idea-intro {
+  font-size: 1.125rem;
+  color: #3f3f46;
+  margin-bottom: 0.5rem;
+}
+
+.swarga-idea-elements {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0.5rem 0;
+}
+
+.swarga-idea-elements h4 {
+  font-size: 1rem;
+  color: #3f3f46;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.swarga-idea-elements p {
+  color: #52525B;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.swarga-idea-elements .cross {
+  font-size: 1rem;
+  color: #52525B;
+  margin: 0.5rem 0;
+  font-weight: 500;
+}
+
+.swarga-idea-conclusion {
+  color: #3f3f46;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.swarga-idea-conclusion p {
+  margin-bottom: 0;
+}
+
+/* MOODBOARD PARALLAX SECTION */
+.swarga-moodboard-absolute-container {
+  width: 100%;
+  position: relative;
+  overflow: visible;
+  padding: 4rem 0;
+}
+
+.swarga-moodboard-scaler {
+  position: relative;
+  width: 100%;
+  /* Maintain the 1976 / 2760 aspect ratio for the container */
+  aspect-ratio: 1976 / 2760;
+  margin: 0 auto;
+}
+
+.swarga-moodboard-absolute-item {
+  position: absolute;
+  will-change: transform;
+}
+
+.swarga-moodboard-absolute-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #f4f4f5;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+@media (max-width: 768px) {
+  .swarga-moodboard-scaler {
+    /* Optional: scale it up a bit if it's too small on mobile, or stack them */
+    min-width: 150%;
+    transform: translateX(-15%); /* Center the scaled version */
+  }
+  .swarga-sticky-nav {
+    display: none;
+  }
+  .swarga-layout {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+  .swarga-hero {
+    padding: 6rem 1rem 2rem;
+  }
+  .swarga-section-title {
+    font-size: 2rem;
+  }
+  .swarga-idea-title {
+    font-size: 1.8rem;
+  }
+}

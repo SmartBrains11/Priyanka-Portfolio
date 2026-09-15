@@ -265,7 +265,7 @@ export default function SmartBrainsIndia({ project, onNavigate }: SmartBrainsInd
 
 
 
-          <div className="case-navigation" style={{ padding: '0 110px', marginTop: '100px' }}>
+          <div className="case-navigation sbi-case-navigation">
             {previous ? <button type="button" onClick={() => onNavigate(previous.route)}><ChevronLeft size={17} /><span><small>Previous Project</small>{previous.title}</span></button> : <span />}
             {next ? <button type="button" onClick={() => onNavigate(next.route)}><span><small>Next Project</small>{next.title}</span><ChevronRight size={17} /></button> : <button type="button" onClick={() => onNavigate('/projects')}><span><small>Return to</small>Projects</span><ChevronRight size={17} /></button>}
           </div>

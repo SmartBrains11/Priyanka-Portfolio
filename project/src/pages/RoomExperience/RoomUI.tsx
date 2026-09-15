@@ -94,12 +94,12 @@ export default function RoomUI({ onUiHoverChange, onAction, viewState, audioComp
       >
         <button className="intent-button" onClick={() => onAction && onAction('mirror')}>I am hiring</button>
         <button className="intent-button" onClick={() => onAction && onAction('default')}>I am a designer</button>
-        <button className="intent-button">I'm curious</button>
+        <button className="intent-button" onClick={() => onAction && onAction('board')}>I'm curious</button>
       </div>
 
       {/* Know Me Pointer */}
       <div 
-        className={`cp-container ${viewState === 'mirror' ? 'show-pop opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} 
+        className={`cp-container cp-know-me ${viewState === 'mirror' ? 'show-pop opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} 
         style={{ left: '20%', top: '50%' }}
         onMouseEnter={() => onUiHoverChange(true)}
         onMouseLeave={() => onUiHoverChange(false)}
@@ -119,7 +119,7 @@ export default function RoomUI({ onUiHoverChange, onAction, viewState, audioComp
 
       {/* Explore my Work Pointer */}
       <div 
-        className={`cp-container ${audioCompleted && viewState === 'default' ? 'opacity-100 pointer-events-auto show-pop-work' : 'opacity-0 pointer-events-none'}`}
+        className={`cp-container cp-explore ${audioCompleted && viewState === 'default' ? 'opacity-100 pointer-events-auto show-pop-work' : 'opacity-0 pointer-events-none'}`}
         style={{ left: '60%', top: '48%' }}
         onMouseEnter={() => onUiHoverChange(true)}
         onMouseLeave={() => onUiHoverChange(false)}
@@ -138,7 +138,7 @@ export default function RoomUI({ onUiHoverChange, onAction, viewState, audioComp
 
       {/* Understand How I Think Pointer (On Board) */}
       <div 
-        className={`cp-container ${viewState === 'board' ? 'show-pop-work opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
+        className={`cp-container cp-understand ${viewState === 'board' ? 'show-pop-work opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
         style={{ left: '50%', top: '45%' }} // Centered since camera zooms in on it
         onMouseEnter={() => onUiHoverChange(true)}
         onMouseLeave={() => onUiHoverChange(false)}

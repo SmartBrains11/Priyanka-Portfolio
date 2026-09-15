@@ -185,8 +185,58 @@
   opacity: 1;
 }
 .pointer-events-none {
-  pointer-events: none;
+  pointer-events: none !important;
+}
+.cp-container.pointer-events-none .cp-button {
+  pointer-events: none !important;
 }
 .pointer-events-auto {
   pointer-events: auto;
+}
+@media (max-width: 768px) {
+  .welcome-text {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  .top-title-text {
+    font-size: 1rem;
+    top: 5%;
+    width: 90%;
+    text-align: center;
+    padding: 0.5rem 1rem;
+  }
+  .intent-options {
+    flex-direction: column;
+    gap: 1rem;
+    bottom: 5%;
+    align-items: center;
+  }
+  .intent-button {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    width: 200px;
+  }
+  
+  /* Restrict mobile overrides strictly to the room UI layer so they don't break ProjectsHome */
+  .room-ui-layer .cp-know-me {
+    left: 40% !important;
+    top: 50% !important;
+  }
+  .room-ui-layer .cp-explore {
+    left: 50% !important;
+    top: 55% !important;
+  }
+  .room-ui-layer .cp-understand {
+    left: 50% !important;
+    top: 50% !important;
+  }
+  .room-ui-layer .cp-svg {
+    display: none !important;
+  }
+  .room-ui-layer .cp-content {
+    bottom: -50px !important;
+    left: 0 !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+  }
 }

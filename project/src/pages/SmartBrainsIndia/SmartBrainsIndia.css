@@ -154,29 +154,33 @@
 
 .sbi-page .section-label {
     font-weight: 600;
-    font-size: 20px;
-    line-height: 120%;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
+    color: var(--brand-blue);
 }
 
 .sbi-page .section-title {
-    font-weight: 500;
-    font-size: 35.69px;
-    line-height: 120%;
-    margin-bottom: 20px;
+    font-weight: 600;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
 }
 
 .sbi-page .title-underline {
-    width: 217px;
-    height: 4px;
-    margin-bottom: 30px;
+    width: 80px;
+    height: 3px;
+    margin-bottom: 2rem;
+    background: var(--brand-blue);
 }
 
 .sbi-page .section-text {
     font-weight: 400;
-    font-size: 17.85px;
-    line-height: 27px;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
 }
 
 /* Hero Section */
@@ -235,22 +239,25 @@
 }
 
 .sbi-page .hero-title {
-    font-weight: 600;
-    font-size: 39px;
+    font-weight: 700;
+    font-size: 4rem;
     text-transform: uppercase;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
 }
 
 .sbi-page .hero-subtitle {
     font-weight: 500;
-    font-size: 35px;
+    font-size: 2rem;
     color: var(--brand-blue);
     line-height: 1.2;
 }
 
 .sbi-page .hero-desc {
     font-weight: 400;
-    font-size: 17.8px;
-    line-height: 1.5;
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
 }
 
 .sbi-page .hero-image {
@@ -269,10 +276,10 @@
 /* Overview Section */
 .sbi-overview {
     position: relative;
-    margin: 40px auto 100px;
-    padding: 0 110px 0 0;
+    margin: 4rem auto;
+    padding: 0 2rem 0 0;
     display: flex;
-    gap: 100px;
+    gap: 4rem;
     align-items: flex-start;
     scroll-margin-top: 4rem;
 }
@@ -334,8 +341,8 @@
 
 /* Problem Statement */
 .sbi-problem {
-    margin: 100px auto;
-    padding: 0 110px 0 0;
+    margin: 6rem auto;
+    padding: 0 2rem 0 0;
     scroll-margin-top: 4rem;
 }
 
@@ -397,8 +404,8 @@
 
 /* My Role */
 .sbi-role {
-    margin: 100px auto;
-    padding: 0 110px 0 0;
+    margin: 6rem auto;
+    padding: 0 2rem 0 0;
     scroll-margin-top: 4rem;
 }
 
@@ -509,8 +516,8 @@
 
 /* Design Process Section */
 .sbi-process {
-    margin: 100px auto;
-    padding: 0 110px 0 0;
+    margin: 6rem auto;
+    padding: 0 2rem 0 0;
     scroll-margin-top: 4rem;
 }
 
@@ -616,8 +623,8 @@
 
 /* Key Pages & Design Decisions Section */
 .sbi-key-pages {
-    margin: 100px auto;
-    padding: 0 110px 0 0;
+    margin: 6rem auto;
+    padding: 0 2rem 0 0;
     scroll-margin-top: 4rem;
     container-type: inline-size;
 }
@@ -721,8 +728,8 @@
 
 /* About & Programs Section */
 .sbi-about-programs {
-    margin: 100px auto;
-    padding: 0 110px 0 0;
+    margin: 6rem auto;
+    padding: 0 2rem 0 0;
     scroll-margin-top: 4rem;
 }
 
@@ -1172,8 +1179,8 @@
 
 /* SEO Section */
 .sbi-seo {
-    margin: 100px auto;
-    padding: 0 110px 0 0;
+    margin: 6rem auto;
+    padding: 0 2rem 0 0;
     scroll-margin-top: 4rem;
 }
 
@@ -1181,4 +1188,103 @@
     width: 100%;
     height: auto;
     display: block;
+}
+
+@media (max-width: 768px) {
+  .sbi-layout {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+    gap: 0;
+  }
+  .sbi-sticky-nav {
+    display: none;
+  }
+  .sbi-hero {
+    flex-direction: column;
+    padding: 100px 20px 50px;
+    min-height: auto;
+  }
+  .sbi-page .hero-bg-text,
+  .sbi-page .overview-bg-text {
+    font-size: 40px;
+    left: 20px;
+    top: 20px;
+  }
+  .sbi-page .hero-image,
+  .sbi-page .overview-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+  .sbi-overview {
+    flex-direction: column;
+    padding: 0 1rem;
+    gap: 2rem;
+  }
+  .sbi-problem, .sbi-role, .sbi-process, .sbi-key-pages, .sbi-about-programs, .sbi-branding, .sbi-seo {
+    padding: 0 1rem !important;
+    margin: 3rem auto;
+  }
+  .sbi-page .comparison {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .sbi-page .problem-card {
+    padding: 30px 20px;
+  }
+  .sbi-page .nodes {
+    position: relative;
+    left: 0;
+    width: 100%;
+    grid-template-columns: 1fr;
+    margin-top: 30px;
+  }
+  .sbi-page .role-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .sbi-page .artist-profile {
+    margin: 0 auto;
+  }
+  .ap-vertical-layout {
+    gap: 50px;
+  }
+  .sbi-page .stats-row {
+    flex-direction: column;
+  }
+  .sbi-page .section-title {
+    font-size: 28px;
+  }
+  .sbi-page .hero-title {
+    font-size: 30px;
+  }
+  .sbi-page .hero-subtitle {
+    font-size: 24px;
+  }
+  .kp-container {
+    width: 100%;
+    margin-left: 0;
+  }
+  .branding-bento-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .bento-item {
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
+  }
+  .sbi-case-navigation {
+    padding: 0 20px;
+    margin-top: 50px;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .sbi-case-navigation button {
+    text-align: center;
+  }
+  .sbi-case-navigation button:last-child {
+    text-align: center;
+  }
 }

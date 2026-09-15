@@ -16,16 +16,16 @@ function CameraController({ isUiHovered, viewState }: CameraControllerProps) {
 
   // Handle specific view states (like zooming to mirror)
   useEffect(() => {
+    const isMobile = window.innerWidth <= 768;
     if (viewState === 'mirror') {
-      targetRotation.current = { yaw: 0.2, pitch: -0.05 }; // Adjusted yaw to center the mirror and not go off-edge
-      targetFov.current = 16; // Intermediate zoom level
+      targetRotation.current = { yaw: isMobile ? 0.35 : 0.2, pitch: -0.05 }; 
+      targetFov.current = 16; 
     } else if (viewState === 'board') {
-      // Coordinates for the moodboard (wire grid panel)
-      targetRotation.current = { yaw: -0.1, pitch: 0.15 }; 
+      targetRotation.current = { yaw: isMobile ? -0.3 : -0.1, pitch: 0.15 }; 
       targetFov.current = 18; 
     } else if (viewState === 'default') {
       targetRotation.current = { yaw: 0, pitch: 0 };
-      targetFov.current = 75;
+      targetFov.current = isMobile ? 110 : 75;
     }
   }, [viewState]);
 
@@ -59,7 +59,8 @@ function CameraController({ isUiHovered, viewState }: CameraControllerProps) {
 
   useFrame((state, delta) => {
     // Only update targets if we are not hovering interactive UI elements and we are in default view (not frozen in mirror)
-    if (!isUiHovered && viewState === 'default') {
+    const isMobile = window.innerWidth <= 768;
+    if (!isUiHovered && viewState === 'default' && !isMobile) {
       // Calculate a deadzone for x and y
       const deadzone = 0.2;
       let moveX = 0;

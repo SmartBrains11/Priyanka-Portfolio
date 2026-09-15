@@ -18,6 +18,8 @@ import UnderstandHowIThink from './pages/UnderstandHowIThink/UnderstandHowIThink
 import SmartBrainsIndia from './pages/SmartBrainsIndia/SmartBrainsIndia';
 
 import RoomExperience from './pages/RoomExperience/RoomExperience';
+import Swarga from './pages/Swarga/Swarga';
+
 
 type RouteState = { project?: Project };
 
@@ -60,6 +62,9 @@ function App() {
     }
     if (route.project.id === 'smartbrains-india') {
       return <SmartBrainsIndia project={route.project} onNavigate={openPath} />;
+    }
+    if (route.project.id === 'swarga') {
+      return <Swarga project={route.project} onNavigate={openPath} />;
     }
     return <ProjectPage project={route.project} onNavigate={openPath} />;
   }
