@@ -29,7 +29,7 @@ export const projects: Project[] = [
     eyebrow: 'B2B / ENTERPRISE',
     visualTitle: 'Assure Q',
     visualSubtitle: 'Redesigning a complex automation testing platform',
-    image: '/thumbnails/23.png',
+    image: '/images/AzzureQ/[AZURE Q — HERO DASHBOARD].png',
     sections: [
       {
         id: 'overview',
@@ -96,7 +96,7 @@ export const projects: Project[] = [
     eyebrow: 'WEBSITE / SEO',
     visualTitle: 'SmartBrains India',
     visualSubtitle: 'Learn • Grow • Build',
-    image: '/thumbnails/sbi.png',
+    image: '/images/Smart Brains India/image 1.png',
   },
   {
     id: 'swarga',
@@ -108,6 +108,7 @@ export const projects: Project[] = [
     eyebrow: 'BRAND / IDENTITY',
     visualTitle: 'SWARGA',
     visualSubtitle: 'HEAVEN GROUNDED',
+    image: '/images/Swarga/idea.png',
   },
   {
     id: 'illustration',

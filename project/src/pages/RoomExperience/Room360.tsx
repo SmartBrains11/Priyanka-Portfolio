@@ -43,6 +43,40 @@ function CameraController({ isUiHovered, viewState }: CameraControllerProps) {
     return () => window.removeEventListener('wheel', handleWheel);
   }, [isUiHovered]);
 
+  // Handle zooming via pinch (touch events)
+  useEffect(() => {
+    let initialDistance = 0;
+    let initialFov = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (isUiHovered || e.touches.length !== 2) return;
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      initialDistance = Math.sqrt(dx * dx + dy * dy);
+      initialFov = targetFov.current;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (isUiHovered || e.touches.length !== 2) return;
+      e.preventDefault();
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const currentDistance = Math.sqrt(dx * dx + dy * dy);
+      
+      const distanceDelta = initialDistance - currentDistance;
+      const zoomAmount = distanceDelta * 0.1;
+      targetFov.current = THREE.MathUtils.clamp(initialFov + zoomAmount, 30, 100);
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [isUiHovered]);
+
   // Handle pointer movement for panning
   useEffect(() => {
     const handlePointerMove = (e: PointerEvent) => {

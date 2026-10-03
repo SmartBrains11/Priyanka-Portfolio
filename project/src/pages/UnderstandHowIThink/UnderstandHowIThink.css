@@ -36,12 +36,12 @@
 .eyebrow { margin: 0 0 24px; color: #8791a4; }
 .page h1, .page h2, .page p { margin-top: 0; }
 .page h1 {
-  font: 700 clamp(42px, 6vw, 84px)/1.08 'Space Grotesk', sans-serif;
+  font: 700 clamp(40px, 8vw, 84px)/1.08 'Space Grotesk', sans-serif;
   letter-spacing: -0.04em; margin-bottom: 40px; color: #151a2b;
 }
 .intro-rule, .ending-rule { width: 40px; height: 2px; background: #e2e6ed; margin-bottom: 28px; }
 .intro-copy > p:not(.eyebrow) {
-  max-width: 420px; font-size: 17px; line-height: 1.6; color: #5c6372; margin-bottom: 22px;
+  max-width: 420px; font-size: clamp(15px, 2vw, 17px); line-height: 1.6; color: #5c6372; margin-bottom: 22px;
 }
 .intro-copy > p:nth-of-type(2) { margin-top: 32px; }
 .intro-note {
@@ -90,13 +90,13 @@
 @media (max-width: 800px) {
   .intro { min-height: 820px; padding: 100px 24px 70px; display: block; }
   .back-btn { top: 24px; left: 24px; }
-  .page h1 { font-size: clamp(40px, 13vw, 68px); margin-bottom: 38px; }
-  .intro-copy > p:not(.eyebrow) { font-size: 15px; max-width: 330px; }
+  .page h1 { margin-bottom: 38px; }
+  .intro-copy > p:not(.eyebrow) { max-width: 330px; }
   .intro-note { margin-top: 90px; }
   .editorial-journey { padding: 80px 24px; min-height: 80vh; }
   .large-editorial-text { font-size: clamp(28px, 8vw, 42px); line-height: 1.4; }
   .ending { padding: 100px 24px; min-height: 600px; }
-  .thinking-list { font-size: 18px; line-height: 1.6; }
+  .thinking-list { line-height: 1.6; }
   .desktop-break { display: none; }
   .ending-rule { margin-top: 90px; }
   .closing-loop { font-size: 10px; line-height: 2.2; margin-top: 80px; }

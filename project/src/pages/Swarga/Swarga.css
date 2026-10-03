@@ -31,11 +31,14 @@
   color: #09090B;
 }
 
-.swarga-case-study h1, .swarga-case-study h2, .swarga-case-study h3, .swarga-case-study h4 {
+.swarga-case-study h1,
+.swarga-case-study h2,
+.swarga-case-study h3,
+.swarga-case-study h4 {
   font-weight: 600;
   letter-spacing: -0.02em;
   margin-top: 0;
-  color: #09090B;
+  color: #526B50;
 }
 
 .swarga-case-study p {
@@ -48,12 +51,12 @@
 
 /* HERO SECTION */
 .swarga-hero {
-  padding: 6rem 2rem 4rem;
+  padding: clamp(3rem, 10vh, 6rem) clamp(1rem, 5vw, 2rem) clamp(2rem, 8vh, 4rem);
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: clamp(1rem, 4vw, 2rem);
   align-items: center;
 }
 
@@ -140,7 +143,8 @@
 
 /* CONTENT */
 .swarga-content {
-  min-width: 0; /* Prevents grid blowout */
+  min-width: 0;
+  /* Prevents grid blowout */
 }
 
 .swarga-section {
@@ -152,7 +156,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #18181B;
+  color: #526B50;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -160,10 +164,12 @@
 }
 
 .swarga-section-title {
-  font-family: 'Playfair Display', serif; /* Or similar elegant serif */
-  font-size: 3rem;
+  font-family: 'Playfair Display', serif;
+  /* Or similar elegant serif */
+  font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 500;
-  color: #3f6e52; /* Grounded green */
+  color: #526B50;
+  /* Grounded green */
   margin-bottom: 1.5rem;
   letter-spacing: 0;
 }
@@ -192,10 +198,53 @@
   letter-spacing: 0.05em;
 }
 
-/* Intro specific styling */
-.intro-text p {
+/* INTRODUCTION SECTION */
+.intro-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.swarga-intro-header {
+  margin-bottom: 1rem;
+}
+
+.swarga-intro-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  color: #52525B;
+  margin-top: -1rem;
+  font-style: italic;
+}
+
+.swarga-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.swarga-intro-statement p {
+  font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+  line-height: 1.2;
+  color: #3f3f46;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.swarga-intro-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.swarga-intro-details p {
   font-size: 1.125rem;
-  max-width: none;
+  color: #3f3f46;
+  margin: 0;
+  line-height: 1.8;
 }
 
 /* IDEA SECTION */
@@ -206,18 +255,26 @@
   align-items: start;
 }
 
-@media (max-width: 768px) {
-  .swarga-idea-layout {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
+.swarga-idea-image-wrapper {
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(23, 60, 50, 0.08);
+  transition: transform 0.5s ease;
+}
+
+.swarga-idea-image-wrapper:hover {
+  transform: translateY(-5px);
 }
 
 .swarga-idea-image {
   width: 100%;
-  height: auto;
-  border-radius: 4px;
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.swarga-idea-image-wrapper:hover .swarga-idea-image {
+  transform: scale(1.05);
 }
 
 .swarga-idea-text-content {
@@ -227,13 +284,27 @@
   margin-top: -0.5rem;
 }
 
+.swarga-idea-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
 .swarga-idea-title {
   font-family: 'Playfair Display', serif;
-  font-size: 2.5rem;
-  color: #3f6e52;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: #173C32;
   margin: 0;
   font-weight: 500;
   letter-spacing: 0.05em;
+}
+
+.swarga-idea-cross {
+  font-size: 2.5rem;
+  color: #a1a1aa;
+  font-weight: 300;
+  line-height: 1;
 }
 
 .swarga-idea-intro {
@@ -242,44 +313,173 @@
   margin-bottom: 0.5rem;
 }
 
-.swarga-idea-elements {
+.swarga-idea-worlds {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  margin: 0.5rem 0;
+  gap: clamp(1rem, 3vw, 2rem);
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: linear-gradient(145deg, #fbfcfb, #ffffff);
+  border-radius: 20px;
+  border: 1px solid rgba(23, 60, 50, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+  margin: 1.5rem 0;
 }
 
-.swarga-idea-elements h4 {
-  font-size: 1rem;
-  color: #3f3f46;
-  margin: 0;
+.swarga-world h4 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.15em;
+  color: #173C32;
+  margin: 0 0 1rem 0;
+  opacity: 0.8;
 }
 
-.swarga-idea-elements p {
-  color: #52525B;
-  margin: 0;
-  font-size: 1rem;
-}
-
-.swarga-idea-elements .cross {
-  font-size: 1rem;
-  color: #52525B;
-  margin: 0.5rem 0;
-  font-weight: 500;
-}
-
-.swarga-idea-conclusion {
-  color: #3f3f46;
-  margin-top: 1rem;
+.world-tags {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 0.75rem;
 }
 
+.world-tags span {
+  padding: 0.5rem 1.25rem;
+  background: rgba(23, 60, 50, 0.03);
+  border: 1px solid rgba(23, 60, 50, 0.1);
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #173C32;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
+}
+
+.world-tags span:hover {
+  background: #173C32;
+  border-color: #173C32;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(23, 60, 50, 0.15);
+}
+
+.swarga-idea-conclusion {
+  padding-left: 1.5rem;
+  border-left: 3px solid rgba(23, 60, 50, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
 .swarga-idea-conclusion p {
-  margin-bottom: 0;
+  margin: 0;
+  font-size: 1.125rem;
+  color: #52525B;
+}
+
+.swarga-idea-conclusion .highlight {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #173C32;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* CREATIVE DIRECTION OVERLAY */
+.creative-direction-section {
+  position: relative;
+}
+
+.swarga-creative-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.swarga-creative-keywords span {
+  padding: 0.5rem 1.25rem;
+  background: rgba(23, 60, 50, 0.03);
+  border: 1px solid rgba(23, 60, 50, 0.1);
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #173C32;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.01);
+}
+
+.swarga-creative-keywords span:hover {
+  background: #173C32;
+  border-color: #173C32;
+  color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(23, 60, 50, 0.15);
+}
+
+/* EXPLORATION SECTION */
+.swarga-exploration-gallery {
+  margin-top: 2rem;
+}
+
+.swarga-full-width-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* IDENTITY SECTION */
+.swarga-identity-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+  margin-top: 4rem;
+}
+
+.swarga-identity-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.swarga-identity-figure.centered-small {
+  align-items: center;
+  max-width: 60%;
+  margin: 0 auto;
+}
+
+.swarga-identity-figure.centered-small figcaption {
+  border-left: none;
+  padding-left: 0;
+  text-align: center;
+}
+
+.swarga-identity-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #fbfcfb;
+  border-radius: 4px;
+}
+
+.swarga-identity-figure figcaption {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  color: #a1a1aa;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding-left: 1rem;
+  border-left: 1px solid #d4d4d8;
+}
+
+.swarga-identity-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
 }
 
 /* MOODBOARD PARALLAX SECTION */
@@ -309,30 +509,124 @@
   object-fit: cover;
   border-radius: 8px;
   background-color: #f4f4f5;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* BRAND CHALLENGE SECTION */
+.swarga-challenge-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  margin-top: 1rem;
+}
+
+.swarga-challenge-main {
+  max-width: 800px;
+}
+
+.swarga-challenge-subtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #71717A;
+  margin-bottom: 1rem;
+}
+
+.swarga-challenge-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.2;
+  color: #526B50;
+  margin: 0;
+  font-weight: 500;
+}
+
+.swarga-challenge-points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  border-top: 1px solid #E4E4E7;
+  padding-top: 3rem;
+}
+
+.swarga-challenge-point {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.point-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  color: #d4d4d8;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.point-content h4 {
+  font-size: 1.25rem;
+  color: #526B50;
+  margin-bottom: 0.75rem;
+  font-weight: 500;
+}
+
+.point-content p {
+  font-size: 1rem;
+  color: #52525B;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .swarga-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .swarga-sticky-nav {
+    display: none;
+    /* Hide sticky nav on tablets and below */
+  }
 }
 
 @media (max-width: 768px) {
-  .swarga-moodboard-scaler {
-    /* Optional: scale it up a bit if it's too small on mobile, or stack them */
-    min-width: 150%;
-    transform: translateX(-15%); /* Center the scaled version */
-  }
-  .swarga-sticky-nav {
-    display: none;
-  }
-  .swarga-layout {
+
+  .swarga-intro-grid,
+  .swarga-idea-layout {
     grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .swarga-intro-statement p {
+    padding-right: 0;
+  }
+
+  .swarga-moodboard-scaler {
+    min-width: 150%;
+    transform: translateX(-15%);
+  }
+
+  .swarga-layout {
     padding: 0 1rem;
     gap: 1rem;
   }
-  .swarga-hero {
-    padding: 6rem 1rem 2rem;
+
+  .swarga-challenge-points {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
   }
-  .swarga-section-title {
-    font-size: 2rem;
+
+  .swarga-identity-gallery {
+    gap: 4rem;
+    margin-top: 2rem;
   }
-  .swarga-idea-title {
-    font-size: 1.8rem;
+
+  .swarga-identity-figure.centered-small {
+    max-width: 90%;
+  }
+
+  .swarga-identity-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 4rem;
   }
 }

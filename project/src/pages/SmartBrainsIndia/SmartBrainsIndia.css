@@ -163,7 +163,7 @@
 
 .sbi-page .section-title {
     font-weight: 600;
-    font-size: 2.5rem;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
     line-height: 1.2;
     margin-bottom: 1.5rem;
     letter-spacing: -0.02em;
@@ -188,7 +188,7 @@
     position: relative;
     max-width: 1440px;
     margin: 0 auto;
-    padding: 100px 110px 100px;
+    padding: clamp(3rem, 8vh, 100px) clamp(1.25rem, 5vw, 110px) clamp(2rem, 8vh, 100px);
     display: flex;
     justify-content: space-between;
     min-height: 600px;
@@ -197,9 +197,9 @@
 .sbi-page .hero-bg-text {
     position: absolute;
     top: 50px;
-    left: 200px;
+    left: clamp(1rem, 5vw, 200px);
     font-weight: 800;
-    font-size: 65px;
+    font-size: clamp(2.5rem, 6vw, 65px);
     text-transform: uppercase;
     color: rgba(248, 249, 254, 0.68);
     z-index: -1;
@@ -240,7 +240,7 @@
 
 .sbi-page .hero-title {
     font-weight: 700;
-    font-size: 4rem;
+    font-size: clamp(2.25rem, 6vw, 4rem);
     text-transform: uppercase;
     letter-spacing: -0.03em;
     line-height: 1.1;
@@ -248,7 +248,7 @@
 
 .sbi-page .hero-subtitle {
     font-weight: 500;
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     color: var(--brand-blue);
     line-height: 1.2;
 }
@@ -1057,8 +1057,7 @@
 
 .process-video-container {
     position: relative;
-    width: calc(100% + 220px);
-    margin-left: -160px;
+    width: 100%;
     margin-top: 40px;
 }
 
@@ -1201,12 +1200,10 @@
   }
   .sbi-hero {
     flex-direction: column;
-    padding: 100px 20px 50px;
     min-height: auto;
   }
   .sbi-page .hero-bg-text,
   .sbi-page .overview-bg-text {
-    font-size: 40px;
     left: 20px;
     top: 20px;
   }
@@ -1253,15 +1250,7 @@
   .sbi-page .stats-row {
     flex-direction: column;
   }
-  .sbi-page .section-title {
-    font-size: 28px;
-  }
-  .sbi-page .hero-title {
-    font-size: 30px;
-  }
-  .sbi-page .hero-subtitle {
-    font-size: 24px;
-  }
+  /* Titles scale with clamp now */
   .kp-container {
     width: 100%;
     margin-left: 0;
