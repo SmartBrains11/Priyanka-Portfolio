@@ -44,7 +44,7 @@
 /* Welcome Text */
 .welcome-text {
   position: absolute;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Avenue Mono', sans-serif;
   font-size: clamp(1.5rem, 5vw, 3rem);
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -58,23 +58,20 @@
 .top-title-text {
   position: absolute;
   top: 8%;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Avenue Mono', sans-serif;
   font-size: clamp(1rem, 3vw, 1.5rem);
   font-weight: 400;
   letter-spacing: 0.02em;
   color: #333;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 0.75rem 1.5rem;
-  border-radius: 30px;
-  backdrop-filter: blur(4px);
-  transition: opacity 1s ease-in-out, transform 0.2s ease, background 0.2s ease;
+  transition: opacity 1s ease-in-out, transform 0.2s ease;
   z-index: 20;
   cursor: pointer;
+  white-space: pre-wrap;
+  text-align: center;
 }
 
 .top-title-text:hover {
   transform: scale(1.02);
-  background: rgba(255, 255, 255, 0.95);
 }
 
 /* Interactive Options */
@@ -91,7 +88,7 @@
   background: white;
   border: none;
   border-radius: 20px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Avenue Mono', sans-serif;
   font-size: clamp(0.8rem, 2vw, 0.9rem);
   font-weight: 500;
   letter-spacing: 0.05em;
@@ -163,7 +160,7 @@
 }
 
 .hotspot-title {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Avenue Mono', sans-serif;
   font-size: 0.8rem;
   font-weight: 500;
   color: #222;

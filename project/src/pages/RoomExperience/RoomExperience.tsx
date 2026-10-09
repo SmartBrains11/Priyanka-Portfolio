@@ -15,6 +15,7 @@ export default function RoomExperience({ onNavigate }: RoomExperienceProps) {
   const initialView = (searchParams.get('view') as 'default' | 'mirror' | 'board') || 'default';
   
   const [viewState, setViewState] = useState<'default' | 'mirror' | 'board'>(initialView);
+  const [mirrorTransitionPhase, setMirrorTransitionPhase] = useState<'idle' | 'transitioning' | 'finished'>('idle');
   const [audioCompleted, setAudioCompleted] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [showPaperOverlay, setShowPaperOverlay] = useState(false);
@@ -27,6 +28,27 @@ export default function RoomExperience({ onNavigate }: RoomExperienceProps) {
       }
       setShowVideo(false);
       setShowPaperOverlay(false);
+      setMirrorTransitionPhase('idle');
+    } else {
+      setMirrorTransitionPhase('transitioning');
+      const timer = setTimeout(() => {
+        setMirrorTransitionPhase('finished');
+      }, 1200);
+
+      // Automatically navigate to video after 2 seconds
+      const videoTimer = setTimeout(() => {
+        setShowVideo(true);
+        setTimeout(() => {
+          if (videoRef.current) {
+            videoRef.current.play().catch(e => console.error("Video playback failed:", e));
+          }
+        }, 100);
+      }, 2000);
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(videoTimer);
+      };
     }
   }, [viewState]);
 
@@ -164,7 +186,35 @@ export default function RoomExperience({ onNavigate }: RoomExperienceProps) {
         </div>
       )}
 
-      <Room360 isUiHovered={uiHovered} viewState={viewState} />
+      {/* Mirror Clickable Area */}
+      {mirrorTransitionPhase === 'finished' && (
+        <div 
+          className="fixed inset-0 z-[50] flex items-center justify-center pointer-events-none"
+        >
+          <div 
+            className="absolute z-[50] cursor-pointer group pointer-events-auto flex items-center justify-center"
+            style={{
+              top: '50%',
+              left: '33%', /* Moved further right to align perfectly with the mirror */
+              transform: 'translate(-50%, -50%)',
+              width: '12%',
+              height: '55%',
+            }}
+            onClick={handleKnowMeClick}
+            title="Click to know more"
+          >
+            {/* Subtle hover effect for the clickable area */}
+            <div className="absolute inset-0 w-full h-full bg-white/0 group-hover:bg-white/10 rounded-3xl blur-md transition-colors duration-300" />
+            
+            {/* Click Indicator */}
+            <div className="flex flex-col items-center justify-center animate-bounce text-white drop-shadow-xl opacity-80 group-hover:opacity-100 transition-opacity duration-300 z-10">
+              <span className="text-5xl filter drop-shadow-lg">👆</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Room360 isUiHovered={uiHovered} viewState={viewState} mirrorTransitionPhase={mirrorTransitionPhase} />
       <RoomUI 
         onUiHoverChange={setUiHovered} 
         onAction={(action) => setViewState(action)} 
@@ -173,6 +223,7 @@ export default function RoomExperience({ onNavigate }: RoomExperienceProps) {
         onExploreClick={() => onNavigate && onNavigate('/projects')}
         onUnderstandClick={() => onNavigate && onNavigate('/understand-how-i-think')}
         onKnowMeClick={handleKnowMeClick}
+        onNavigate={onNavigate}
       />
     </div>
   );

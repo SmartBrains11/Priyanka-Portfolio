@@ -11,6 +11,11 @@ import {
   Star,
   X,
   Lightbulb,
+  FileText,
+  User,
+  Compass,
+  Paintbrush,
+  MoveRight
 } from 'lucide-react';
 import { getProjectByPath, projects, type Project } from '@/data/projects';
 import AzureQ from './pages/AzureQ/AzureQ';
@@ -19,6 +24,11 @@ import SmartBrainsIndia from './pages/SmartBrainsIndia/SmartBrainsIndia';
 
 import RoomExperience from './pages/RoomExperience/RoomExperience';
 import Swarga from './pages/Swarga/Swarga';
+import Inspiration from './pages/Inspiration/Inspiration';
+import Experience from './pages/Experience/Experience';
+import Art from './pages/Art/Art';
+import Contact from './pages/Contact/Contact';
+import GlobalMapMenu from './components/GlobalMapMenu';
 
 
 type RouteState = { project?: Project };
@@ -52,50 +62,78 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  if (window.location.pathname === '/understand-how-i-think') {
-    return <UnderstandHowIThink onNavigate={openPath} />;
-  }
+  const renderPage = () => {
+    if (window.location.pathname === '/understand-how-i-think') {
+      return <UnderstandHowIThink onNavigate={openPath} />;
+    }
+    if (window.location.pathname === '/inspiration') {
+      return <Inspiration onNavigate={openPath} />;
+    }
+    if (window.location.pathname === '/experience') {
+      return <Experience onNavigate={openPath} />;
+    }
+    if (window.location.pathname === '/art') {
+      return <Art onNavigate={openPath} />;
+    }
+    if (window.location.pathname === '/contact') {
+      return <Contact onNavigate={openPath} />;
+    }
+    if (route.project) {
+      if (route.project.id === 'assure-q') {
+        return <AzureQ project={route.project} onNavigate={openPath} />;
+      }
+      if (route.project.id === 'smartbrains-india') {
+        return <SmartBrainsIndia project={route.project} onNavigate={openPath} />;
+      }
+      if (route.project.id === 'swarga') {
+        return <Swarga project={route.project} onNavigate={openPath} />;
+      }
+      return <ProjectPage project={route.project} onNavigate={openPath} />;
+    }
+    if (!route.project && window.location.pathname === '/') {
+      return <RoomExperience onNavigate={openPath} />;
+    }
+    return null;
+  };
 
-  if (route.project) {
-    if (route.project.id === 'assure-q') {
-      return <AzureQ project={route.project} onNavigate={openPath} />;
-    }
-    if (route.project.id === 'smartbrains-india') {
-      return <SmartBrainsIndia project={route.project} onNavigate={openPath} />;
-    }
-    if (route.project.id === 'swarga') {
-      return <Swarga project={route.project} onNavigate={openPath} />;
-    }
-    return <ProjectPage project={route.project} onNavigate={openPath} />;
-  }
-
-  if (!route.project && window.location.pathname === '/') {
-    return <RoomExperience onNavigate={openPath} />;
+  const pageContent = renderPage();
+  if (pageContent) {
+    return (
+      <>
+        {window.location.pathname !== '/' && <GlobalMapMenu onNavigate={openPath} />}
+        {pageContent}
+      </>
+    );
   }
 
   return (
-    <div className="app-shell home-shell">
-      <TopBar activeProject={route.project} onNavigate={openPath} />
-      <div className="workspace-layout">
-        <Sidebar
+    <>
+      {window.location.pathname !== '/' && <GlobalMapMenu onNavigate={openPath} />}
+      <div className="app-shell home-shell">
+        <div className="workspace-layout">
+          <Sidebar
           activeProject={route.project}
           mobileOpen={mobileNavOpen}
           onClose={() => setMobileNavOpen(false)}
           onNavigate={openPath}
         />
-        <main className="main-workspace">
-          <button
-            className="mobile-menu-button"
-            type="button"
-            aria-label="Open navigation"
-            onClick={() => setMobileNavOpen(true)}
-          >
-            <Menu size={20} />
-          </button>
-          <ProjectsHome search={search} onSearchChange={setSearch} onNavigate={openPath} />
-        </main>
+        <div className="flex-1 flex flex-col min-w-0 h-screen">
+          <TopBar activeProject={route.project} onNavigate={openPath} />
+          <main className="main-workspace">
+            <button
+              className="mobile-menu-button"
+              type="button"
+              aria-label="Open navigation"
+              onClick={() => setMobileNavOpen(true)}
+            >
+              <Menu size={20} />
+            </button>
+            <ProjectsHome search={search} onSearchChange={setSearch} onNavigate={openPath} />
+          </main>
+        </div>
       </div>
     </div>
+    </>
   );
 }
 
@@ -120,9 +158,6 @@ type TopBarProps = {
 function TopBar({ activeProject, onNavigate }: TopBarProps) {
   return (
     <header className="topbar">
-      <button className="brand-mark" type="button" aria-label="Back to Projects" onClick={() => onNavigate('/')}>
-        <FigmaIcon />
-      </button>
       <nav className="project-tabs" aria-label="Project tabs">
         {projects.map((project) => (
           <button
@@ -143,8 +178,7 @@ function TopBar({ activeProject, onNavigate }: TopBarProps) {
           <span className="sr-only">Search projects</span>
           <input placeholder="Search projects..." aria-label="Search projects" />
         </label>
-        <button className="icon-button" type="button" aria-label="Notifications"><Bell size={18} /></button>
-        <button className="avatar" type="button" aria-label="Lakkoju Priyanka profile">LP</button>
+        <button className="avatar" type="button" aria-label="Lakkoju Priyanka profile" style={{ background: '#f5ded9', color: '#684541' }}>LP</button>
       </div>
     </header>
   );
@@ -162,23 +196,41 @@ function Sidebar({ activeProject, mobileOpen, onClose, onNavigate }: SidebarProp
     <>
       {mobileOpen && <button className="sidebar-scrim" aria-label="Close navigation" type="button" onClick={onClose} />}
       <aside className={`sidebar ${mobileOpen ? 'open' : ''}`}>
+        <div className="brand-mark-sidebar">
+          <button type="button" aria-label="Back to Projects" onClick={() => onNavigate('/')}>
+            <FigmaIcon />
+          </button>
+        </div>
         <div className="sidebar-heading">
           <button className="sidebar-close" type="button" aria-label="Close navigation" onClick={onClose}><X size={18} /></button>
-          <strong>Lakkoju Priyanka</strong>
-          <span>Portfolio <i>•</i> Case Studies</span>
+          <strong style={{ fontFamily: 'Avenue Mono, serif', fontSize: '24px', letterSpacing: '0', fontWeight: '500', marginTop: '10px' }}>Priyanka</strong>
+          <span style={{ fontSize: '10px', letterSpacing: '1px', textTransform: 'uppercase', color: '#9da4b3', fontWeight: '600' }}>PRODUCT DESIGNER</span>
         </div>
         <nav className="sidebar-nav" aria-label="Portfolio navigation">
-          <button className={!activeProject ? 'selected' : ''} type="button" onClick={() => onNavigate('/')}>
-            <Folder size={19} /> Projects
+          <button className={window.location.pathname === '/projects' ? 'selected' : ''} type="button" onClick={() => onNavigate('/projects')}>
+            <Folder size={18} /> Projects
           </button>
-          <button type="button" onClick={() => onNavigate('/')}>
-            <Star size={19} /> Starred
+          <button className={window.location.pathname === '/experience' ? 'selected' : ''} type="button" onClick={() => onNavigate('/experience')}>
+            <FileText size={18} /> Experience
+          </button>
+          <button className={window.location.pathname === '/contact' ? 'selected' : ''} type="button" onClick={() => onNavigate('/contact')}>
+            <User size={18} /> Contact
+          </button>
+          <button className={window.location.pathname === '/understand-how-i-think' ? 'selected' : ''} type="button" onClick={() => onNavigate('/understand-how-i-think')}>
+            <Compass size={18} /> Process
+          </button>
+          <button className={window.location.pathname === '/art' ? 'selected' : ''} type="button" onClick={() => onNavigate('/art')}>
+            <Paintbrush size={18} /> Art
           </button>
         </nav>
         <div className="sidebar-footer">
-          <div className="mini-mark"><FigmaIcon size={24} /></div>
-          <span>Designed with intention</span>
-          <small>Portfolio workspace</small>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#687184', fontSize: '12px', marginBottom: '12px' }}>
+            <span style={{ width: '6px', height: '6px', background: '#3ecf8e', borderRadius: '50%' }}></span>
+            Available for<br/>opportunities
+          </div>
+          <button style={{ padding: '8px 16px', background: 'transparent', border: '1px solid #e2e6ed', borderRadius: '20px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px', color: '#171b2b', width: '100%', justifyContent: 'space-between' }}>
+            Let's talk <MoveRight size={14} />
+          </button>
         </div>
       </aside>
     </>
@@ -199,47 +251,21 @@ function ProjectsHome({ search, onSearchChange, onNavigate }: ProjectsHomeProps)
 
   return (
     <section className="home-content relative">
+      <div className="section-heading" style={{ display: 'block', margin: '0 0 16px 0' }}>
+        <p className="kicker" style={{ color: '#8791a4', letterSpacing: '3px', fontSize: '11px', marginBottom: '8px' }}>SELECTED WORKS</p>
+        <h1 style={{ fontFamily: 'Avenue Mono, serif', fontSize: '56px', margin: '0 0 4px 0', letterSpacing: '-1.5px', color: '#171b2b', fontWeight: '500' }}>Projects</h1>
+        <p style={{ color: '#7f8797', fontSize: '17px', margin: '0 0 24px 0' }}>Product design, branding and visual exploration.</p>
+        
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button style={{ padding: '8px 24px', borderRadius: '24px', background: '#000', color: '#fff', fontSize: '13px' }}>All</button>
+          <button style={{ padding: '8px 24px', borderRadius: '24px', border: '1px solid #e2e6ed', background: '#fff', color: '#677185', fontSize: '13px' }}>Product Design</button>
+          <button style={{ padding: '8px 24px', borderRadius: '24px', border: '1px solid #e2e6ed', background: '#fff', color: '#677185', fontSize: '13px' }}>Branding</button>
+          <button style={{ padding: '8px 24px', borderRadius: '24px', border: '1px solid #e2e6ed', background: '#fff', color: '#677185', fontSize: '13px' }}>Illustration</button>
+        </div>
+      </div>
       
-      {/* Understand How I Think Pointer */}
-      <div 
-        className="cp-container flicking-pointer-container show-pop-work" 
-        style={{ right: '5%', top: '15%', opacity: 1 }}
-      >
-        <div className="cp-dot" style={{ background: '#438bff', boxShadow: '0 0 0 2px rgba(67, 139, 255, 0.3)' }} />
-        <svg className="cp-svg" width="60" height="60" style={{ bottom: 0, right: 0 }}>
-          <path d="M 60,60 Q 60,0 0,0" fill="none" stroke="#438bff" strokeWidth="2" />
-        </svg>
-        <div className="cp-content" style={{ bottom: '60px', right: '60px', transform: 'translateY(50%)', flexDirection: 'row-reverse' }}>
-          <Lightbulb color="#438bff" size={24} />
-          <button 
-            className="cp-button" 
-            style={{ color: '#438bff', boxShadow: '0 4px 12px rgba(67, 139, 255, 0.15)' }}
-            onClick={() => onNavigate('/?view=board')}
-          >
-            Understand How I Think
-          </button>
-        </div>
-      </div>
-
-      <div className="welcome-block">
-        <p className="kicker">WELCOME BACK,</p>
-        <h1>Lakkoju Priyanka</h1>
-        <p className="subheading">Portfolio <i>•</i> Case Studies</p>
-      </div>
-      <div className="section-heading">
-        <div>
-          <h2>Projects</h2>
-          <p>A collection of my work, case studies and explorations.</p>
-        </div>
-        <label className="content-search">
-          <Search size={16} aria-hidden="true" />
-          <span className="sr-only">Filter projects</span>
-          <input value={search} onChange={(event) => onSearchChange(event.target.value)} placeholder="Filter projects" aria-label="Filter projects" />
-        </label>
-      </div>
-      <p className="explore-hint"><Sparkles size={14} /> Click a project to explore</p>
       {filteredProjects.length > 0 ? (
-        <div className="project-grid">
+        <div className="project-grid mt-4">
           {filteredProjects.map((project) => <ProjectCard key={project.id} project={project} onOpen={() => onNavigate(project.route)} />)}
         </div>
       ) : (
@@ -253,7 +279,7 @@ type ProjectCardProps = { project: Project; onOpen: () => void };
 
 function ProjectCard({ project, onOpen }: ProjectCardProps) {
   return (
-    <button className={`project-card accent-${project.accent}`} type="button" onClick={onOpen} aria-label={`Open ${project.title} project`}>
+    <button className={`project-card accent-${project.accent}`} type="button" onClick={onOpen} aria-label={`Open ${project.title} project`} style={{ borderRadius: '16px' }}>
       <div className={`project-visual ${project.image ? 'has-image' : ''}`}>
         {project.image ? (
           <img src={project.image} alt={`${project.title} project preview`} />
@@ -269,9 +295,17 @@ function ProjectCard({ project, onOpen }: ProjectCardProps) {
           </>
         )}
       </div>
-      <div className="card-footer">
-        <div className="card-copy"><h3>{project.title}</h3><p>{project.description}</p></div>
-        <div className="card-meta"><span className="category-pill">{project.category}</span><span className="open-arrow" aria-hidden="true"><MoveUpRight size={17} /></span></div>
+      <div className="card-footer" style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '220px' }}>
+        <div className="card-copy">
+          <h3 style={{ fontFamily: 'Avenue Mono, serif', fontSize: '20px', fontWeight: '500', marginBottom: '8px', color: '#171b2b' }}>{project.title}</h3>
+          <p style={{ color: '#7f8797', fontSize: '13px', lineHeight: '1.6', margin: 0 }}>{project.description}</p>
+        </div>
+        <div className="card-meta" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '24px' }}>
+          <span className="category-pill">{project.category}</span>
+          <span className="open-arrow" aria-hidden="true" style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: '#f5f6f8', color: '#677185' }}>
+            <MoveRight size={14} />
+          </span>
+        </div>
       </div>
     </button>
   );
@@ -323,4 +357,4 @@ function ProjectPage({ project, onNavigate }: ProjectPageProps) {
   );
 }
 
-export default App;
+export default App; // Force reload

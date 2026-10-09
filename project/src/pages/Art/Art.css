@@ -1,0 +1,122 @@
+.art-page {
+  background-color: #f7f5f2;
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  font-family: 'Georgia', serif;
+}
+
+.art-header {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  z-index: 1000;
+  pointer-events: none; /* Let clicks pass through to canvas underneath */
+}
+
+.art-header * {
+  pointer-events: auto; /* Buttons inside header should still be clickable */
+}
+
+.art-back {
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 24px;
+}
+
+.art-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 56px;
+  color: #1a1a1a;
+  margin: 0 0 12px 0;
+  font-weight: 400;
+}
+
+.art-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #666;
+  letter-spacing: 1px;
+  max-width: 300px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.art-insta-icon {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  color: #1a1a1a;
+  z-index: 1000;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.art-insta-icon:hover {
+  transform: scale(1.1);
+  opacity: 0.7;
+}
+
+.art-canvas {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.draggable-art {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 350px;
+  object-fit: cover;
+  border: 12px solid #fff;
+  border-bottom: 40px solid #fff; /* Polaroid style */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  cursor: grab;
+  user-select: none;
+  touch-action: none; /* Prevent browser pan/scroll on mobile while dragging */
+  background-color: #fff;
+}
+
+/* Fall Transition */
+.draggable-art.falling {
+  /* No transition for initial placement off-screen */
+  opacity: 0;
+}
+
+.draggable-art.fallen {
+  transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease-in;
+  opacity: 1;
+}
+
+/* Dragging State */
+.draggable-art.dragging {
+  transition: transform 0.1s ease-out; /* Fast follow but slight smoothing */
+  cursor: grabbing;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+}
+
+@media (max-width: 768px) {
+  .draggable-art {
+    width: 200px;
+    border-width: 8px;
+    border-bottom-width: 28px;
+  }
+  
+  .art-header {
+    top: 24px;
+    left: 24px;
+  }
+  
+  .art-title {
+    font-size: 40px;
+  }
+
+  .art-insta-icon {
+    top: 24px;
+    right: 24px;
+  }
+}

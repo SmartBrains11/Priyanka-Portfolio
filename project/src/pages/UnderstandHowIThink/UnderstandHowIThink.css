@@ -20,7 +20,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Avenue Mono', sans-serif;
   font-weight: 600;
   color: #6e7585;
   font-size: 14px;
@@ -36,7 +36,7 @@
 .eyebrow { margin: 0 0 24px; color: #8791a4; }
 .page h1, .page h2, .page p { margin-top: 0; }
 .page h1 {
-  font: 700 clamp(40px, 8vw, 84px)/1.08 'Space Grotesk', sans-serif;
+  font: 700 clamp(40px, 8vw, 84px)/1.08 'Avenue Mono', sans-serif;
   letter-spacing: -0.04em; margin-bottom: 40px; color: #151a2b;
 }
 .intro-rule, .ending-rule { width: 40px; height: 2px; background: #e2e6ed; margin-bottom: 28px; }
@@ -61,7 +61,7 @@
 }
 
 .large-editorial-text {
-  font: 500 clamp(36px, 5vw, 64px)/1.5 'Space Grotesk', sans-serif;
+  font: 500 clamp(36px, 5vw, 64px)/1.5 'Avenue Mono', sans-serif;
   color: #a0a7b3;
   max-width: 1200px;
   margin: 0;
@@ -83,7 +83,7 @@
 }
 .ending-rule { margin-top: 120px; margin-bottom: 34px; background: #d7dde8; }
 .final-line { font-size: 18px; line-height: 1.65; color: #6e7585; }
-.final-line em { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: #202638; font-style: normal; }
+.final-line em { font-family: 'Avenue Mono', sans-serif; font-weight: 600; color: #202638; font-style: normal; }
 .closing-loop { margin-top: 110px; color: #a0a7b3; font-weight: 700; letter-spacing: 0.2em; }
 
 /* MOBILE */

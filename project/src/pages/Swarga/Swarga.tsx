@@ -101,6 +101,45 @@ const MoodboardParallax = () => {
   );
 };
 
+const illustrationImages = [
+  'char bg less 1.png',
+  'char bg less 2.png',
+  'char bg less 3.png',
+  'char bg less 5.png',
+  'char bg less 6.png',
+  'char bg less 7.png',
+  'char bg less 8.png',
+  'char bg less 9.png',
+  'char bg less 10.png',
+  'char bg less 11.png',
+  'char bg less 12.png',
+  'char bg less 13.png',
+  'char bg less 16.png',
+];
+
+const IllustrationAnimation = () => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % illustrationImages.length);
+    }, 400); // 400ms per frame for a nice stop-motion effect
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="swarga-illustration-container" style={{ marginTop: '1rem' }}>
+      <div className="swarga-illustration-frame">
+        <img
+          src={`/images/Swarga/illus/${illustrationImages[currentIndex]}`}
+          alt="Illustration character"
+          className="swarga-illustration-image"
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function Swarga({ project, onNavigate }: SwargaProps) {
   const [activeSection, setActiveSection] = useState('intro');
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
@@ -139,11 +178,10 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
     { id: 'exploration', label: '05. Exploration' },
     { id: 'identity', label: '06. Identity' },
     { id: 'illustration', label: '07. Illustration system' },
-    { id: 'graphic', label: '08. Graphic system' },
-    { id: 'applications', label: '09. Applications' },
-    { id: 'campaign', label: '10. Campaign' },
-    { id: 'final', label: '11. Final brand world' },
-    { id: 'reflection', label: '12. Reflection' },
+    { id: 'applications', label: '08. Applications' },
+    { id: 'campaign', label: '09. Campaign' },
+    { id: 'final', label: '10. Final brand world' },
+    { id: 'reflection', label: '11. Reflection' },
   ];
 
   return (
@@ -169,7 +207,6 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
           />
         </div>
       </header>
-
       <div className="swarga-layout">
         {/* Sticky Navigation */}
         <nav className="swarga-sticky-nav">
@@ -191,109 +228,100 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
         <main className="swarga-content">
 
           {/* INTRODUCTION */}
-          <section id="intro" className="swarga-section intro-section" ref={(el) => (sectionRefs.current[0] = el)}>
-            <div className="swarga-section-eyebrow">01 — INTRODUCTION</div>
-            <div className="swarga-intro-header">
-              <h2 className="swarga-section-title">SWARGA</h2>
-              <h3 className="swarga-intro-subtitle">Heaven, Grounded.</h3>
+          <section id="intro" className="swarga-section swarga-editorial-intro" ref={(el) => (sectionRefs.current[0] = el)}>
+
+            <div className="swarga-hero-image-wrapper">
+              <img src="/images/Swarga/idea.png" alt="Heaven meets earth atmospheric landscape" className="swarga-hero-bg" />
             </div>
 
-            <div className="swarga-intro-grid">
-              <div className="swarga-intro-statement">
-                <p>What if heaven could be experienced right here on earth?</p>
-              </div>
-              <div className="swarga-intro-details">
-                <p>Swarga is a self-initiated café concept inspired by the Telugu word “Swargam” (స్వర్గం) — meaning heaven.</p>
-                <p>A quiet escape where mist, greenery, warm light and natural textures come together.</p>
-                <p>The identity blends the ethereal with the earthly through botanical forms, flowing shapes and subtle celestial details.</p>
+            <div className="swarga-intro-content">
+              <p className="swarga-intro-description">
+                A self-initiated café branding concept inspired by the Telugu word “Swargam” — meaning heaven.
+              </p>
+
+              <div className="swarga-hero-metadata">
+                <span>VISUAL IDENTITY</span>
+                <span>ILLUSTRATION</span>
+                <span>GRAPHIC DESIGN</span>
+                <span>ART DIRECTION</span>
               </div>
             </div>
           </section>
 
           {/* THE IDEA */}
-          <section id="idea" className="swarga-section idea-section" ref={(el) => (sectionRefs.current[1] = el)}>
-            <div className="swarga-section-eyebrow">02 — THE IDEA</div>
-            <div className="swarga-idea-layout">
-              <div className="swarga-idea-image-wrapper">
-                <img
-                  src="/images/Swarga/idea.png"
-                  alt="Heaven and Earth misty landscape"
-                  className="swarga-idea-image"
-                />
-              </div>
-              <div className="swarga-idea-text-content">
-                <div className="swarga-idea-header">
-                  <h2 className="swarga-idea-title">HEAVEN</h2>
-                  <span className="swarga-idea-cross">×</span>
-                  <h2 className="swarga-idea-title">EARTH</h2>
+          <section id="idea" className="swarga-section swarga-editorial-idea" ref={(el) => (sectionRefs.current[1] = el)}>
+
+            <div className="swarga-idea-editorial-container">
+              <h2 className="swarga-idea-statement">
+                WHAT IF HEAVEN<br />
+                WASN’T ABOVE US?
+              </h2>
+
+              <div className="swarga-idea-story">
+                <div className="swarga-idea-story-block">
+                  <h3 className="swarga-idea-story-title">SWARGA</h3>
+                  <p>In Telugu, “Swargam” means heaven.</p>
+                  <p>Swarga imagines heaven not as a distant place above us, but as a feeling that can exist here on earth — through nature, light, mist, warmth and quiet moments.</p>
                 </div>
 
-                <div className="swarga-idea-intro">
-                  Swarga is built around the meeting point of two worlds.
-                </div>
-
-                <div className="swarga-idea-worlds">
-                  <div className="swarga-world heaven-world">
+                <div className="swarga-idea-visual-equation">
+                  <div className="swarga-equation-item">
                     <h4>HEAVEN</h4>
-                    <div className="world-tags">
-                      <span>Mist</span><span>Light</span><span>Air</span><span>Dreams</span><span>Celestial</span>
-                    </div>
+                    <p>light / sky / mist / celestial forms</p>
                   </div>
-
-                  <div className="swarga-world earth-world">
+                  <div className="swarga-equation-cross">×</div>
+                  <div className="swarga-equation-item">
                     <h4>EARTH</h4>
-                    <div className="world-tags">
-                      <span>Roots</span><span>Plants</span><span>Texture</span><span>Warmth</span><span>Life</span>
-                    </div>
+                    <p>plants / landscape / organic textures / warmth</p>
                   </div>
                 </div>
 
-                <div className="swarga-idea-conclusion">
-                  <p>The goal isn't to make the brand look luxurious or perfectly heavenly.</p>
-                  <p className="highlight">Heaven shouldn't feel shiny.<br />It should feel alive.</p>
-                  <p>That becomes the heart of Swarga.</p>
-                </div>
+
               </div>
             </div>
           </section>
 
           {/* BRAND CHALLENGE */}
-          <section id="brand-challenge" className="swarga-section" ref={(el) => (sectionRefs.current[2] = el)}>
-            <div className="swarga-section-eyebrow">03 — BRAND CHALLENGE</div>
-            <div className="swarga-challenge-layout">
-              <div className="swarga-challenge-main">
-                <h3 className="swarga-challenge-subtitle">THE CHALLENGE</h3>
-                <h2 className="swarga-challenge-title">How do you make “heaven” feel grounded, natural and believable?</h2>
+          <section id="brand-challenge" className="swarga-section swarga-editorial-challenge" ref={(el) => (sectionRefs.current[2] = el)}>
+
+            <div className="swarga-challenge-editorial-container">
+              <h2 className="swarga-challenge-statement">
+                HOW DO YOU MAKE<br />
+                ‘HEAVEN’ FEEL<br />
+                GROUNDED?
+              </h2>
+
+              <p className="swarga-challenge-desc">
+                The challenge was to create a café identity that feels ethereal and dreamlike without becoming overly mystical, while remaining organic, contemporary and believable.
+              </p>
+
+              <div className="swarga-challenge-tensions">
+                <div className="swarga-tension">
+                  <span className="swarga-tension-term">ETHEREAL</span>
+                  <span className="swarga-tension-arrow">↕</span>
+                  <span className="swarga-tension-term">GROUNDED</span>
+                </div>
+                <div className="swarga-tension">
+                  <span className="swarga-tension-term">ORGANIC</span>
+                  <span className="swarga-tension-arrow">↕</span>
+                  <span className="swarga-tension-term">REFINED</span>
+                </div>
+                <div className="swarga-tension">
+                  <span className="swarga-tension-term">TIMELESS</span>
+                  <span className="swarga-tension-arrow">↕</span>
+                  <span className="swarga-tension-term">CONTEMPORARY</span>
+                </div>
               </div>
-              <div className="swarga-challenge-points">
-                <div className="swarga-challenge-point">
-                  <div className="point-number">01</div>
-                  <div className="point-content">
-                    <h4>Avoid the obvious</h4>
-                    <p>No clouds, halos or overly literal heavenly imagery.</p>
-                  </div>
-                </div>
-                <div className="swarga-challenge-point">
-                  <div className="point-number">02</div>
-                  <div className="point-content">
-                    <h4>Feel alive</h4>
-                    <p>The identity should feel organic rather than perfectly geometric.</p>
-                  </div>
-                </div>
-                <div className="swarga-challenge-point">
-                  <div className="point-number">03</div>
-                  <div className="point-content">
-                    <h4>Balance two worlds</h4>
-                    <p>Blend the ethereal with the earthly.</p>
-                  </div>
-                </div>
+
+              <div className="swarga-challenge-goal">
+                <h3>THE GOAL</h3>
+                <p>Create a visual identity that feels like a quiet piece of heaven — rooted in nature, designed for everyday life.</p>
               </div>
             </div>
           </section>
 
           {/* CREATIVE DIRECTION */}
           <section id="creative-direction" className="swarga-section creative-direction-section" ref={(el) => (sectionRefs.current[3] = el)}>
-            <div className="swarga-section-eyebrow">04 — CREATIVE DIRECTION</div>
             <div className="swarga-creative-keywords">
               <span>MIST</span>
               <span>BOTANICAL</span>
@@ -307,79 +335,196 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
 
           {/* EXPLORATION */}
           <section id="exploration" className="swarga-section" ref={(el) => (sectionRefs.current[4] = el)}>
-            <div className="swarga-section-eyebrow">05 — EXPLORATION</div>
             <div className="swarga-exploration-gallery">
-              <img src="/images/Swarga/exploration book.jpg" alt="Exploration Book" className="swarga-full-width-img" />
+              <img src="/images/Swarga/explo.png" alt="Exploration Book" className="swarga-full-width-img" />
+            </div>
+
+            <div className="swarga-infographic">
+              <div className="swarga-info-header">
+                <h3 className="swarga-info-title">THE MAKING OF</h3>
+                <p className="swarga-info-subtitle">A SYMBOL ROOTED IN A HIGHER FEELING</p>
+              </div>
+
+              <div className="swarga-info-columns">
+                <div className="swarga-info-col">
+                  <div className="swarga-info-col-top">
+                    <span className="swarga-info-num">01</span>
+                    <h4 className="swarga-info-name">LEAF</h4>
+                    <div className="swarga-info-img-wrapper">
+                      <img src="/images/Swarga/leaf.png" alt="Leaf" />
+                    </div>
+                  </div>
+                  <div className="swarga-info-col-bottom">
+                    <h5 className="swarga-info-represents">REPRESENTS<br />NATURE & LIFE</h5>
+                  </div>
+                </div>
+
+                <div className="swarga-info-col">
+                  <div className="swarga-info-col-top">
+                    <span className="swarga-info-num">02</span>
+                    <h4 className="swarga-info-name">FLOWING STEM</h4>
+                    <div className="swarga-info-img-wrapper">
+                      <img src="/images/Swarga/stem.png" alt="Stem" />
+                    </div>
+                  </div>
+                  <div className="swarga-info-col-bottom">
+                    <h5 className="swarga-info-represents">REPRESENTS<br />MOVEMENT</h5>
+                  </div>
+                </div>
+
+                <div className="swarga-info-col">
+                  <div className="swarga-info-col-top">
+                    <span className="swarga-info-num">03</span>
+                    <h4 className="swarga-info-name">CELESTIAL SUN</h4>
+                    <div className="swarga-info-img-wrapper">
+                      <img src="/images/Swarga/sun.png" alt="Sun" />
+                    </div>
+                  </div>
+                  <div className="swarga-info-col-bottom">
+                    <h5 className="swarga-info-represents">REPRESENTS<br />HEAVEN & LIGHT</h5>
+                  </div>
+                </div>
+
+                <div className="swarga-info-col">
+                  <div className="swarga-info-col-top">
+                    <span className="swarga-info-num">04</span>
+                    <h4 className="swarga-info-name">STAR</h4>
+                    <div className="swarga-info-img-wrapper">
+                      <img src="/images/Swarga/star.png" alt="Star" />
+                    </div>
+                  </div>
+                  <div className="swarga-info-col-bottom">
+                    <h5 className="swarga-info-represents">REPRESENTS<br />THE ETHEREAL</h5>
+                  </div>
+                </div>
+
+                <div className="swarga-info-col">
+                  <div className="swarga-info-col-top">
+                    <span className="swarga-info-num">05</span>
+                    <h4 className="swarga-info-name">CIRCULAR HALO</h4>
+                    <div className="swarga-info-img-wrapper">
+                      <img src="/images/Swarga/holo.png" alt="Halo" />
+                    </div>
+                  </div>
+                  <div className="swarga-info-col-bottom">
+                    <h5 className="swarga-info-represents">REPRESENTS<br />CONNECTION</h5>
+                  </div>
+                </div>
+              </div>
+
+              <div className="swarga-info-connector">
+                <div className="swarga-info-line"></div>
+                <div className="swarga-info-ticks">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <div className="swarga-info-center-drop"></div>
+              </div>
+
+              <div className="swarga-info-full-logo">
+                <img src="/images/Swarga/Full logo.png" alt="Swarga Full Logo" />
+              </div>
             </div>
           </section>
 
           {/* IDENTITY */}
           <section id="identity" className="swarga-section identity-section" ref={(el) => (sectionRefs.current[5] = el)}>
-            <div className="swarga-section-eyebrow">06 — IDENTITY</div>
 
             <div className="swarga-identity-gallery">
               <figure className="swarga-identity-figure full-width">
-                <img src="/images/Swarga/pentool outliner.png" alt="Drafting the Mark" className="swarga-identity-img" />
-                <figcaption>Drafting the Mark</figcaption>
+                <img src="/images/Swarga/logo combination mockup.png" alt="Logo Combination Mockup" className="swarga-identity-img" />
               </figure>
 
               <figure className="swarga-identity-figure centered-small">
-                <img src="/images/Swarga/moodboard/Logo.png" alt="Primary Logo" className="swarga-identity-img" />
-                <figcaption>Primary Logo</figcaption>
+                <img src="/images/Swarga/pentool outliner.png" alt="Pentool Outliner" className="swarga-identity-img" />
               </figure>
 
-              <figure className="swarga-identity-figure centered-small">
-                <img src="/images/Swarga/moodboard/Watermark.png" alt="Brand Watermark" className="swarga-identity-img" />
-                <figcaption>Brand Watermark</figcaption>
-              </figure>
-
-              <div className="swarga-identity-grid-2">
-                <figure className="swarga-identity-figure">
-                  <img src="/images/Swarga/moodboard/Combination.png" alt="Vertical Lockup" className="swarga-identity-img" />
-                  <figcaption>Vertical Lockup</figcaption>
+              <div className="swarga-identity-group-no-gap">
+                <figure className="swarga-identity-figure full-width">
+                  <img src="/images/Swarga/colour.png" alt="Colour Palette" className="swarga-identity-img" />
                 </figure>
-                <figure className="swarga-identity-figure">
-                  <img src="/images/Swarga/moodboard/Combination 2.png" alt="Horizontal Lockup" className="swarga-identity-img" />
-                  <figcaption>Horizontal Lockup</figcaption>
+
+                <figure className="swarga-identity-figure full-width">
+                  <img src="/images/Swarga/logo var.png" alt="Logo Variations" className="swarga-identity-img" />
+                </figure>
+
+                <figure className="swarga-identity-figure full-width">
+                  <img src="/images/Swarga/iden 4.png" alt="Identity 4" className="swarga-identity-img" />
                 </figure>
               </div>
             </div>
           </section>
 
           {/* ILLUSTRATION SYSTEM */}
-          <section id="illustration" className="swarga-section" ref={(el) => (sectionRefs.current[6] = el)}>
-            <div className="swarga-section-eyebrow">07 — ILLUSTRATION SYSTEM</div>
-            <Placeholder id="illustration-placeholder" label="Content for Illustration System" />
-          </section>
-
-          {/* GRAPHIC SYSTEM */}
-          <section id="graphic" className="swarga-section" ref={(el) => (sectionRefs.current[7] = el)}>
-            <div className="swarga-section-eyebrow">08 — GRAPHIC SYSTEM</div>
-            <Placeholder id="graphic-placeholder" label="Content for Graphic System" />
+          <section id="illustration" className="swarga-section" ref={(el) => (sectionRefs.current[6] = el)} style={{ paddingBottom: '2rem' }}>
+            <IllustrationAnimation />
           </section>
 
           {/* APPLICATIONS */}
-          <section id="applications" className="swarga-section" ref={(el) => (sectionRefs.current[8] = el)}>
-            <div className="swarga-section-eyebrow">09 — APPLICATIONS</div>
-            <Placeholder id="applications-placeholder" label="Content for Applications" />
+          <section id="applications" className="swarga-section" ref={(el) => (sectionRefs.current[7] = el)}>
+            <div className="swarga-applications-gallery" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2rem' }}>
+              <img src="/images/Swarga/man.png" alt="Man with Swarga T-shirt" className="swarga-full-width-img" />
+              <img src="/images/Swarga/mock tray.png" alt="Mock tray with croissant and drink" className="swarga-full-width-img" />
+              <img src="/images/Swarga/bill.png" alt="Swarga Billboard" className="swarga-full-width-img" />
+            </div>
           </section>
 
           {/* CAMPAIGN */}
-          <section id="campaign" className="swarga-section" ref={(el) => (sectionRefs.current[9] = el)}>
-            <div className="swarga-section-eyebrow">10 — CAMPAIGN</div>
-            <Placeholder id="campaign-placeholder" label="Content for Campaign" />
+          <section id="campaign" className="swarga-section" ref={(el) => (sectionRefs.current[8] = el)}>
+            <div className="swarga-campaign-marquee">
+              <div className="swarga-campaign-marquee-track">
+                {[...Array(4)].map((_, i) => (
+                  <React.Fragment key={i}>
+                    <img src="/images/Swarga/pos 1.png" alt="Campaign Poster 1" />
+                    <img src="/images/Swarga/Combination 2.png" alt="Combination 2" />
+                    <img src="/images/Swarga/pos 2.png" alt="Campaign Poster 2" />
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
           </section>
 
           {/* FINAL BRAND WORLD */}
-          <section id="final" className="swarga-section" ref={(el) => (sectionRefs.current[10] = el)}>
-            <div className="swarga-section-eyebrow">11 — FINAL BRAND WORLD</div>
-            <Placeholder id="final-placeholder" label="Content for Final Brand World" />
+          <section id="final" className="swarga-section" ref={(el) => (sectionRefs.current[9] = el)}>
+            <div className="swarga-branding-video-container" style={{ borderRadius: '24px', overflow: 'hidden' }}>
+              <video
+                src="/images/Swarga/branding.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{ width: '100%', height: 'auto', display: 'block' }}
+              />
+            </div>
           </section>
 
           {/* REFLECTION */}
-          <section id="reflection" className="swarga-section" ref={(el) => (sectionRefs.current[11] = el)}>
-            <div className="swarga-section-eyebrow">12 — REFLECTION</div>
-            <Placeholder id="reflection-placeholder" label="Content for Reflection" />
+          <section id="reflection" className="swarga-section swarga-editorial-challenge" ref={(el) => (sectionRefs.current[10] = el)}>
+            <div className="swarga-challenge-editorial-container">
+              <h2 className="swarga-challenge-statement">WHAT I LEARNED</h2>
+              <p className="swarga-challenge-desc">
+                Swarga started as an exploration of how a café could feel like a small escape from everyday life.<br /><br />
+                Through the process, I learned that creating a visual identity is not just about making a beautiful logo — it is about building a consistent visual world around an idea.
+              </p>
+
+              <div className="swarga-reflection-grid">
+                <div className="point-content">
+                  <h4>01 — Meaning before decoration</h4>
+                  <p>I learned to start with the brand idea and translate it into visual decisions rather than adding decorative elements just because they look good.</p>
+                </div>
+                <div className="point-content">
+                  <h4>02 — Build a system, not a single logo</h4>
+                  <p>The identity became stronger when the logo, illustrations, characters, colours, typography and applications started working together as one language.</p>
+                </div>
+                <div className="point-content">
+                  <h4>03 — Restraint creates sophistication</h4>
+                  <p>Working with a soft, minimal aesthetic taught me that leaving space and reducing visual noise can make the important elements feel more premium.</p>
+                </div>
+                <div className="point-content">
+                  <h4>04 — Designing for real touchpoints</h4>
+                  <p>Exploring cups, menus, posters, packaging, uniforms and digital applications helped me understand how a visual identity needs to adapt beyond a presentation board.</p>
+                </div>
+              </div>
+            </div>
           </section>
 
         </main>
