@@ -23,7 +23,7 @@ export default function Inspiration({ onNavigate }: InspirationProps) {
       </header>
 
       <div className="inspiration-hero">
-        <img 
+        <img loading="lazy" decoding="async" 
           src="/images/what inspires me/hero me.png" 
           alt="Open book collage showcasing inspiration" 
         />
@@ -50,7 +50,7 @@ export default function Inspiration({ onNavigate }: InspirationProps) {
         {/* 01 - Art */}
         <div className="collage-item">
           <div className="collage-img-wrapper">
-            <img src="/images/what inspires me/art_illustration_1791478077835.jpg" alt="Art and Illustration" />
+            <img loading="lazy" decoding="async" src="/images/what inspires me/art_illustration_1791478077835.jpg" alt="Art and Illustration" />
           </div>
           <div className="collage-number">01</div>
           <div className="collage-category">Art & Illustration</div>
@@ -60,7 +60,7 @@ export default function Inspiration({ onNavigate }: InspirationProps) {
         {/* 02 - Nature */}
         <div className="collage-item">
           <div className="collage-img-wrapper">
-            <img src="/images/what inspires me/nature_collage_1791478090287.jpg" alt="Nature" />
+            <img loading="lazy" decoding="async" src="/images/what inspires me/nature_collage_1791478090287.jpg" alt="Nature" />
           </div>
           <div className="collage-number">02</div>
           <div className="collage-category">Nature</div>
@@ -70,7 +70,7 @@ export default function Inspiration({ onNavigate }: InspirationProps) {
         {/* 03 - Everyday Life */}
         <div className="collage-item">
           <div className="collage-img-wrapper">
-            <img src="/images/what inspires me/everyday_life_1791478102816.jpg" alt="Everyday Life" />
+            <img loading="lazy" decoding="async" src="/images/what inspires me/everyday_life_1791478102816.jpg" alt="Everyday Life" />
           </div>
           <div className="collage-number">03</div>
           <div className="collage-category">Everyday Life</div>
@@ -80,7 +80,7 @@ export default function Inspiration({ onNavigate }: InspirationProps) {
         {/* 04 - Stories & Culture */}
         <div className="collage-item">
           <div className="collage-img-wrapper">
-            <img src="/images/what inspires me/stories_culture_1791478115670.jpg" alt="Stories and Culture" />
+            <img loading="lazy" decoding="async" src="/images/what inspires me/stories_culture_1791478115670.jpg" alt="Stories and Culture" />
           </div>
           <div className="collage-number">04</div>
           <div className="collage-category">Stories & Culture</div>
@@ -90,7 +90,7 @@ export default function Inspiration({ onNavigate }: InspirationProps) {
         {/* 05 - Curiosity */}
         <div className="collage-item">
           <div className="collage-img-wrapper">
-            <img src="/images/what inspires me/curiosity_1791478127709.jpg" alt="Curiosity" />
+            <img loading="lazy" decoding="async" src="/images/what inspires me/curiosity_1791478127709.jpg" alt="Curiosity" />
           </div>
           <div className="collage-number">05</div>
           <div className="collage-category">Curiosity</div>

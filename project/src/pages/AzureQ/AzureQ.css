@@ -43,8 +43,7 @@
 
 .azure-case-study p {
   line-height: 1.7;
-  color: #A1A1AA;
-  font-size: 1.125rem;
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
   margin-bottom: 1.5rem;
   max-width: 65ch;
   color: #D4D4D8;
@@ -710,11 +709,11 @@
 .azure-role-timeline-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 4rem;
-  margin-top: 4rem;
+  gap: 3rem;
+  margin-top: 3rem;
   background: #0F0F15;
   border-radius: 16px;
-  padding: 4rem 2rem;
+  padding: 2rem 1rem;
   border: 1px solid #1F1F2E;
   overflow-x: auto;
   max-width: 100%;
@@ -769,11 +768,11 @@
 }
 
 .orbit-node span {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #F4F4F5;
   font-weight: 500;
   background: #050508;
-  padding: 0.25rem 0.75rem;
+  padding: 0.4rem 1rem;
   border-radius: 100px;
   border: 1px solid #1F1F2E;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -836,19 +835,19 @@
 .week-bar {
   background: #0F0F15;
   color: #A1A1AA;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   border-radius: 4px;
   z-index: 1;
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   border: 1px solid #1F1F2E;
   white-space: nowrap;
 }
 
 .week-col span {
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #FFFFFF;
   font-weight: 500;
   text-align: center;
@@ -1079,15 +1078,36 @@
   }
 }
 
-@media (max-width: 600px) {
-  .results-header, .results-row {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
+@media (max-width: 768px) {
+  /* Keep same format but decrease size to fit mobile without scrolling */
+  .azure-role-timeline-wrapper,
+  .azure-journey-table-wrapper,
+  .azure-ia-diagram,
+  .azure-affinity-map {
+    overflow-x: hidden;
+    width: 100%;
     padding: 1rem;
   }
+
+  /* Shrink elements proportionally */
+  .azure-role-orbit,
+  .azure-timeline-chart,
+  .azure-journey-table,
+  .azure-ia-diagram > *,
+  .azure-affinity-map {
+    zoom: 0.45;
+  }
   
-  .results-header div:not(:first-child) {
-    display: none;
+  .azure-affinity-map {
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
+    gap: 1rem;
+    padding-bottom: 0;
+  }
+  
+  /* Reset the padding that gets magnified by zoom inversion */
+  .azure-ia-diagram {
+    padding: 1rem;
+    justify-content: flex-start;
   }
 }
 
@@ -1125,3 +1145,108 @@
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
+
+@media (max-width: 992px) {
+  .azure-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 0 1.25rem;
+  }
+
+  .azure-sticky-nav {
+    position: static;
+    padding-top: 1rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    border-bottom: 1px solid #1F1F2E;
+    padding-bottom: 1rem;
+  }
+
+  .azure-sticky-nav ul {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+
+  .azure-sticky-nav button {
+    padding: 6px 14px;
+    background: #111118;
+    border: 1px solid #232332;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .azure-sticky-nav button.active {
+    padding-left: 14px;
+    border-left: 1px solid #3b82f6;
+    background: #1d283a;
+    color: #60a5fa;
+  }
+
+  .azure-content {
+    padding-top: 1rem;
+  }
+
+  .azure-content section {
+    margin-bottom: 4rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .azure-hero {
+    padding: 4.5rem 1rem 2rem;
+    gap: 1.5rem;
+  }
+
+  .azure-hero-subtitle {
+    font-size: clamp(1.75rem, 6vw, 2.25rem);
+    margin-bottom: 1rem;
+  }
+
+  .azure-hero-tagline {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+  }
+
+  .azure-hero-intro {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .azure-metadata {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .azure-back-link {
+    top: 1.25rem;
+    left: 1rem;
+  }
+
+  .azure-content h2 {
+    font-size: clamp(1.4rem, 5vw, 1.75rem);
+  }
+
+  .azure-content h3 {
+    font-size: clamp(1.15rem, 4vw, 1.35rem);
+  }
+
+  .azure-content p {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+
+  .azure-wireframe-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .azure-image, img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+

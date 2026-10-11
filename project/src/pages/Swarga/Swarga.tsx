@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronLeft } from 'lucide-react';
-import { Project } from '@/data/projects';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { projects, Project } from '@/data/projects';
 import './Swarga.css';
 
 interface SwargaProps {
@@ -92,7 +92,7 @@ const MoodboardParallax = () => {
                 transition: 'transform 0.1s ease-out'
               }}
             >
-              <img src={`/images/Swarga/moodboard/${item.src}`} alt="Moodboard element" />
+              <img loading="lazy" decoding="async" src={`/images/Swarga/moodboard/${item.src}`} alt="Moodboard element" />
             </div>
           )
         })}
@@ -130,7 +130,7 @@ const IllustrationAnimation = () => {
   return (
     <div className="swarga-illustration-container" style={{ marginTop: '1rem' }}>
       <div className="swarga-illustration-frame">
-        <img
+        <img loading="lazy" decoding="async"
           src={`/images/Swarga/illus/${illustrationImages[currentIndex]}`}
           alt="Illustration character"
           className="swarga-illustration-image"
@@ -141,6 +141,10 @@ const IllustrationAnimation = () => {
 };
 
 export default function Swarga({ project, onNavigate }: SwargaProps) {
+  const currentIndex = projects.findIndex((p) => p.id === project.id);
+  const previous = projects[currentIndex - 1];
+  const next = projects[currentIndex + 1];
+
   const [activeSection, setActiveSection] = useState('intro');
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
 
@@ -187,11 +191,13 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
   return (
     <div className="swarga-case-study">
       <button
-        onClick={() => onNavigate('/')}
+        onClick={() => onNavigate('/projects')}
         className="swarga-back-link"
+        type="button"
+        aria-label="Back to Projects"
       >
         <ChevronLeft size={16} />
-        Back to Home
+        Back to Projects
       </button>
 
       {/* HERO SECTION */}
@@ -231,7 +237,7 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
           <section id="intro" className="swarga-section swarga-editorial-intro" ref={(el) => (sectionRefs.current[0] = el)}>
 
             <div className="swarga-hero-image-wrapper">
-              <img src="/images/Swarga/idea.png" alt="Heaven meets earth atmospheric landscape" className="swarga-hero-bg" />
+              <img loading="lazy" decoding="async" src="/images/Swarga/idea.png" alt="Heaven meets earth atmospheric landscape" className="swarga-hero-bg" />
             </div>
 
             <div className="swarga-intro-content">
@@ -336,7 +342,7 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
           {/* EXPLORATION */}
           <section id="exploration" className="swarga-section" ref={(el) => (sectionRefs.current[4] = el)}>
             <div className="swarga-exploration-gallery">
-              <img src="/images/Swarga/explo.png" alt="Exploration Book" className="swarga-full-width-img" />
+              <img loading="lazy" decoding="async" src="/images/Swarga/explo.png" alt="Exploration Book" className="swarga-full-width-img" />
             </div>
 
             <div className="swarga-infographic">
@@ -351,7 +357,7 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
                     <span className="swarga-info-num">01</span>
                     <h4 className="swarga-info-name">LEAF</h4>
                     <div className="swarga-info-img-wrapper">
-                      <img src="/images/Swarga/leaf.png" alt="Leaf" />
+                      <img loading="lazy" decoding="async" src="/images/Swarga/leaf.png" alt="Leaf" />
                     </div>
                   </div>
                   <div className="swarga-info-col-bottom">
@@ -364,7 +370,7 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
                     <span className="swarga-info-num">02</span>
                     <h4 className="swarga-info-name">FLOWING STEM</h4>
                     <div className="swarga-info-img-wrapper">
-                      <img src="/images/Swarga/stem.png" alt="Stem" />
+                      <img loading="lazy" decoding="async" src="/images/Swarga/stem.png" alt="Stem" />
                     </div>
                   </div>
                   <div className="swarga-info-col-bottom">
@@ -377,7 +383,7 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
                     <span className="swarga-info-num">03</span>
                     <h4 className="swarga-info-name">CELESTIAL SUN</h4>
                     <div className="swarga-info-img-wrapper">
-                      <img src="/images/Swarga/sun.png" alt="Sun" />
+                      <img loading="lazy" decoding="async" src="/images/Swarga/sun.png" alt="Sun" />
                     </div>
                   </div>
                   <div className="swarga-info-col-bottom">
@@ -390,7 +396,7 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
                     <span className="swarga-info-num">04</span>
                     <h4 className="swarga-info-name">STAR</h4>
                     <div className="swarga-info-img-wrapper">
-                      <img src="/images/Swarga/star.png" alt="Star" />
+                      <img loading="lazy" decoding="async" src="/images/Swarga/star.png" alt="Star" />
                     </div>
                   </div>
                   <div className="swarga-info-col-bottom">
@@ -403,7 +409,7 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
                     <span className="swarga-info-num">05</span>
                     <h4 className="swarga-info-name">CIRCULAR HALO</h4>
                     <div className="swarga-info-img-wrapper">
-                      <img src="/images/Swarga/holo.png" alt="Halo" />
+                      <img loading="lazy" decoding="async" src="/images/Swarga/holo.png" alt="Halo" />
                     </div>
                   </div>
                   <div className="swarga-info-col-bottom">
@@ -421,7 +427,7 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
               </div>
 
               <div className="swarga-info-full-logo">
-                <img src="/images/Swarga/Full logo.png" alt="Swarga Full Logo" />
+                <img loading="lazy" decoding="async" src="/images/Swarga/full-logo.png" alt="Swarga Full Logo" />
               </div>
             </div>
           </section>
@@ -431,24 +437,24 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
 
             <div className="swarga-identity-gallery">
               <figure className="swarga-identity-figure full-width">
-                <img src="/images/Swarga/logo combination mockup.png" alt="Logo Combination Mockup" className="swarga-identity-img" />
+                <img loading="lazy" decoding="async" src="/images/Swarga/logo-combination-mockup.png" alt="Logo Combination Mockup" className="swarga-identity-img" />
               </figure>
 
               <figure className="swarga-identity-figure centered-small">
-                <img src="/images/Swarga/pentool outliner.png" alt="Pentool Outliner" className="swarga-identity-img" />
+                <img loading="lazy" decoding="async" src="/images/Swarga/pentool-outliner.png" alt="Pentool Outliner" className="swarga-identity-img" />
               </figure>
 
               <div className="swarga-identity-group-no-gap">
                 <figure className="swarga-identity-figure full-width">
-                  <img src="/images/Swarga/colour.png" alt="Colour Palette" className="swarga-identity-img" />
+                  <img loading="lazy" decoding="async" src="/images/Swarga/colour.png" alt="Colour Palette" className="swarga-identity-img" />
                 </figure>
 
                 <figure className="swarga-identity-figure full-width">
-                  <img src="/images/Swarga/logo var.png" alt="Logo Variations" className="swarga-identity-img" />
+                  <img loading="lazy" decoding="async" src="/images/Swarga/logo-var.png" alt="Logo Variations" className="swarga-identity-img" />
                 </figure>
 
                 <figure className="swarga-identity-figure full-width">
-                  <img src="/images/Swarga/iden 4.png" alt="Identity 4" className="swarga-identity-img" />
+                  <img loading="lazy" decoding="async" src="/images/Swarga/iden-4.png" alt="Identity 4" className="swarga-identity-img" />
                 </figure>
               </div>
             </div>
@@ -462,9 +468,9 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
           {/* APPLICATIONS */}
           <section id="applications" className="swarga-section" ref={(el) => (sectionRefs.current[7] = el)}>
             <div className="swarga-applications-gallery" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2rem' }}>
-              <img src="/images/Swarga/man.png" alt="Man with Swarga T-shirt" className="swarga-full-width-img" />
-              <img src="/images/Swarga/mock tray.png" alt="Mock tray with croissant and drink" className="swarga-full-width-img" />
-              <img src="/images/Swarga/bill.png" alt="Swarga Billboard" className="swarga-full-width-img" />
+              <img loading="lazy" decoding="async" src="/images/Swarga/man.png" alt="Man with Swarga T-shirt" className="swarga-full-width-img" />
+              <img loading="lazy" decoding="async" src="/images/Swarga/mock-tray.png" alt="Mock tray with croissant and drink" className="swarga-full-width-img" />
+              <img loading="lazy" decoding="async" src="/images/Swarga/bill.png" alt="Swarga Billboard" className="swarga-full-width-img" />
             </div>
           </section>
 
@@ -474,9 +480,9 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
               <div className="swarga-campaign-marquee-track">
                 {[...Array(4)].map((_, i) => (
                   <React.Fragment key={i}>
-                    <img src="/images/Swarga/pos 1.png" alt="Campaign Poster 1" />
-                    <img src="/images/Swarga/Combination 2.png" alt="Combination 2" />
-                    <img src="/images/Swarga/pos 2.png" alt="Campaign Poster 2" />
+                    <img loading="lazy" decoding="async" src="/images/Swarga/pos-1.png" alt="Campaign Poster 1" />
+                    <img loading="lazy" decoding="async" src="/images/Swarga/combination-2.png" alt="Combination 2" />
+                    <img loading="lazy" decoding="async" src="/images/Swarga/pos-2.png" alt="Campaign Poster 2" />
                   </React.Fragment>
                 ))}
               </div>
@@ -527,6 +533,26 @@ export default function Swarga({ project, onNavigate }: SwargaProps) {
             </div>
           </section>
 
+          {/* PREVIOUS / NEXT CASE STUDY NAVIGATION */}
+          <div className="case-navigation" style={{ marginTop: '4rem', paddingBottom: '2rem' }}>
+            {previous ? (
+              <button type="button" onClick={() => onNavigate(previous.route)}>
+                <ChevronLeft size={18} />
+                <span><small>Previous Project</small>{previous.title}</span>
+              </button>
+            ) : <span />}
+            {next ? (
+              <button type="button" onClick={() => onNavigate(next.route)}>
+                <span><small>Next Project</small>{next.title}</span>
+                <ChevronRight size={18} />
+              </button>
+            ) : (
+              <button type="button" onClick={() => onNavigate('/projects')}>
+                <span><small>Return to</small>Projects</span>
+                <ChevronRight size={18} />
+              </button>
+            )}
+          </div>
         </main>
       </div>
     </div>

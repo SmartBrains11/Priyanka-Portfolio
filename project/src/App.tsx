@@ -90,10 +90,36 @@ function App() {
       }
       return <ProjectPage project={route.project} onNavigate={openPath} />;
     }
-    if (!route.project && window.location.pathname === '/') {
+    if (window.location.pathname === '/' && !route.project) {
       return <RoomExperience onNavigate={openPath} />;
     }
-    return null;
+    if (window.location.pathname === '/projects') {
+      return null; // Renders Projects workspace layout
+    }
+    // Any unrecognized path falls back to custom 404 view
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: '24px', background: '#fafaf9', color: '#171b2b', fontFamily: "'DM Sans', sans-serif" }}>
+        <p style={{ color: '#8791a4', fontSize: '12px', letterSpacing: '3px', textTransform: 'uppercase', fontWeight: 600, marginBottom: '12px' }}>404 — PAGE NOT FOUND</p>
+        <h1 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(36px, 6vw, 48px)', fontWeight: 700, margin: '0 0 16px 0', letterSpacing: '-0.5px' }}>Lost your way?</h1>
+        <p style={{ color: '#687184', fontSize: '16px', maxWidth: '420px', lineHeight: 1.6, margin: '0 0 32px 0' }}>The page or project you're looking for doesn't exist or has moved.</p>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <button 
+            type="button" 
+            onClick={() => openPath('/')}
+            style={{ padding: '10px 24px', borderRadius: '9999px', background: '#171b2b', color: '#ffffff', border: 'none', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}
+          >
+            Go to 3D Room
+          </button>
+          <button 
+            type="button" 
+            onClick={() => openPath('/projects')}
+            style={{ padding: '10px 24px', borderRadius: '9999px', background: '#ffffff', color: '#171b2b', border: '1px solid #e2e6ed', fontSize: '14px', fontWeight: 500, cursor: 'pointer' }}
+          >
+            Explore Projects
+          </button>
+        </div>
+      </div>
+    );
   };
 
   const pageContent = renderPage();
@@ -108,31 +134,40 @@ function App() {
 
   return (
     <>
-      {window.location.pathname !== '/' && <GlobalMapMenu onNavigate={openPath} />}
+      {window.location.pathname !== '/' && (
+        <div className="desktop-only-map">
+          <GlobalMapMenu onNavigate={openPath} />
+        </div>
+      )}
       <div className="app-shell home-shell">
         <div className="workspace-layout">
           <Sidebar
-          activeProject={route.project}
-          mobileOpen={mobileNavOpen}
-          onClose={() => setMobileNavOpen(false)}
-          onNavigate={openPath}
-        />
-        <div className="flex-1 flex flex-col min-w-0 h-screen">
-          <TopBar activeProject={route.project} onNavigate={openPath} />
-          <main className="main-workspace">
-            <button
-              className="mobile-menu-button"
-              type="button"
-              aria-label="Open navigation"
-              onClick={() => setMobileNavOpen(true)}
-            >
-              <Menu size={20} />
-            </button>
-            <ProjectsHome search={search} onSearchChange={setSearch} onNavigate={openPath} />
-          </main>
+            activeProject={route.project}
+            mobileOpen={mobileNavOpen}
+            onClose={() => setMobileNavOpen(false)}
+            onNavigate={openPath}
+          />
+          <div className="flex-1 flex flex-col min-w-0 h-screen">
+            {/* Mobile Header: Priyanka on left, Circular Map icon on right */}
+            <header className="mobile-projects-header">
+              <button
+                type="button"
+                className="mobile-brand-title"
+                onClick={() => openPath('/')}
+                aria-label="Lakkoju Priyanka - Home"
+              >
+                Priyanka
+              </button>
+              <GlobalMapMenu onNavigate={openPath} isInline />
+            </header>
+
+            <TopBar activeProject={route.project} onNavigate={openPath} />
+            <main className="main-workspace">
+              <ProjectsHome search={search} onSearchChange={setSearch} onNavigate={openPath} />
+            </main>
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
@@ -244,23 +279,101 @@ type ProjectsHomeProps = {
 };
 
 function ProjectsHome({ search, onSearchChange, onNavigate }: ProjectsHomeProps) {
-  const filteredProjects = useMemo(
-    () => projects.filter((project) => `${project.title} ${project.category}`.toLowerCase().includes(search.toLowerCase())),
-    [search]
-  );
+  const [activeCategory, setActiveCategory] = useState('All');
+  const categories = ['All', 'Product Design', 'Branding', 'Illustration'];
+
+  const filteredProjects = useMemo(() => {
+    return projects.filter((project) => {
+      const matchesCategory =
+        activeCategory === 'All'
+          ? true
+          : activeCategory === 'Product Design'
+          ? project.category === 'Product Design' || project.category === 'Case Study'
+          : project.category.toLowerCase() === activeCategory.toLowerCase();
+      const matchesSearch = `${project.title} ${project.category}`
+        .toLowerCase()
+        .includes(search.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [search, activeCategory]);
 
   return (
     <section className="home-content relative">
-      <div className="section-heading" style={{ display: 'block', margin: '0 0 16px 0' }}>
-        <p className="kicker" style={{ color: '#8791a4', letterSpacing: '3px', fontSize: '11px', marginBottom: '8px' }}>SELECTED WORKS</p>
-        <h1 style={{ fontFamily: 'Avenue Mono, serif', fontSize: '56px', margin: '0 0 4px 0', letterSpacing: '-1.5px', color: '#171b2b', fontWeight: '500' }}>Projects</h1>
-        <p style={{ color: '#7f8797', fontSize: '17px', margin: '0 0 24px 0' }}>Product design, branding and visual exploration.</p>
+      <div className="section-heading" style={{ display: 'block', margin: '0 0 24px 0' }}>
+        <p 
+          className="kicker" 
+          style={{ 
+            color: '#8791a4', 
+            letterSpacing: '2.5px', 
+            fontSize: '11px', 
+            fontWeight: 700, 
+            textTransform: 'uppercase', 
+            margin: '0 0 6px 0' 
+          }}
+        >
+          SELECTED WORKS
+        </p>
+        <h1 
+          style={{ 
+            fontFamily: "'Playfair Display', Georgia, serif", 
+            fontSize: 'clamp(36px, 8vw, 44px)', 
+            fontWeight: 700, 
+            margin: '0 0 8px 0', 
+            letterSpacing: '-0.5px', 
+            color: '#171b2b', 
+            lineHeight: 1.15 
+          }}
+        >
+          Projects
+        </h1>
+        <p 
+          style={{ 
+            color: '#687184', 
+            fontSize: '15px', 
+            lineHeight: 1.5, 
+            margin: '0 0 24px 0' 
+          }}
+        >
+          Product design, branding and visual exploration.
+        </p>
         
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button style={{ padding: '8px 24px', borderRadius: '24px', background: '#000', color: '#fff', fontSize: '13px' }}>All</button>
-          <button style={{ padding: '8px 24px', borderRadius: '24px', border: '1px solid #e2e6ed', background: '#fff', color: '#677185', fontSize: '13px' }}>Product Design</button>
-          <button style={{ padding: '8px 24px', borderRadius: '24px', border: '1px solid #e2e6ed', background: '#fff', color: '#677185', fontSize: '13px' }}>Branding</button>
-          <button style={{ padding: '8px 24px', borderRadius: '24px', border: '1px solid #e2e6ed', background: '#fff', color: '#677185', fontSize: '13px' }}>Illustration</button>
+        {/* Category Filter Pills */}
+        <div 
+          className="category-filters-scroll" 
+          style={{ 
+            display: 'flex', 
+            gap: '8px', 
+            overflowX: 'auto', 
+            paddingBottom: '4px', 
+            scrollbarWidth: 'none', 
+            WebkitOverflowScrolling: 'touch' 
+          }}
+        >
+          {categories.map((cat) => {
+            const isActive = activeCategory === cat;
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => setActiveCategory(cat)}
+                style={{
+                  padding: '8px 22px',
+                  borderRadius: '9999px',
+                  background: isActive ? '#171b2b' : '#ffffff',
+                  color: isActive ? '#ffffff' : '#495366',
+                  border: isActive ? '1px solid #171b2b' : '1px solid #e2e6ed',
+                  fontSize: '14px',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  boxShadow: isActive ? '0 2px 6px rgba(23, 27, 43, 0.15)' : 'none',
+                }}
+              >
+                {cat}
+              </button>
+            );
+          })}
         </div>
       </div>
       

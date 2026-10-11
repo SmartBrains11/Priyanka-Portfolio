@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Room360 from './Room360';
 import RoomUI from './RoomUI';
+import MobileHome from './MobileHome';
 import './RoomExperience.css';
 
 type RoomExperienceProps = {
@@ -8,6 +9,13 @@ type RoomExperienceProps = {
 };
 
 export default function RoomExperience({ onNavigate }: RoomExperienceProps) {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const [uiHovered, setUiHovered] = useState(false);
   
   // Read initial view from URL
@@ -187,7 +195,7 @@ export default function RoomExperience({ onNavigate }: RoomExperienceProps) {
       )}
 
       {/* Mirror Clickable Area */}
-      {mirrorTransitionPhase === 'finished' && (
+      {!isMobile && mirrorTransitionPhase === 'finished' && (
         <div 
           className="fixed inset-0 z-[50] flex items-center justify-center pointer-events-none"
         >
@@ -214,17 +222,27 @@ export default function RoomExperience({ onNavigate }: RoomExperienceProps) {
         </div>
       )}
 
-      <Room360 isUiHovered={uiHovered} viewState={viewState} mirrorTransitionPhase={mirrorTransitionPhase} />
-      <RoomUI 
-        onUiHoverChange={setUiHovered} 
-        onAction={(action) => setViewState(action)} 
-        viewState={viewState}
-        audioCompleted={audioCompleted}
-        onExploreClick={() => onNavigate && onNavigate('/projects')}
-        onUnderstandClick={() => onNavigate && onNavigate('/understand-how-i-think')}
-        onKnowMeClick={handleKnowMeClick}
-        onNavigate={onNavigate}
-      />
+      {isMobile ? (
+        <div className="absolute inset-0 z-0 overflow-y-auto bg-[#fbfcfe]">
+          <MobileHome onNavigate={onNavigate!} onAboutClick={handleKnowMeClick} />
+        </div>
+      ) : (
+        <div className="desktop-hero-page">
+          <RoomUI 
+            onUiHoverChange={setUiHovered} 
+            onAction={(action) => setViewState(action)} 
+            viewState={viewState}
+            audioCompleted={audioCompleted}
+            onExploreClick={() => onNavigate && onNavigate('/projects')}
+            onUnderstandClick={() => onNavigate && onNavigate('/understand-how-i-think')}
+            onKnowMeClick={handleKnowMeClick}
+            onNavigate={onNavigate}
+            renderRoomCanvas={() => (
+              <Room360 isUiHovered={uiHovered} viewState={viewState} mirrorTransitionPhase={mirrorTransitionPhase} />
+            )}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -4,32 +4,33 @@
   background-color: #ffffff;
   color: #3d3b38;
   min-height: 100vh;
-  padding: 60px 24px;
+  padding: clamp(36px, 6vw, 60px) clamp(16px, 4vw, 24px);
   font-family: 'Avenue Mono', serif;
 }
 
 .inspiration-header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: clamp(32px, 6vw, 60px);
 }
 
 .inspiration-kicker {
-  font-family: sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 11px;
-  letter-spacing: 4px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: #8c8881;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .inspiration-title {
   font-family: 'Avenue Mono', serif;
-  font-size: 42px;
-  font-weight: 300;
-  letter-spacing: 6px;
+  font-size: clamp(28px, 6vw, 42px);
+  font-weight: 400;
+  letter-spacing: clamp(2px, 1vw, 4px);
   color: #2a2927;
   margin: 0;
   text-transform: uppercase;
+  line-height: 1.2;
 }
 
 .inspiration-hero {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { User, Laptop, Lightbulb, Map as MapIcon } from 'lucide-react';
+import { Map as MapIcon, ArrowRight, Pause, Play, RotateCcw, Briefcase, Laptop, Compass } from 'lucide-react';
 
 type RoomUIProps = {
   onUiHoverChange: (hovered: boolean) => void;
@@ -10,239 +10,211 @@ type RoomUIProps = {
   onUnderstandClick?: () => void;
   onKnowMeClick?: () => void;
   onNavigate?: (path: string) => void;
+  renderRoomCanvas?: () => React.ReactNode;
 };
 
-let hasPlayedIntro = false;
+const roles = ['Product Designer', 'Visual Designer', 'Illustration'];
 
-const INTRO_TOKENS = [
-  { text: "A ", style: { fontWeight: 300 } },
-  { text: "designer’s room", style: { fontWeight: 500 } },
-  { text: " says a lot about how she ", style: { fontWeight: 300 } },
-  { text: "thinks.", style: { fontWeight: 500, fontStyle: 'italic' as const } },
-  { text: "\\n", style: {} },
-  { text: "I’m Priyanka", style: { fontWeight: 600 } },
-  { text: " — come in, ", style: { fontWeight: 300 } },
-  { text: "explore.", style: { fontWeight: 400, fontStyle: 'italic' as const } },
-];
-const TOTAL_CHARS = INTRO_TOKENS.reduce((sum, t) => sum + t.text.length, 0);
-
-export default function RoomUI({ onUiHoverChange, onAction, viewState, audioCompleted, onExploreClick, onUnderstandClick, onKnowMeClick, onNavigate }: RoomUIProps) {
-  const [phase, setPhase] = useState<'white' | 'welcome' | 'room' | 'options'>(hasPlayedIntro ? 'options' : 'white');
-  const [showTitle, setShowTitle] = useState(!hasPlayedIntro);
-  const [typedCount, setTypedCount] = useState(hasPlayedIntro ? TOTAL_CHARS : 0);
+export default function RoomUI({ 
+  onUiHoverChange, 
+  onAction, 
+  viewState, 
+  onExploreClick, 
+  onUnderstandClick, 
+  onKnowMeClick, 
+  onNavigate, 
+  renderRoomCanvas 
+}: RoomUIProps) {
   const [mapHovered, setMapHovered] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Cycle through titles one by one near Priyanka name
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [isRoleFading, setIsRoleFading] = useState(false);
 
   useEffect(() => {
-    if (hasPlayedIntro) return;
+    const timer = setInterval(() => {
+      setIsRoleFading(true);
+      setTimeout(() => {
+        setRoleIndex((prev) => (prev + 1) % roles.length);
+        setIsRoleFading(false);
+      }, 300);
+    }, 2600);
 
-    // Sequence timing
-    // Phase 1: White screen holds for a moment, then "Welcome" appears while white screen fades out
-    const t1 = setTimeout(() => setPhase('welcome'), 500);
-
-    // Phase 2: "Welcome" holds, room is fully visible
-    const t2 = setTimeout(() => setPhase('room'), 2500);
-
-    // Phase 3: Options appear after welcome fades
-    const t3 = setTimeout(() => {
-      setPhase('options');
-      hasPlayedIntro = true;
-    }, 3500);
-
-    // Phase 4: Hide the top title text after 20 seconds
-    const t4 = setTimeout(() => setShowTitle(false), 20000);
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
-    };
+    return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    // Only hide on interaction if the text has finished typing
-    if (typedCount < TOTAL_CHARS) return;
-
-    const hideTitleOnInteract = () => {
-      setShowTitle(false);
-    };
-    window.addEventListener('wheel', hideTitleOnInteract, { once: true });
-    window.addEventListener('touchstart', hideTitleOnInteract, { once: true });
-    window.addEventListener('mousedown', hideTitleOnInteract, { once: true });
-
-    return () => {
-      window.removeEventListener('wheel', hideTitleOnInteract);
-      window.removeEventListener('touchstart', hideTitleOnInteract);
-      window.removeEventListener('mousedown', hideTitleOnInteract);
-    };
-  }, [typedCount]);
-
-  useEffect(() => {
-    if (phase === 'options') {
-      // If already typed, don't re-type
-      if (hasPlayedIntro && typedCount === TOTAL_CHARS) return;
-
-      const interval = setInterval(() => {
-        setTypedCount((prev) => {
-          if (prev >= TOTAL_CHARS) {
-            clearInterval(interval);
-            return prev;
-          }
-          return prev + 1;
-        });
-      }, 50);
-      return () => clearInterval(interval);
-    }
-  }, [phase]);
-
-  const renderTypedText = () => {
-    let charsLeft = typedCount;
-    return INTRO_TOKENS.map((token, i) => {
-      if (charsLeft <= 0) return null;
-      
-      let textToRender = "";
-      if (charsLeft >= token.text.length) {
-        textToRender = token.text;
-        charsLeft -= token.text.length;
-      } else {
-        textToRender = token.text.slice(0, charsLeft);
-        charsLeft = 0;
-      }
-      
-      if (textToRender === "\\n") {
-        return <br key={i} />;
-      }
-      
-      return <span key={i} style={token.style}>{textToRender}</span>;
-    });
-  };
-
   return (
-    <div className="room-ui-layer pointer-events-none">
+    <div className="hero-editorial-wrapper">
+      {/* Background Soft Glow Shadows */}
+      <div className="hero-bg-accent" />
 
-      {/* Map Hotspot Legend */}
-      <div 
-        className="map-legend-container" 
-        style={{ position: 'absolute', top: '32px', right: '32px', pointerEvents: 'auto', zIndex: 100 }}
-      >
-        <button 
-          style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#fff', border: '1px solid #e8ebf1', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', transition: 'all 0.2s' }}
-          aria-label="Interactive Map"
-          className="map-legend-trigger"
-          onClick={() => { setMapHovered(!mapHovered); onUiHoverChange(!mapHovered); }}
-        >
-          <MapIcon size={20} color="#171b2b" />
-        </button>
-        
-        {/* Dropdown / Hover Menu */}
-        <div 
-          style={{ 
-            position: 'absolute', top: '100%', right: '0', marginTop: '12px', background: '#fff', 
-            borderRadius: '16px', border: '1px solid #e8ebf1', padding: '12px', width: '220px',
-            boxShadow: '0 12px 32px rgba(0,0,0,0.1)', opacity: mapHovered ? 1 : 0, 
-            transform: mapHovered ? 'translateY(0)' : 'translateY(-10px)',
-            pointerEvents: mapHovered ? 'auto' : 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            zIndex: 40 
-          }}
-        >
-          <div style={{ fontSize: '11px', fontWeight: 600, color: '#8791a4', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '8px', padding: '0 8px' }}>Explore Room</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <button onClick={() => { if (onKnowMeClick) onKnowMeClick(); if (onAction) onAction('mirror'); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px', borderRadius: '8px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '13px', color: '#171b2b', textAlign: 'left', width: '100%', transition: 'background 0.2s' }} className="map-legend-item">
-              <span>🪞 Mirror</span><span style={{ color: '#8791a4' }}>About me</span>
-            </button>
-            <button onClick={() => { if (onExploreClick) onExploreClick(); if (onNavigate) onNavigate('/projects'); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px', borderRadius: '8px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '13px', color: '#171b2b', textAlign: 'left', width: '100%', transition: 'background 0.2s' }} className="map-legend-item">
-              <span>💻 Laptop</span><span style={{ color: '#8791a4' }}>My work</span>
-            </button>
-            <button onClick={() => { if (onUnderstandClick) onUnderstandClick(); if (onAction) onAction('board'); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px', borderRadius: '8px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '13px', color: '#171b2b', textAlign: 'left', width: '100%', transition: 'background 0.2s' }} className="map-legend-item">
-              <span>📌 Pinboard</span><span style={{ color: '#8791a4' }}>How I think</span>
-            </button>
-            <button onClick={() => { if (onNavigate) onNavigate('/art'); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px', borderRadius: '8px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '13px', color: '#171b2b', textAlign: 'left', width: '100%', transition: 'background 0.2s' }} className="map-legend-item">
-              <span>🎨 Easel</span><span style={{ color: '#8791a4' }}>My art</span>
-            </button>
-            <button onClick={() => { if (onNavigate) onNavigate('/experience'); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px', borderRadius: '8px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '13px', color: '#171b2b', textAlign: 'left', width: '100%', transition: 'background 0.2s' }} className="map-legend-item">
-              <span>📚 Bookshelf</span><span style={{ color: '#8791a4' }}>Experience</span>
-            </button>
-            <button onClick={() => { if (onNavigate) onNavigate('/inspiration'); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px', borderRadius: '8px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '13px', color: '#171b2b', textAlign: 'left', width: '100%', transition: 'background 0.2s' }} className="map-legend-item">
-              <span>🪟 Window</span><span style={{ color: '#8791a4' }}>What inspires me</span>
-            </button>
-            <button onClick={() => { if (onNavigate) onNavigate('/contact'); }} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px', borderRadius: '8px', border: 'none', background: 'transparent', cursor: 'pointer', fontSize: '13px', color: '#171b2b', textAlign: 'left', width: '100%', transition: 'background 0.2s' }} className="map-legend-item">
-              <span>🗄️ Drawer</span><span style={{ color: '#8791a4' }}>Work with me</span>
-            </button>
+      {/* Top Header Row */}
+      <header className="hero-top-row">
+        <div className="hero-brand-left">
+          <div className="brand-name-group">
+            <span className="brand-author-tag">PRIYANKA LAKKOJU</span>
+            <span className="brand-author-dash">—</span>
+          </div>
+          <div className="brand-roles-cycler" aria-live="polite">
+            <span className={`brand-role-item ${isRoleFading ? 'role-fade-out' : 'role-fade-in'}`}>
+              {roles[roleIndex]}
+            </span>
           </div>
         </div>
-      </div>
 
-      {/* White Screen Overlay */}
-      <div
-        className={`intro-white-screen ${phase === 'white' ? 'opacity-100' : 'opacity-0'}`}
-      />
-
-      {/* Welcome Text */}
-      <div className={`welcome-text ${phase === 'welcome' ? 'opacity-100' : 'opacity-0'}`}>
-        Welcome to my space
-      </div>
-
-      {/* Top Title Text */}
-      <div
-        className={`top-title-text ${phase === 'options' && showTitle ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-        onClick={() => setShowTitle(false)}
-      >
-        {renderTypedText()}
-        <span className="animate-pulse">|</span>
-      </div>
-
-      {/* Interactive Options */}
-      <div
-        className={`intent-options ${phase === 'options' ? 'opacity-100' : 'opacity-0'} ${viewState === 'mirror' ? 'pointer-events-none' : 'pointer-events-auto'}`}
-        onMouseEnter={() => onUiHoverChange(true)}
-        onMouseLeave={() => onUiHoverChange(false)}
-      >
-        <button className={`intent-button transition-opacity duration-500 opacity-100`} disabled={viewState === 'mirror'} onClick={() => onAction && onAction('mirror')}>I am hiring</button>
-        <button className={`intent-button transition-opacity duration-500 opacity-100`} disabled={viewState === 'mirror'} onClick={() => onAction && onAction('default')}>I am a designer</button>
-        <button className={`intent-button transition-opacity duration-500 opacity-100`} disabled={viewState === 'mirror'} onClick={() => onAction && onAction('board')}>I'm curious</button>
-      </div>
-
-      {/* Know Me Pointer (Removed for Mirror Overlay Flow) */}
-
-      {/* Explore my Work Pointer */}
-      <div
-        className={`cp-container cp-explore ${audioCompleted && viewState === 'default' ? 'opacity-100 pointer-events-auto show-pop-work' : 'opacity-0 pointer-events-none'}`}
-        style={{ left: '60%', top: '48%' }}
-        onMouseEnter={() => onUiHoverChange(true)}
-        onMouseLeave={() => onUiHoverChange(false)}
-      >
-        <div className="cp-dot" />
-        <svg className="cp-svg" width="60" height="60" style={{ bottom: 0, right: 0 }}>
-          <path d="M 60,60 Q 60,0 0,0" fill="none" stroke="white" strokeWidth="2" />
-        </svg>
-        <div className="cp-content" style={{ bottom: '60px', right: '60px', transform: 'translateY(50%)', flexDirection: 'row-reverse' }}>
-          <Laptop color="white" size={24} />
-          <button className="cp-button" onClick={onExploreClick}>
-            Wanna explore my work ?
-          </button>
+        <div className="hero-brand-center">
+          <h1 className="hero-main-title">Priyanka.</h1>
+          <p className="hero-tagline-quote">A designer&apos;s room says a lot about how she thinks.</p>
         </div>
-      </div>
 
-      {/* Understand How I Think Pointer (On Board) */}
-      <div
-        className={`cp-container cp-understand ${viewState === 'board' ? 'show-pop-work opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-        style={{ left: '50%', top: '45%' }} // Centered since camera zooms in on it
+        <div className="hero-nav-right">
+          <div className="map-legend-container" style={{ position: 'relative' }}>
+            <button 
+              className="map-legend-trigger hero-map-button"
+              aria-label="Interactive Map"
+              onClick={() => { setMapHovered(!mapHovered); onUiHoverChange(!mapHovered); }}
+            >
+              <MapIcon size={20} color="#171b2b" strokeWidth={1.8} />
+            </button>
+            
+            {/* Map Menu Dropdown */}
+            <div 
+              className="hero-map-dropdown"
+              style={{ 
+                opacity: mapHovered ? 1 : 0, 
+                transform: mapHovered ? 'translateY(0)' : 'translateY(-10px)',
+                pointerEvents: mapHovered ? 'auto' : 'none',
+              }}
+            >
+              <div className="hero-dropdown-heading">Explore Room</div>
+              <div className="hero-dropdown-list">
+                <button onClick={() => { setMapHovered(false); if (onKnowMeClick) onKnowMeClick(); if (onAction) onAction('mirror'); }} className="map-legend-item">
+                  <span>🪞 Mirror</span><span className="map-sub">About me</span>
+                </button>
+                <button onClick={() => { setMapHovered(false); if (onExploreClick) onExploreClick(); if (onNavigate) onNavigate('/projects'); }} className="map-legend-item">
+                  <span>💻 Laptop</span><span className="map-sub">My work</span>
+                </button>
+                <button onClick={() => { setMapHovered(false); if (onUnderstandClick) onUnderstandClick(); if (onAction) onAction('board'); }} className="map-legend-item">
+                  <span>📌 Pinboard</span><span className="map-sub">How I think</span>
+                </button>
+                <button onClick={() => { setMapHovered(false); if (onNavigate) onNavigate('/art'); }} className="map-legend-item">
+                  <span>🎨 Easel</span><span className="map-sub">My art</span>
+                </button>
+                <button onClick={() => { setMapHovered(false); if (onNavigate) onNavigate('/experience'); }} className="map-legend-item">
+                  <span>📚 Bookshelf</span><span className="map-sub">Experience</span>
+                </button>
+                <button onClick={() => { setMapHovered(false); if (onNavigate) onNavigate('/inspiration'); }} className="map-legend-item">
+                  <span>🪟 Window</span><span className="map-sub">What inspires me</span>
+                </button>
+                <button onClick={() => { setMapHovered(false); if (onNavigate) onNavigate('/contact'); }} className="map-legend-item">
+                  <span>🗄️ Drawer</span><span className="map-sub">Work with me</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Room Viewport with Distinctive Concave Curve */}
+      <section className="hero-room-container">
+        {/* SVG clip-path definition for smooth organic curve */}
+        <svg width="0" height="0" style={{ position: 'absolute' }}>
+          <defs>
+            <clipPath id="heroCurvedRoomClip" clipPathUnits="objectBoundingBox">
+              <path d="M 0,0.015 Q 0.5,0.07 1,0.015 L 1,0.97 Q 0.5,0.99 0,0.97 Z" />
+            </clipPath>
+          </defs>
+        </svg>
+
+        <div className="hero-room-outer-frame">
+          <div className="hero-room-inner-frame">
+            {/* The 3D Canvas or 360 Room View */}
+            {renderRoomCanvas && renderRoomCanvas()}
+
+            {/* In-Room Controls & Subtle Accents */}
+            <div className="in-room-overlay pointer-events-none">
+              {/* Bottom-left Pause/Play and Reset buttons */}
+              <div className="room-control-pill pointer-events-auto">
+                <button 
+                  className="room-icon-btn" 
+                  aria-label={isPaused ? "Play animation" : "Pause animation"}
+                  onClick={() => setIsPaused(!isPaused)}
+                  title={isPaused ? "Play" : "Pause"}
+                >
+                  {isPaused ? <Play size={13} fill="currentColor" /> : <Pause size={13} fill="currentColor" />}
+                </button>
+                {viewState !== 'default' && (
+                  <button 
+                    className="room-icon-btn ml-1" 
+                    aria-label="Reset view"
+                    onClick={() => onAction && onAction('default')}
+                    title="Reset view"
+                  >
+                    <RotateCcw size={13} />
+                  </button>
+                )}
+              </div>
+
+              {/* Bottom-right Drag to Explore hint */}
+              <div className="room-explore-hint">
+                <span className="hint-label">DRAG TO EXPLORE</span>
+                <span className="hint-line" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Primary Navigation Dock */}
+      <nav 
+        className="hero-intent-nav" 
+        aria-label="Main portfolio navigation"
         onMouseEnter={() => onUiHoverChange(true)}
         onMouseLeave={() => onUiHoverChange(false)}
       >
-        <div className="cp-dot" />
-        <svg className="cp-svg" width="60" height="60" style={{ bottom: 0, left: 0 }}>
-          <path d="M 0,60 Q 0,0 60,0" fill="none" stroke="white" strokeWidth="2" />
-        </svg>
-        <div className="cp-content" style={{ bottom: '60px', left: '60px', transform: 'translateY(50%)' }}>
-          <Lightbulb color="white" size={24} />
-          <button className="cp-button" onClick={onUnderstandClick}>
-            Understand How I Think
-            <span className="clicking-pointer">👆</span>
-          </button>
-        </div>
-      </div>
+        <button 
+          className="hero-intent-pill"
+          type="button"
+          onClick={() => onAction && onAction('mirror')}
+        >
+          <div className="pill-icon-box">
+            <Briefcase size={18} strokeWidth={2} />
+          </div>
+          <span className="pill-heading">I&apos;M HIRING</span>
+          <div className="pill-arrow-circle">
+            <ArrowRight size={15} className="pill-arrow" />
+          </div>
+        </button>
 
+        <button 
+          className="hero-intent-pill"
+          type="button"
+          onClick={() => { if (onNavigate) onNavigate('/projects'); }}
+        >
+          <div className="pill-icon-box">
+            <Laptop size={18} strokeWidth={2} />
+          </div>
+          <span className="pill-heading">DESIGNER</span>
+          <div className="pill-arrow-circle">
+            <ArrowRight size={15} className="pill-arrow" />
+          </div>
+        </button>
+
+        <button 
+          className="hero-intent-pill"
+          type="button"
+          onClick={() => onAction && onAction('board')}
+        >
+          <div className="pill-icon-box">
+            <Compass size={18} strokeWidth={2} />
+          </div>
+          <span className="pill-heading">CURIOUS</span>
+          <div className="pill-arrow-circle">
+            <ArrowRight size={15} className="pill-arrow" />
+          </div>
+        </button>
+      </nav>
     </div>
   );
 }

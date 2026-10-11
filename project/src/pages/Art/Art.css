@@ -101,22 +101,33 @@
 
 @media (max-width: 768px) {
   .draggable-art {
-    width: 200px;
+    width: 190px;
     border-width: 8px;
     border-bottom-width: 28px;
   }
   
   .art-header {
-    top: 24px;
-    left: 24px;
+    top: 76px;
+    left: 20px;
+    right: 20px;
   }
   
   .art-title {
-    font-size: 40px;
+    font-size: 34px;
+    margin-bottom: 8px;
+  }
+
+  .art-subtitle {
+    font-size: 13px;
+    max-width: 260px;
   }
 
   .art-insta-icon {
-    top: 24px;
-    right: 24px;
+    top: 76px;
+    right: 20px;
+  }
+
+  .art-back {
+    display: none; /* Handled by GlobalNavDrawer */
   }
 }

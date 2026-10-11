@@ -12,7 +12,7 @@
     --tag-green: rgba(5, 215, 29, 0.17);
     --tag-yellow: rgba(251, 247, 143, 0.29);
 
-    font-family: 'Poppins', sans-serif;
+    
     background-color: var(--bg-main);
     color: var(--text-primary);
     overflow-x: clip;
@@ -178,7 +178,7 @@
 
 .sbi-page .section-text {
     font-weight: 400;
-    font-size: 1.125rem;
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
     line-height: 1.7;
     color: var(--text-secondary);
 }
@@ -255,7 +255,7 @@
 
 .sbi-page .hero-desc {
     font-weight: 400;
-    font-size: 1.125rem;
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
     line-height: 1.7;
     color: var(--text-secondary);
 }
@@ -537,7 +537,7 @@
 }
 
 .process-label {
-    font-family: 'Poppins', sans-serif;
+    
     font-size: 20px;
     font-weight: 600;
     color: rgba(0, 0, 0, 0.79);
@@ -547,7 +547,7 @@
 }
 
 .process-title {
-    font-family: 'Poppins', sans-serif;
+    
     font-size: 35.7px;
     font-weight: 500;
     color: #2E5FEF;
@@ -562,8 +562,8 @@
 }
 
 .process-desc {
-    font-family: 'Poppins', sans-serif;
-    font-size: 17.85px;
+    
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
     line-height: 27px;
     color: rgba(0, 0, 0, 0.79);
     font-weight: 400;
@@ -575,7 +575,7 @@
     width: 100%;
     aspect-ratio: 1024 / 567;
     margin-top: 0px;
-    background: url('/sbi-arc-bg.png') no-repeat center center;
+    background: url('/images/Smart Brains India/sbi-arc-bg.png') no-repeat center center;
     background-size: cover;
 }
 
@@ -604,7 +604,7 @@
 }
 
 .node-title {
-    font-family: 'Poppins', sans-serif;
+    
     font-size: 21.05px;
     font-weight: 500;
     color: #2E5FEF;
@@ -612,7 +612,7 @@
 }
 
 .node-text {
-    font-family: 'Poppins', sans-serif;
+    
     font-size: 11.5px;
     font-weight: 400;
     color: rgba(0, 38, 148, 0.72);
@@ -634,7 +634,7 @@
     width: 140%;
     margin-left: -20%;
     aspect-ratio: 1440 / 2999;
-    background: url('/images/30.png') no-repeat center center;
+    background: url('/images/Smart Brains India/30.png') no-repeat center center;
     background-size: cover;
 }
 
@@ -651,7 +651,7 @@
 }
 
 .kp-header-label {
-    font-family: 'Poppins', sans-serif;
+    
     font-weight: 600;
     font-size: 1.38cqw;
     /* 20px on 1440px */
@@ -662,7 +662,7 @@
 }
 
 .kp-header-title {
-    font-family: 'Poppins', sans-serif;
+    
     font-weight: 500;
     font-size: 2.47cqw;
     text-align: right;
@@ -671,14 +671,14 @@
 }
 
 .kp-huge-title {
-    font-family: 'Poppins', sans-serif;
+    
     font-weight: 600;
     font-size: 4.44cqw;
     color: rgba(137, 32, 207, 0.37);
 }
 
 .kp-intro {
-    font-family: 'Poppins', sans-serif;
+    
     font-weight: 400;
     font-size: 1.04cqw;
     line-height: 1.5;
@@ -692,14 +692,14 @@
 }
 
 .kp-block-title {
-    font-family: 'Poppins', sans-serif;
+    
     font-weight: 500;
     font-size: 0.97cqw;
     color: rgba(0, 0, 0, 0.79);
 }
 
 .kp-block-text {
-    font-family: 'Poppins', sans-serif;
+    
     font-weight: 400;
     font-size: 0.83cqw;
     line-height: 1.5;
@@ -713,14 +713,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: 'Poppins', sans-serif;
+    
     font-weight: 400;
     font-size: 0.69cqw;
     color: rgba(0, 0, 0, 0.58);
 }
 
 .kp-small-text {
-    font-family: 'Poppins', sans-serif;
+    
     font-weight: 400;
     font-size: 0.83cqw;
     color: rgba(0, 0, 0, 0.58);
@@ -808,7 +808,7 @@
     position: absolute;
     padding: 8px 14px;
     border-radius: 28px;
-    font-size: 13.5px;
+    font-size: 1rem;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.79);
     white-space: nowrap;
@@ -1045,14 +1045,14 @@
     right: 50px;
     top: 50px;
     transform: rotate(-12.41deg);
-    background-image: url('/images/35.png');
+    background-image: url('/images/Smart Brains India/35.png');
 }
 
 .decor-2 {
     right: 250px;
     top: 0;
     transform: rotate(12deg);
-    background-image: url('/images/30.png');
+    background-image: url('/images/Smart Brains India/30.png');
 }
 
 .process-video-container {
@@ -1085,19 +1085,17 @@
 }
 
 .branding-title {
-    font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    font-size: 96px;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
     line-height: 120%;
     color: rgba(137, 32, 207, 0.37);
     margin-bottom: 20px;
 }
 
 .branding-desc {
-    font-family: 'Poppins', sans-serif;
     font-weight: 400;
-    font-size: 20px;
-    line-height: 30px;
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+    line-height: 1.7;
     color: #454545;
     margin-bottom: 40px;
     max-width: 600px;
@@ -1112,9 +1110,9 @@
 }
 
 .b-pill {
-    font-family: 'Poppins', sans-serif;
+    
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 1rem;
     line-height: 20px;
     color: rgba(0, 0, 0, 0.79);
     padding: 8px 14px;

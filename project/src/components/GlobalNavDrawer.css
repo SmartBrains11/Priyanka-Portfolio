@@ -1,0 +1,355 @@
+/* Global Navigation Bar & Drawer Styles */
+
+.global-header-bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  background: rgba(251, 252, 254, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(226, 230, 237, 0.85);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Dark mode override for dark case studies (e.g. AzureQ) */
+.azure-case-study ~ .global-header-bar,
+.theme-dark .global-header-bar,
+[data-theme="dark"] .global-header-bar {
+  background: rgba(5, 5, 8, 0.92);
+  border-bottom: 1px solid rgba(31, 31, 46, 0.85);
+}
+
+.global-header-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 14px clamp(16px, 4vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 58px;
+}
+
+.global-logo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  padding: 4px 6px;
+  margin-left: -6px;
+  cursor: pointer;
+  text-align: left;
+  transition: opacity 0.2s ease;
+}
+
+.global-logo-btn:hover {
+  opacity: 0.8;
+}
+
+.global-logo-text {
+  font-family: 'Avenue Mono', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  color: #171b2b;
+}
+
+.azure-case-study ~ .global-header-bar .global-logo-text,
+.theme-dark .global-logo-text,
+[data-theme="dark"] .global-logo-text {
+  color: #f4f4f5;
+}
+
+.global-page-badge {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8791a4;
+  white-space: nowrap;
+}
+
+.global-hamburger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  background: #ffffff;
+  border: 1px solid #e2e6ed;
+  color: #171b2b;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(23, 27, 43, 0.04);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.global-hamburger-btn:hover {
+  background: #f7f9fc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(23, 27, 43, 0.08);
+}
+
+.azure-case-study ~ .global-header-bar .global-hamburger-btn,
+.theme-dark .global-hamburger-btn,
+[data-theme="dark"] .global-hamburger-btn {
+  background: #12121a;
+  border-color: #2a2a3a;
+  color: #f4f4f5;
+}
+
+.azure-case-study ~ .global-header-bar .global-hamburger-btn:hover,
+.theme-dark .global-hamburger-btn:hover,
+[data-theme="dark"] .global-hamburger-btn:hover {
+  background: #1a1a26;
+  border-color: #3f3f56;
+}
+
+.global-hamburger-label {
+  letter-spacing: -0.2px;
+}
+
+.global-hamburger-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* DRAWER MODAL */
+.global-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0.3s ease;
+}
+
+.global-drawer-overlay.is-open {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.global-drawer-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.global-drawer-overlay.is-open .global-drawer-scrim {
+  opacity: 1;
+}
+
+.global-drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 380px;
+  background: #ffffff;
+  box-shadow: -10px 0 35px rgba(15, 23, 42, 0.14);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.global-drawer-overlay.is-open .global-drawer-panel {
+  transform: translateX(0);
+}
+
+.global-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+.global-drawer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.drawer-brand-name {
+  font-family: 'Avenue Mono', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #171b2b;
+  letter-spacing: -0.5px;
+}
+
+.drawer-brand-role {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #8791a4;
+}
+
+.global-drawer-close {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #f4f6fa;
+  border: 1px solid #e5e9f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #171b2b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.global-drawer-close:hover {
+  background: #e9edf5;
+  transform: rotate(90deg);
+}
+
+.global-drawer-nav {
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.global-drawer-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #171b2b;
+  width: 100%;
+}
+
+.global-drawer-link:hover {
+  background: #f4f6fa;
+  transform: translateX(3px);
+}
+
+.global-drawer-link.is-active {
+  background: #edf4ff;
+  color: #2563eb;
+}
+
+.drawer-link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+
+.global-drawer-link.is-active .drawer-link-icon,
+.global-drawer-link:hover .drawer-link-icon {
+  color: #2563eb;
+}
+
+.drawer-link-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.drawer-link-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: inherit;
+  letter-spacing: -0.2px;
+}
+
+.drawer-link-subtitle {
+  font-size: 12px;
+  color: #8791a4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.drawer-link-arrow {
+  color: #94a3b8;
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: all 0.2s ease;
+}
+
+.global-drawer-link:hover .drawer-link-arrow,
+.global-drawer-link.is-active .drawer-link-arrow {
+  opacity: 1;
+  transform: translate(0, 0);
+  color: #2563eb;
+}
+
+.global-drawer-footer {
+  padding: 20px 24px 28px;
+  border-top: 1px solid #eef2f7;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #fafbfe;
+}
+
+.drawer-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.drawer-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  flex-shrink: 0;
+}
+
+.drawer-contact-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-radius: 9999px;
+  background: #171b2b;
+  color: #ffffff;
+  border: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.drawer-contact-action:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .global-drawer-panel {
+    max-width: 100%;
+  }
+}

@@ -81,7 +81,7 @@ export default function SmartBrainsIndia({ project, onNavigate }: SmartBrainsInd
           <p className="hero-desc">Adding structure to conversations, without breaking them. Solo designer and developer. Real clients. Measurable growth. From zero to a functioning brand online.</p>
         </div>
         <div className="hero-image">
-          <img src="/images/Smart Brains India/image 1.png" alt="Smart Brains India Hero" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          <img loading="lazy" decoding="async" src="/images/Smart Brains India/image-1.png" alt="Smart Brains India Hero" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
       </section>
 
@@ -108,7 +108,7 @@ export default function SmartBrainsIndia({ project, onNavigate }: SmartBrainsInd
           <section id="overview" className="sbi-overview" ref={(el) => (sectionRefs.current[0] = el)}>
             <div className="overview-bg-text">INDIA</div>
             <div className="overview-image">
-              <img src="/images/Smart Brains India/image 2.png" alt="Overview" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+              <img loading="lazy" decoding="async" src="/images/Smart Brains India/image-2.png" alt="Overview" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             <div className="overview-content">
               <div className="section-label">01 — Project Overview</div>
@@ -175,7 +175,7 @@ export default function SmartBrainsIndia({ project, onNavigate }: SmartBrainsInd
 
             <div className="role-diagram">
               <div className="artist-profile">
-                <img src="/images/Smart Brains India/artist-main 1.png" alt="Priyanka" className="artist-img" style={{ objectFit: 'cover' }} />
+                <img loading="lazy" decoding="async" src="/images/Smart Brains India/artist-main-1.png" alt="Priyanka" className="artist-img" style={{ objectFit: 'cover' }} />
                 <div className="artist-name">Priyanka | UI/UX Designer</div>
               </div>
 
@@ -260,7 +260,7 @@ export default function SmartBrainsIndia({ project, onNavigate }: SmartBrainsInd
 
           {/* SEO Section */}
           <section id="seo" className="sbi-seo" ref={(el) => (sectionRefs.current[6] = el)}>
-            <img src="/images/Smart Brains India/SEO.png" alt="SEO" className="seo-image" loading="lazy" />
+            <img src="/images/Smart Brains India/seo.png" alt="SEO" className="seo-image" loading="lazy" />
           </section>
 
 

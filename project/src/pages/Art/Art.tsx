@@ -10,16 +10,18 @@ type DraggableImageProps = {
 };
 
 function DraggableImage({ src, delay, zIndex, bringToFront }: DraggableImageProps) {
-  // Fix dimensions to know exact bottom
-  const imgWidth = 280;
-  const imgHeight = 350;
+  // Responsive dimensions for mobile vs desktop
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const imgWidth = isMobile ? Math.min(200, window.innerWidth - 60) : 280;
+  const imgHeight = isMobile ? Math.round(imgWidth * 1.25) : 350;
   
-  // Scatter everywhere across the screen width
-  const targetX = (Math.random() * (window.innerWidth - imgWidth - 40)) + 20; 
+  // Scatter comfortably within viewport bounds
+  const maxAvailableX = Math.max(10, window.innerWidth - imgWidth - 30);
+  const targetX = Math.max(15, (Math.random() * maxAvailableX) + 15); 
   
   // Start from high above, but aligned with targetX so they fall straight down (gravity)
-  const startX = targetX + (Math.random() * 100 - 50); // slight wind/drift
-  const [position, setPosition] = useState({ x: startX, y: -800 - (Math.random() * 500) });
+  const startX = targetX + (Math.random() * 40 - 20); // slight wind/drift
+  const [position, setPosition] = useState({ x: startX, y: -600 - (Math.random() * 400) });
   
   // Start with a random rotation and land with a messy rotation
   const [rotation, setRotation] = useState((Math.random() - 0.5) * 60);
@@ -72,7 +74,7 @@ function DraggableImage({ src, delay, zIndex, bringToFront }: DraggableImageProp
   };
 
   return (
-    <img
+    <img loading="lazy" decoding="async"
       ref={imgRef}
       src={src}
       className={`draggable-art ${hasFallen ? 'fallen' : 'falling'} ${isDragging ? 'dragging' : ''}`}

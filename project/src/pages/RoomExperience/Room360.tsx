@@ -8,13 +8,24 @@ type CameraControllerProps = {
   viewState: 'default' | 'mirror' | 'board';
 };
 
+// Bounding limits ensuring the image NEVER goes out of the frame by more than 30% of the image.
+// The panoramic cylinder arc is 130° (2.2689 rad).
+// 30% of the image is 39° (0.68 rad).
+// Clamping total yaw to ±0.42 rad (~24°) limits maximum shift to ~18.5%, well within the 30% limit.
+const MAX_YAW = 0.42;
+const MAX_PITCH = 0.08;
+const MIN_FOV = 44;
+const MAX_FOV = 68;
+
 function CameraController({ isUiHovered, viewState }: CameraControllerProps) {
   const { camera, gl } = useThree();
-  const targetRotation = useRef({ yaw: 0, pitch: 0 }); // Initial target rotation
-  const targetFov = useRef(75);
-  const pointerPos = useRef({ x: 0, y: 0 });
+  const targetRotation = useRef({ yaw: 0, pitch: 0 });
+  const targetFov = useRef(64);
+  const pointerNorm = useRef({ x: 0, y: 0 });
+  const isInsideFrameRef = useRef(false);
+  const dragOffset = useRef({ yaw: 0, pitch: 0 });
 
-  // Handle specific view states (like zooming to mirror)
+  // Handle specific view states (mirror, board, default)
   useEffect(() => {
     const isMobile = window.innerWidth <= 768;
     if (viewState === 'mirror') {
@@ -24,31 +35,41 @@ function CameraController({ isUiHovered, viewState }: CameraControllerProps) {
       targetRotation.current = { yaw: isMobile ? -0.3 : -0.1, pitch: 0.15 };
       targetFov.current = 18;
     } else if (viewState === 'default') {
+      dragOffset.current = { yaw: 0, pitch: 0 };
       targetRotation.current = { yaw: 0, pitch: 0 };
-      targetFov.current = isMobile ? 110 : 75;
+      targetFov.current = isMobile ? 110 : 64;
     }
   }, [viewState]);
 
-  // Handle zooming via wheel
+  // Handle zooming via wheel: ACTIVELY INSIDE THE FRAME ONLY
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
-      // If hovering UI, don't zoom
-      if (isUiHovered || viewState === 'mirror') return;
+      // If hovering UI overlays or not in default view, do not zoom
+      if (isUiHovered || viewState !== 'default') return;
 
-      const zoomAmount = e.deltaY * 0.05;
-      targetFov.current = THREE.MathUtils.clamp(targetFov.current + zoomAmount, 30, 100);
+      const rect = gl.domElement.getBoundingClientRect();
+      const isInside =
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom;
+
+      // Only zoom actively when cursor is inside the frame
+      if (!isInside) return;
+
+      e.preventDefault();
+      const zoomAmount = e.deltaY * 0.04;
+      targetFov.current = THREE.MathUtils.clamp(targetFov.current + zoomAmount, MIN_FOV, MAX_FOV);
     };
 
     window.addEventListener('wheel', handleWheel, { passive: false });
     return () => window.removeEventListener('wheel', handleWheel);
-  }, [isUiHovered]);
+  }, [isUiHovered, viewState, gl]);
 
-  // Handle zooming via pinch (touch events) and panning via single-finger drag
+  // Handle touch events (mobile / tablet gestures)
   useEffect(() => {
     let initialDistance = 0;
     let initialFov = 0;
-
-    // For 1-finger panning
     let lastTouchX = 0;
     let lastTouchY = 0;
 
@@ -76,23 +97,26 @@ function CameraController({ isUiHovered, viewState }: CameraControllerProps) {
         const currentDistance = Math.sqrt(dx * dx + dy * dy);
 
         const distanceDelta = initialDistance - currentDistance;
-        const zoomAmount = distanceDelta * 0.1;
-        targetFov.current = THREE.MathUtils.clamp(initialFov + zoomAmount, 30, 100);
+        const zoomAmount = distanceDelta * 0.08;
+        targetFov.current = THREE.MathUtils.clamp(initialFov + zoomAmount, MIN_FOV, MAX_FOV);
       } else if (e.touches.length === 1 && viewState === 'default') {
         const currentTouchX = e.touches[0].clientX;
         const currentTouchY = e.touches[0].clientY;
 
         const deltaX = currentTouchX - lastTouchX;
         const deltaY = currentTouchY - lastTouchY;
+        const panSensitivity = 0.004;
 
-        // Adjust sensitivity for panning
-        const panSensitivity = 0.005;
-
-        targetRotation.current.yaw += deltaX * panSensitivity;
-        targetRotation.current.pitch += deltaY * panSensitivity;
-
-        // Clamp pitch to avoid flipping
-        targetRotation.current.pitch = THREE.MathUtils.clamp(targetRotation.current.pitch, -Math.PI / 4, Math.PI / 4);
+        dragOffset.current.yaw = THREE.MathUtils.clamp(
+          dragOffset.current.yaw + deltaX * panSensitivity,
+          -MAX_YAW * 0.8,
+          MAX_YAW * 0.8
+        );
+        dragOffset.current.pitch = THREE.MathUtils.clamp(
+          dragOffset.current.pitch + deltaY * panSensitivity,
+          -MAX_PITCH * 0.8,
+          MAX_PITCH * 0.8
+        );
 
         lastTouchX = currentTouchX;
         lastTouchY = currentTouchY;
@@ -108,58 +132,166 @@ function CameraController({ isUiHovered, viewState }: CameraControllerProps) {
     };
   }, [isUiHovered, viewState]);
 
-  // Handle pointer movement for panning
+  // Handle mouse movement and drag
   useEffect(() => {
-    const handlePointerMove = (e: PointerEvent) => {
-      // Normalize pointer coordinates (-1 to 1)
-      pointerPos.current = {
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: -(e.clientY / window.innerHeight) * 2 + 1,
-      };
+    let isDragging = false;
+    let prevMouseX = 0;
+    let prevMouseY = 0;
+
+    const handleMouseDown = (e: MouseEvent) => {
+      if (isUiHovered || viewState !== 'default') return;
+
+      const rect = gl.domElement.getBoundingClientRect();
+      const inside =
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom;
+
+      if (!inside) return;
+
+      isDragging = true;
+      prevMouseX = e.clientX;
+      prevMouseY = e.clientY;
     };
 
-    window.addEventListener('pointermove', handlePointerMove);
-    return () => window.removeEventListener('pointermove', handlePointerMove);
-  }, []);
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = gl.domElement.getBoundingClientRect();
+      const inside =
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom;
+
+      isInsideFrameRef.current = inside;
+
+      if (isDragging && viewState === 'default') {
+        const deltaX = e.clientX - prevMouseX;
+        const deltaY = e.clientY - prevMouseY;
+        prevMouseX = e.clientX;
+        prevMouseY = e.clientY;
+
+        const panSensitivity = 0.003;
+        dragOffset.current.yaw = THREE.MathUtils.clamp(
+          dragOffset.current.yaw + deltaX * panSensitivity,
+          -MAX_YAW * 0.65,
+          MAX_YAW * 0.65
+        );
+        dragOffset.current.pitch = THREE.MathUtils.clamp(
+          dragOffset.current.pitch + deltaY * panSensitivity,
+          -MAX_PITCH * 0.65,
+          MAX_PITCH * 0.65
+        );
+      }
+
+      if (inside) {
+        // Inside the frame: normalized coordinate between -1.0 and +1.0
+        const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+        pointerNorm.current = {
+          x: THREE.MathUtils.clamp(nx, -1, 1),
+          y: THREE.MathUtils.clamp(ny, -1, 1),
+        };
+      } else {
+        // Outside the frame: normalized relative to window
+        const nx = (e.clientX / window.innerWidth) * 2 - 1;
+        const ny = (e.clientY / window.innerHeight) * 2 - 1;
+        pointerNorm.current = {
+          x: THREE.MathUtils.clamp(nx, -1, 1),
+          y: THREE.MathUtils.clamp(ny, -1, 1),
+        };
+      }
+    };
+
+    const handleMouseUp = () => {
+      isDragging = false;
+    };
+
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isUiHovered, viewState, gl]);
 
   useFrame((state, delta) => {
-    // Only update targets if we are not hovering interactive UI elements and we are in default view (not frozen in mirror)
     const isMobile = window.innerWidth <= 768;
-    if (!isUiHovered && viewState === 'default' && !isMobile) {
-      // Calculate a deadzone for x and y
-      const deadzone = 0.2;
-      let moveX = 0;
-      let moveY = 0;
 
-      if (Math.abs(pointerPos.current.x) > deadzone) {
-        moveX = pointerPos.current.x > 0 ? pointerPos.current.x - deadzone : pointerPos.current.x + deadzone;
+    if (viewState === 'mirror') {
+      const damping = 4.5;
+      const euler = new THREE.Euler(targetRotation.current.pitch, targetRotation.current.yaw, 0, 'YXZ');
+      const targetQuat = new THREE.Quaternion().setFromEuler(euler);
+      camera.quaternion.slerp(targetQuat, delta * damping);
+
+      if (camera instanceof THREE.PerspectiveCamera) {
+        camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov.current, delta * damping);
+        camera.updateProjectionMatrix();
       }
-
-      if (Math.abs(pointerPos.current.y) > deadzone) {
-        moveY = pointerPos.current.y > 0 ? pointerPos.current.y - deadzone : pointerPos.current.y + deadzone;
-      }
-
-      // Max rotation speed
-      const sensitivity = 0.5;
-      targetRotation.current.yaw -= moveX * sensitivity * delta;
-      targetRotation.current.pitch += moveY * sensitivity * delta;
-
-      // Clamp pitch to avoid looking completely up/down
-      targetRotation.current.pitch = THREE.MathUtils.clamp(targetRotation.current.pitch, -Math.PI / 4, Math.PI / 4);
+      return;
     }
 
-    // Smoothly interpolate camera rotation
-    const damping = viewState === 'mirror' ? 4.5 : 3.0; // Faster convergence for a quick, snappy zoom
+    if (viewState === 'board') {
+      const damping = 4.0;
+      const euler = new THREE.Euler(targetRotation.current.pitch, targetRotation.current.yaw, 0, 'YXZ');
+      const targetQuat = new THREE.Quaternion().setFromEuler(euler);
+      camera.quaternion.slerp(targetQuat, delta * damping);
 
-    // Create Quaternions for smooth spherical interpolation
-    const euler = new THREE.Euler(targetRotation.current.pitch, targetRotation.current.yaw, 0, 'YXZ');
-    const targetQuat = new THREE.Quaternion().setFromEuler(euler);
-    camera.quaternion.slerp(targetQuat, delta * damping);
+      if (camera instanceof THREE.PerspectiveCamera) {
+        camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov.current, delta * damping);
+        camera.updateProjectionMatrix();
+      }
+      return;
+    }
 
-    // Smoothly interpolate camera FOV
-    if (camera instanceof THREE.PerspectiveCamera) {
-      camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov.current, delta * damping);
-      camera.updateProjectionMatrix();
+    // Default room view state
+    if (!isMobile) {
+      const inside = isInsideFrameRef.current;
+
+      let cursorYaw = 0;
+      let cursorPitch = 0;
+      let damping = 3.5;
+
+      if (inside) {
+        // Actively move left and right based on mouse movement inside the frame
+        cursorYaw = -pointerNorm.current.x * 0.35;
+        cursorPitch = pointerNorm.current.y * 0.05;
+        damping = 4.0; // Responsive, active reaction
+      } else {
+        // Outside the frame: react to mouse movement but VERY SLOWLY
+        cursorYaw = -pointerNorm.current.x * 0.10;
+        cursorPitch = pointerNorm.current.y * 0.02;
+        damping = 0.8; // Very slow, calm, gentle drift
+      }
+
+      // Combine drag + cursor tracking and clamp to strictly prevent going >30% out of frame
+      const combinedYaw = THREE.MathUtils.clamp(
+        dragOffset.current.yaw + cursorYaw,
+        -MAX_YAW,
+        MAX_YAW
+      );
+      const combinedPitch = THREE.MathUtils.clamp(
+        dragOffset.current.pitch + cursorPitch,
+        -MAX_PITCH,
+        MAX_PITCH
+      );
+
+      targetRotation.current.yaw = combinedYaw;
+      targetRotation.current.pitch = combinedPitch;
+
+      // Smoothly interpolate camera rotation
+      const euler = new THREE.Euler(targetRotation.current.pitch, targetRotation.current.yaw, 0, 'YXZ');
+      const targetQuat = new THREE.Quaternion().setFromEuler(euler);
+      camera.quaternion.slerp(targetQuat, delta * damping);
+
+      // Smoothly interpolate camera FOV
+      if (camera instanceof THREE.PerspectiveCamera) {
+        camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov.current, delta * (inside ? 4.0 : 1.5));
+        camera.updateProjectionMatrix();
+      }
     }
   });
 
@@ -167,7 +299,7 @@ function CameraController({ isUiHovered, viewState }: CameraControllerProps) {
 }
 
 function RoomGeometry({ mirrorTransitionPhase }: { mirrorTransitionPhase: string }) {
-  const texture = useTexture('/images/finalversion.png');
+  const texture = useTexture('/images/updated room.png');
   const mirrorTexture = useTexture('/images/Mirror.png');
 
   // Improve texture quality
@@ -212,16 +344,16 @@ function RoomGeometry({ mirrorTransitionPhase }: { mirrorTransitionPhase: string
         </Sphere>
       */}
 
-      {/* Temporary curved canvas for the flat image to prevent distortion */}
+      {/* Curved panoramic canvas configured for updated room.png (2172x724 = 3.0:1 ratio) */}
       <mesh position={[0, 0, 0]} rotation={[0, Math.PI, 0]} scale={[-1, 1, 1]} renderOrder={0}>
-        {/* Arc length = 500 * (Math.PI/2) = 785. For 16:9 ratio, height = 785 / (16/9) = 441.5 */}
-        <cylinderGeometry args={[500, 500, 441.5, 64, 1, true, -Math.PI / 4, Math.PI / 2]} />
+        {/* Arc length = 500 * (130 * PI / 180) = 1134.4. For 3.0 ratio, height = 1134.4 / 3 = 378 */}
+        <cylinderGeometry args={[500, 500, 378, 64, 1, true, -13 * Math.PI / 36, 13 * Math.PI / 18]} />
         <meshBasicMaterial map={texture} side={THREE.BackSide} />
       </mesh>
 
       {/* Mirror overlay in 3D */}
       <mesh position={[0, 0, 0]} rotation={[0, Math.PI, 0]} scale={[-1, 1, 1]} renderOrder={1}>
-        <cylinderGeometry args={[500, 500, 441.5, 64, 1, true, -Math.PI / 4, Math.PI / 2]} />
+        <cylinderGeometry args={[500, 500, 378, 64, 1, true, -13 * Math.PI / 36, 13 * Math.PI / 18]} />
         <meshBasicMaterial 
           ref={mirrorMaterialRef} 
           map={mirrorTexture} 
@@ -272,9 +404,16 @@ type Room360Props = {
 };
 
 export default function Room360({ isUiHovered, viewState, mirrorTransitionPhase = 'idle' }: Room360Props) {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
   return (
     <div className="canvas-container">
-      <Canvas camera={{ position: [0, 0, 0], fov: 75, near: 0.1, far: 1000 }}>
+      <Canvas 
+        camera={{ position: [0, 0, 0], fov: isMobile ? 110 : 64, near: 0.1, far: 1000 }}
+        gl={{
+          toneMapping: THREE.NoToneMapping,
+          outputColorSpace: THREE.SRGBColorSpace,
+        }}
+      >
         <React.Suspense fallback={null}>
           <RoomGeometry mirrorTransitionPhase={mirrorTransitionPhase} />
           <CameraController isUiHovered={isUiHovered} viewState={viewState} />

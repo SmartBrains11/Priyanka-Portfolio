@@ -1,0 +1,200 @@
+.mobile-home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #fbfcfe;
+  font-family: 'DM Sans', sans-serif;
+  color: #171b2b;
+}
+
+.mobile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 20px;
+}
+
+.logo {
+  font-family: 'Avenue Mono', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.menu-button {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-content {
+  padding: 0 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.intro-section h1 {
+  font-family: 'Avenue Mono', sans-serif;
+  font-size: clamp(28px, 8vw, 34px);
+  line-height: 1.2;
+  margin: 0 0 8px;
+  letter-spacing: -1px;
+}
+
+.intro-section p {
+  font-size: 16px;
+  color: #616a7b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.room-image-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.room-image-container {
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e6ed;
+  background-color: #fff;
+  position: relative;
+  /* Removed fixed aspect ratio so it hugs the image tightly */
+}
+
+.static-room-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.bookmark-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  background: rgba(97, 97, 97, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+
+.interaction-hint {
+  font-size: 11px;
+  font-weight: 600;
+  color: #8791a4;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.navigation-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.nav-card {
+  background: #ffffff;
+  border: 1px solid #eef0f4;
+  border-radius: 16px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(23, 27, 43, 0.03);
+}
+
+.nav-card:hover, .nav-card:active {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(23, 27, 43, 0.08);
+  border-color: #d8dee8;
+}
+
+.card-icon {
+  color: #5c6372;
+}
+
+.nav-card span {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #171b2b;
+  letter-spacing: -0.2px;
+}
+
+.contact-card {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-hint {
+  text-align: center;
+  font-size: 13px;
+  color: #8791a4;
+  margin-top: 8px;
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 20px;
+  border-bottom: 1px solid #e8ebf1;
+}
+
+.menu-close-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.mobile-menu-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px;
+  gap: 16px;
+}
+
+.mobile-menu-nav button {
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: 18px;
+  font-weight: 500;
+  color: #171b2b;
+  padding: 12px 0;
+  border-bottom: 1px solid #f2f5fa;
+  cursor: pointer;
+}

@@ -114,7 +114,7 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
             </div>
           </div>
         </div>
-        <img src="/images/AzzureQ/[AZURE Q — HERO DASHBOARD].png" alt="Azure Q Hero Dashboard" className="azure-image" />
+        <img loading="lazy" decoding="async" src="/images/AzzureQ/hero-dashboard.png" alt="Azure Q Hero Dashboard" className="azure-image" />
       </header>
 
       <div className="azure-layout">
@@ -225,7 +225,7 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
             <h3>3.1 USER RESEARCH</h3>
             <p>Before redesigning screens, I investigated how information architecture and navigation patterns impacted daily QA workflows.</p>
             <h4>User Personas</h4>
-            <img src="/images/AzzureQ/[AZURE Q — USER PERSONAS DIAGRAM].png" alt="User Personas Diagram" className="azure-image" />
+            <img loading="lazy" decoding="async" src="/images/AzzureQ/user-personas-diagram.png" alt="User Personas Diagram" className="azure-image" />
             <div className="azure-persona-details">
               <div className="persona">
                 <h4>QA Engineer</h4>
@@ -252,7 +252,7 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
             <h3>3.2 RESEARCH FINDINGS</h3>
             <p>Before redesigning screens, I investigated how information architecture and navigation patterns impacted daily QA workflows.</p>
             
-            <img src="/images/AzzureQ/[AZURE Q — RESEARCH FINDINGS VISUAL].png" alt="Research Findings Visual" className="azure-image" />
+            <img loading="lazy" decoding="async" src="/images/AzzureQ/research-findings-visual.png" alt="Research Findings Visual" className="azure-image" />
 
             <h4>Heuristic Audit</h4>
             <p>The heuristic audit surfaced 4 critical violations across both modules:</p>
@@ -457,13 +457,13 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
             <div className="flow-block">
               <h4>User Flow A — (Test Execution)</h4>
               <p>Help QA teams locate and execute a test case with minimal navigation effort.</p>
-              <img src="/images/AzzureQ/[AZURE Q — USER FLOW A].png" alt="User Flow A" className="azure-image" />
+              <img loading="lazy" decoding="async" src="/images/AzzureQ/user-flow-a.png" alt="User Flow A" className="azure-image" />
             </div>
 
             <div className="flow-block">
               <h4>User Flow B — (Test Suite Navigation)</h4>
               <p>Make suite hierarchy visible while reducing unnecessary exploration.</p>
-              <img src="/images/AzzureQ/[AZURE Q — USER FLOW B].png" alt="User Flow B" className="azure-image" />
+              <img loading="lazy" decoding="async" src="/images/AzzureQ/user-flow-b.png" alt="User Flow B" className="azure-image" />
             </div>
           </section>
 
@@ -545,7 +545,7 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
                   <li>✅ <strong>Option C: Dedicated Screen (Chosen)</strong></li>
                 </ul>
               </div>
-              <img src="/images/AzzureQ/[AZURE Q — DECISION 01 UI EXAMPLES].png" alt="Decision 01 UI Examples" className="azure-image" />
+              <img loading="lazy" decoding="async" src="/images/AzzureQ/decision-01-ui-examples.png" alt="Decision 01 UI Examples" className="azure-image" />
             </div>
 
             <div className="decision-block">
@@ -560,7 +560,7 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
                   <li>✅ <strong>Option C: Two Panel Layout (Chosen)</strong></li>
                 </ul>
               </div>
-              <img src="/images/AzzureQ/[AZURE Q — DECISION 02 UI EXAMPLES].png" alt="Decision 02 UI Examples" className="azure-image" />
+              <img loading="lazy" decoding="async" src="/images/AzzureQ/decision-02-ui-examples.png" alt="Decision 02 UI Examples" className="azure-image" />
             </div>
 
             <div className="decision-block">
@@ -575,7 +575,7 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
                   <li>✅ <strong>Option C: Status Pills (Chosen)</strong></li>
                 </ul>
               </div>
-              <img src="/images/AzzureQ/[AZURE Q — DECISION 03 UI EXAMPLES].png" alt="Decision 03 UI Examples" className="azure-image" />
+              <img loading="lazy" decoding="async" src="/images/AzzureQ/decision-03-ui-examples.png" alt="Decision 03 UI Examples" className="azure-image" />
             </div>
 
             </section>
@@ -602,9 +602,9 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
             </div>
             <div className="azure-wireframes-grid">
               {[1, 2, 3, 4, 5, 6].map((num) => (
-                <img 
+                <img loading="lazy" decoding="async" 
                   key={num} 
-                  src={`/images/AzzureQ/wireframe ${num}.png`} 
+                  src={`/images/AzzureQ/wireframe-${num}.png`} 
                   alt={`Wireframe ${num}`} 
                   className="azure-wireframe-item" 
                 />
@@ -619,19 +619,19 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
               <h2>DESIGN SYSTEM</h2>
             </div>
             <h3>13.1 GRIDS</h3>
-            <img src="/images/AzzureQ/[AZURE Q — GRIDS].png" alt="Grids" className="azure-image" />
+            <img loading="lazy" decoding="async" src="/images/AzzureQ/grids.png" alt="Grids" className="azure-image" />
             <h3>13.2 FONT</h3>
-            <img src="/images/AzzureQ/[AZURE Q — FONT].png" alt="Font" className="azure-image" />
+            <img loading="lazy" decoding="async" src="/images/AzzureQ/font.png" alt="Font" className="azure-image" />
             <h3>13.3 COLOR PALETTE</h3>
             <p>The problem with the old colours: NoGrunt used dark orange and dark blue heavily across the entire interface. The screens felt visually heavy. What we changed: We shifted to a white-dominant theme with blue and orange used intentionally.</p>
-            <img src="/images/AzzureQ/[AZURE Q — TYPOGRAPHY, COLORS & LOGO].png" alt="Typography, Colors & Logo" className="azure-image" />
+            <img loading="lazy" decoding="async" src="/images/AzzureQ/typography,-colors-&-logo.png" alt="Typography, Colors & Logo" className="azure-image" />
             
             <h3>13.4 LOGO</h3>
-            <img src="/images/AzzureQ/[AZURE Q — LOGO].png" alt="Logo" className="azure-image" />
+            <img loading="lazy" decoding="async" src="/images/AzzureQ/logo.png" alt="Logo" className="azure-image" />
             <h3>13.5 BUTTONS</h3>
-            <img src="/images/AzzureQ/[AZURE Q — BUTTONS].png" alt="Buttons" className="azure-image" />
+            <img loading="lazy" decoding="async" src="/images/AzzureQ/buttons.png" alt="Buttons" className="azure-image" />
             <h3>13.6 COMPONENTS</h3>
-            <img src="/images/AzzureQ/[AZURE Q — COMPONENTS PREVIEW].png" alt="Components Preview" className="azure-image" />
+            <img loading="lazy" decoding="async" src="/images/AzzureQ/components-preview.png" alt="Components Preview" className="azure-image" />
           </section>
 
           {/* FEATURES / INTERACTION PRINCIPLES */}
@@ -668,13 +668,13 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
             <div className="solution-block">
               <h3>Module 1: Test Studio</h3>
               <p>The NoGrunt Test Studio crammed Application, Module, and Test Scenario selection into a single screen above a flat list of steps.</p>
-              <img src="/images/AzzureQ/[AZURE Q — TEST STUDIO BEFORE VS AFTER VISUAL].png" alt="Test Studio Before Vs After Visual" className="azure-image" />
+              <img loading="lazy" decoding="async" src="/images/AzzureQ/test-studio-before-vs-after-visual.png" alt="Test Studio Before Vs After Visual" className="azure-image" />
             </div>
 
             <div className="solution-block">
               <h3>Module 2: Test Suites</h3>
               <p>Making hierarchy visible at last. Test suites were flat folder icon cards. You had no idea how many test cases were inside, or whether nested suites existed.</p>
-              <img src="/images/AzzureQ/[AZURE Q — TEST SUITES BEFORE VS AFTER VISUAL].png" alt="Test Suites Before Vs After Visual" className="azure-image" />
+              <img loading="lazy" decoding="async" src="/images/AzzureQ/test-suites-before-vs-after-visual.png" alt="Test Suites Before Vs After Visual" className="azure-image" />
             </div>
           </section>
 
@@ -727,7 +727,7 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
               <span className="section-number">17</span>
               <h2>BEFORE VS AFTER</h2>
             </div>
-            <Placeholder id="azure-q-before-after-path" label="[AZURE Q — BEFORE VS AFTER TANGLED PATH VISUAL]" />
+            {/* <Placeholder id="azure-q-before-after-path" label="before-vs-after-tangled-path-visual" /> */}
           </section>
 
             <div className="outcomes-grid">
@@ -842,7 +842,7 @@ export default function AzureQ({ project, onNavigate }: AzureQProps) {
                 <ChevronRight size={24} />
               </button>
             ) : (
-              <button className="nav-btn" type="button" onClick={() => onNavigate('/')}>
+              <button className="nav-btn" type="button" onClick={() => onNavigate('/projects')}>
                 <div className="nav-btn-text">
                   <small>Return to</small>
                   <span>Projects</span>

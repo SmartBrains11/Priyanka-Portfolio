@@ -686,9 +686,15 @@
     padding-right: 0;
   }
 
+  .swarga-moodboard-absolute-container {
+    padding: 2rem 0;
+    overflow: hidden;
+  }
+
   .swarga-moodboard-scaler {
-    min-width: 150%;
-    transform: translateX(-15%);
+    width: 100%;
+    min-width: 100%;
+    transform: none;
   }
 
   .swarga-layout {

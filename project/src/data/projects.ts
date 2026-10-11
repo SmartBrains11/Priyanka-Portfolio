@@ -29,7 +29,7 @@ export const projects: Project[] = [
     eyebrow: 'B2B / ENTERPRISE',
     visualTitle: 'Assure Q',
     visualSubtitle: 'Redesigning a complex automation testing platform',
-    image: '/images/AzzureQ/[AZURE Q — HERO DASHBOARD].png',
+    image: "/images/AzzureQ/hero-dashboard.png",
     sections: [
       {
         id: 'overview',
@@ -96,7 +96,7 @@ export const projects: Project[] = [
     eyebrow: 'WEBSITE / SEO',
     visualTitle: 'SmartBrains India',
     visualSubtitle: 'Learn • Grow • Build',
-    image: '/images/Smart Brains India/image 1.png',
+    image: "/images/Smart Brains India/image-1.png",
   },
   {
     id: 'swarga',
@@ -108,7 +108,7 @@ export const projects: Project[] = [
     eyebrow: 'BRAND / IDENTITY',
     visualTitle: 'SWARGA',
     visualSubtitle: 'HEAVEN GROUNDED',
-    image: '/images/Swarga/idea.png',
+    image: "/images/Swarga/idea.png",
   },
   {
     id: 'illustration',
@@ -124,5 +124,10 @@ export const projects: Project[] = [
 ];
 
 export function getProjectByPath(pathname: string): Project | undefined {
-  return projects.find((project) => project.route === pathname);
+  const normalized = pathname.replace(/\/$/, '');
+  return projects.find((project) => {
+    if (project.route === normalized) return true;
+    if (project.id === 'assure-q' && (normalized === '/assure-q' || normalized === '/azure-q')) return true;
+    return false;
+  });
 }
