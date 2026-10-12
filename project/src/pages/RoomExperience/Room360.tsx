@@ -29,8 +29,8 @@ function CameraController({ isUiHovered, viewState }: CameraControllerProps) {
   useEffect(() => {
     const isMobile = window.innerWidth <= 768;
     if (viewState === 'mirror') {
-      targetRotation.current = { yaw: isMobile ? 0.35 : 0.2, pitch: -0.05 };
-      targetFov.current = 16;
+      targetRotation.current = { yaw: isMobile ? 0.44 : 0.35, pitch: -0.01 };
+      targetFov.current = 22;
     } else if (viewState === 'board') {
       targetRotation.current = { yaw: isMobile ? -0.3 : -0.1, pitch: 0.15 };
       targetFov.current = 18;
@@ -402,6 +402,10 @@ type Room360Props = {
   viewState: 'default' | 'mirror' | 'board';
   mirrorTransitionPhase?: 'idle' | 'transitioning' | 'finished';
 };
+
+// Preload critical textures immediately so they load and render instantly
+useTexture.preload('/images/updated room.png');
+useTexture.preload('/images/Mirror.png');
 
 export default function Room360({ isUiHovered, viewState, mirrorTransitionPhase = 'idle' }: Room360Props) {
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;

@@ -203,10 +203,10 @@ export default function RoomExperience({ onNavigate }: RoomExperienceProps) {
             className="absolute z-[50] cursor-pointer group pointer-events-auto flex items-center justify-center"
             style={{
               top: '50%',
-              left: '33%', /* Moved further right to align perfectly with the mirror */
+              left: '50%', /* Aligned with the centered mirror */
               transform: 'translate(-50%, -50%)',
-              width: '12%',
-              height: '55%',
+              width: '16%',
+              height: '60%',
             }}
             onClick={handleKnowMeClick}
             title="Click to know more"

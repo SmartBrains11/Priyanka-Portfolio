@@ -74,7 +74,11 @@ function DraggableImage({ src, delay, zIndex, bringToFront }: DraggableImageProp
   };
 
   return (
-    <img loading="lazy" decoding="async"
+    <img 
+      loading="eager" 
+      decoding="async"
+      // @ts-expect-error fetchpriority attribute
+      fetchpriority={delay <= 1000 ? "high" : "auto"}
       ref={imgRef}
       src={src}
       className={`draggable-art ${hasFallen ? 'fallen' : 'falling'} ${isDragging ? 'dragging' : ''}`}
@@ -111,6 +115,14 @@ type ArtProps = {
 export default function Art({ onNavigate }: ArtProps) {
   const [zIndices, setZIndices] = useState(ART_IMAGES.map((_, i) => i + 10));
   const maxZIndex = useRef(20);
+
+  // Preload all art images into browser cache immediately
+  useEffect(() => {
+    ART_IMAGES.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   const bringToFront = (index: number) => {
     maxZIndex.current += 1;

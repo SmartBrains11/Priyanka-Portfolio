@@ -395,7 +395,14 @@ function ProjectCard({ project, onOpen }: ProjectCardProps) {
     <button className={`project-card accent-${project.accent}`} type="button" onClick={onOpen} aria-label={`Open ${project.title} project`} style={{ borderRadius: '16px' }}>
       <div className={`project-visual ${project.image ? 'has-image' : ''}`}>
         {project.image ? (
-          <img src={project.image} alt={`${project.title} project preview`} />
+          <img 
+            src={project.image} 
+            alt={`${project.title} project preview`} 
+            loading="eager"
+            decoding="async"
+            // @ts-expect-error fetchpriority
+            fetchpriority="high"
+          />
         ) : (
           <>
             <span className="visual-orbit orbit-one" />

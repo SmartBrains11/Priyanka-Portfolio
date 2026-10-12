@@ -11,6 +11,14 @@ import {
   X, 
   ChevronRight 
 } from 'lucide-react';
+import { 
+  getStoredIntent, 
+  getStoredHotspot, 
+  setStoredHotspot, 
+  getHotspotFromLocation, 
+  getRecommendation,
+  type HotspotId
+} from '@/data/navigationJourneys';
 
 export type GlobalMapMenuProps = {
   onNavigate: (path: string) => void;
@@ -22,6 +30,19 @@ export default function GlobalMapMenu({ onNavigate, className = '', isInline = f
   const [isOpen, setIsOpen] = useState(false);
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
   const currentSearch = typeof window !== 'undefined' ? window.location.search : '';
+
+  // Get current recommendation based on intent and location
+  const intent = getStoredIntent();
+  const currentHotspot = getHotspotFromLocation(currentPath, currentSearch) || getStoredHotspot();
+  const recommendation = getRecommendation(intent, currentHotspot);
+
+  // When user is on this page, sync stored hotspot
+  useEffect(() => {
+    const locHotspot = getHotspotFromLocation(currentPath, currentSearch);
+    if (locHotspot) {
+      setStoredHotspot(locHotspot);
+    }
+  }, [currentPath, currentSearch]);
 
   // Close on Escape key
   useEffect(() => {
@@ -35,16 +56,19 @@ export default function GlobalMapMenu({ onNavigate, className = '', isInline = f
   }, [isOpen]);
 
   const navItems = [
-    { label: 'Home', path: '/', subtitle: '3D Room Experience', icon: <Home size={18} /> },
-    { label: 'Projects', path: '/projects', subtitle: 'Selected Works', icon: <Folder size={18} /> },
-    { label: 'About Me', path: '/?view=mirror', subtitle: 'Who I am & My story', icon: <User size={18} /> },
-    { label: 'Experience', path: '/experience', subtitle: 'Career & timeline', icon: <Briefcase size={18} /> },
-    { label: 'My Art', path: '/art', subtitle: 'Visual exploration', icon: <Paintbrush size={18} /> },
-    { label: 'Inspiration', path: '/inspiration', subtitle: 'What inspires me', icon: <Compass size={18} /> },
-    { label: 'Contact', path: '/contact', subtitle: 'Work with me', icon: <Mail size={18} /> },
+    { id: 'mirror' as HotspotId, label: 'About Me', path: '/?view=mirror', subtitle: 'Who I am & My story', icon: <User size={18} /> },
+    { id: 'laptop' as HotspotId, label: 'Projects', path: '/projects', subtitle: 'Selected Works', icon: <Folder size={18} /> },
+    { id: 'board' as HotspotId, label: 'Process', path: '/understand-how-i-think', subtitle: 'How I think', icon: <Compass size={18} /> },
+    { id: 'bookshelf' as HotspotId, label: 'Experience', path: '/experience', subtitle: 'Career & timeline', icon: <Briefcase size={18} /> },
+    { id: 'drawer' as HotspotId, label: 'Contact', path: '/contact', subtitle: 'Work with me', icon: <Mail size={18} /> },
+    { id: 'window' as HotspotId, label: 'Inspiration', path: '/inspiration', subtitle: 'What inspires me', icon: <Home size={18} /> },
+    { id: 'easel' as HotspotId, label: 'My Art', path: '/art', subtitle: 'Visual exploration', icon: <Paintbrush size={18} /> },
   ];
 
-  const handleSelect = (path: string) => {
+  const handleSelect = (path: string, hotspotId?: HotspotId) => {
+    if (hotspotId) {
+      setStoredHotspot(hotspotId);
+    }
     setIsOpen(false);
     onNavigate(path);
   };
@@ -112,7 +136,7 @@ export default function GlobalMapMenu({ onNavigate, className = '', isInline = f
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', paddingBottom: '12px', borderBottom: '1px solid #f0f2f5' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid #f0f2f5' }}>
               <div style={{ fontSize: '11px', fontWeight: 700, color: '#8791a4', letterSpacing: '2px', textTransform: 'uppercase' }}>
                 Navigation
               </div>
@@ -138,6 +162,69 @@ export default function GlobalMapMenu({ onNavigate, className = '', isInline = f
               </button>
             </div>
 
+            {/* Recommended Next Suggestion (if intent is selected) */}
+            {recommendation && (
+              <div 
+                style={{ 
+                  marginBottom: '14px', 
+                  padding: '10px 12px', 
+                  borderRadius: '12px', 
+                  background: '#f8fafc', 
+                  border: '1px solid #e2e8f0',
+                  boxSizing: 'border-box'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 700, color: '#64748b', letterSpacing: '1px', textTransform: 'uppercase' }}>
+                    RECOMMENDED NEXT
+                  </span>
+                  {recommendation.intent && (
+                    <span style={{ fontSize: '9px', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                      {recommendation.intent === 'hiring' ? 'Hiring' : recommendation.intent === 'designer' ? 'Designer' : 'Curious'}
+                    </span>
+                  )}
+                </div>
+                {recommendation.type === 'recommendation' ? (
+                  <button
+                    type="button"
+                    onClick={() => handleSelect(recommendation.hotspot.path, recommendation.hotspot.id)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      width: '100%',
+                      padding: '8px 10px',
+                      borderRadius: '8px',
+                      background: '#ffffff',
+                      border: '1px solid #cbd5e1',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+                      transition: 'all 0.15s ease',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = '#2563eb';
+                      e.currentTarget.style.background = '#f0f7ff';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = '#cbd5e1';
+                      e.currentTarget.style.background = '#ffffff';
+                    }}
+                  >
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: '#171b2b', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span>{recommendation.hotspot.emoji}</span>
+                      <span>{recommendation.hotspot.actionText}</span>
+                    </span>
+                    <span style={{ fontSize: '14px', color: '#2563eb', fontWeight: 700 }}>→</span>
+                  </button>
+                ) : (
+                  <div style={{ fontSize: '12px', fontWeight: 500, color: '#64748b', padding: '4px 2px' }}>
+                    ✓ You&apos;ve explored this journey.
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Links List */}
             <nav style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
               {navItems.map((item) => {
@@ -152,7 +239,7 @@ export default function GlobalMapMenu({ onNavigate, className = '', isInline = f
                   <button 
                     key={item.label}
                     type="button"
-                    onClick={() => handleSelect(item.path)}
+                    onClick={() => handleSelect(item.path, item.id)}
                     style={{ 
                       display: 'flex', 
                       alignItems: 'center', 

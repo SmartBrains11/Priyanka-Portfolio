@@ -1,5 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Map as MapIcon, ArrowRight, Pause, Play, RotateCcw, Briefcase, Laptop, Compass } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Map as MapIcon, Pause, Play, RotateCcw } from 'lucide-react';
+import { 
+  getStoredIntent, 
+  setStoredIntent, 
+  getStoredHotspot, 
+  setStoredHotspot, 
+  getRecommendation,
+  type VisitorIntent,
+  type HotspotId 
+} from '@/data/navigationJourneys';
 
 type RoomUIProps = {
   onUiHoverChange: (hovered: boolean) => void;
@@ -13,7 +22,7 @@ type RoomUIProps = {
   renderRoomCanvas?: () => React.ReactNode;
 };
 
-const roles = ['Product Designer', 'Visual Designer', 'Illustration'];
+const roles = ['Product Designer', 'Illustrator', 'UI/UX Designer'];
 
 export default function RoomUI({ 
   onUiHoverChange, 
@@ -27,8 +36,44 @@ export default function RoomUI({
 }: RoomUIProps) {
   const [mapHovered, setMapHovered] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [currentIntent, setCurrentIntent] = useState<VisitorIntent | null>(getStoredIntent());
 
-  // Cycle through titles one by one near Priyanka name
+  // Determine current hotspot within 3D room context
+  const activeHotspotId: HotspotId | null = 
+    viewState === 'mirror' ? 'mirror' : 
+    viewState === 'board' ? 'board' : 
+    getStoredHotspot();
+
+  const recommendation = getRecommendation(currentIntent, activeHotspotId);
+
+  const handleSelectIntent = (intent: VisitorIntent) => {
+    setCurrentIntent(intent);
+    setStoredIntent(intent);
+    if (intent === 'hiring') {
+      setStoredHotspot('mirror');
+      if (onAction) onAction('mirror');
+    } else if (intent === 'designer') {
+      setStoredHotspot('board');
+      if (onNavigate) onNavigate('/understand-how-i-think');
+    } else if (intent === 'curious') {
+      setStoredHotspot('easel');
+      if (onNavigate) onNavigate('/art');
+    }
+  };
+
+  const handleNavigateToHotspot = (hotspotId: HotspotId, path: string, targetViewState?: 'mirror' | 'board' | 'default') => {
+    setStoredHotspot(hotspotId);
+    setMapHovered(false);
+    if (targetViewState) {
+      if (targetViewState === 'mirror' && onKnowMeClick) onKnowMeClick();
+      if (targetViewState === 'board' && onUnderstandClick) onUnderstandClick();
+      if (onAction) onAction(targetViewState);
+    } else if (onNavigate) {
+      onNavigate(path);
+    }
+  };
+
+  // Cycle through titles one by one with smooth animation
   const [roleIndex, setRoleIndex] = useState(0);
   const [isRoleFading, setIsRoleFading] = useState(false);
 
@@ -38,83 +83,143 @@ export default function RoomUI({
       setTimeout(() => {
         setRoleIndex((prev) => (prev + 1) % roles.length);
         setIsRoleFading(false);
-      }, 300);
-    }, 2600);
+      }, 350);
+    }, 2800);
 
     return () => clearInterval(timer);
   }, []);
 
+  const isDefaultView = viewState === 'default';
+
   return (
-    <div className="hero-editorial-wrapper">
+    <div className={`hero-editorial-wrapper ${!isDefaultView ? 'is-fullscreen-view' : ''}`}>
       {/* Background Soft Glow Shadows */}
       <div className="hero-bg-accent" />
 
-      {/* Top Header Row */}
-      <header className="hero-top-row">
-        <div className="hero-brand-left">
-          <div className="brand-name-group">
-            <span className="brand-author-tag">PRIYANKA LAKKOJU</span>
-            <span className="brand-author-dash">—</span>
+      {/* Top Header Row - Hidden in Full View */}
+      {isDefaultView && (
+        <header className="hero-top-row">
+          <div className="hero-brand-left">
+            <div className="brand-role-animated-container" aria-live="polite">
+              <span className={`brand-role-animated-text ${isRoleFading ? 'role-fade-out' : 'role-fade-in'}`}>
+                {roles[roleIndex]}
+              </span>
+            </div>
           </div>
-          <div className="brand-roles-cycler" aria-live="polite">
-            <span className={`brand-role-item ${isRoleFading ? 'role-fade-out' : 'role-fade-in'}`}>
-              {roles[roleIndex]}
-            </span>
+
+          <div className="hero-brand-center">
+            <h1 className="hero-main-title">Priyanka.</h1>
+            <p className="hero-tagline-quote">A designer&apos;s room says a lot about how she thinks.</p>
           </div>
-        </div>
 
-        <div className="hero-brand-center">
-          <h1 className="hero-main-title">Priyanka.</h1>
-          <p className="hero-tagline-quote">A designer&apos;s room says a lot about how she thinks.</p>
-        </div>
+          <div className="hero-nav-right">
+            <div className="map-legend-container" style={{ position: 'relative' }}>
+              <button 
+                className="map-legend-trigger hero-map-button"
+                aria-label="Interactive Map"
+                onClick={() => { setMapHovered(!mapHovered); onUiHoverChange(!mapHovered); }}
+              >
+                <MapIcon size={20} color="#171b2b" strokeWidth={1.8} />
+              </button>
+              
+              {/* Map Menu Dropdown */}
+              <div 
+                className="hero-map-dropdown"
+                style={{ 
+                  opacity: mapHovered ? 1 : 0, 
+                  transform: mapHovered ? 'translateY(0)' : 'translateY(-10px)',
+                  pointerEvents: mapHovered ? 'auto' : 'none',
+                }}
+              >
+                <div className="hero-dropdown-heading">Explore Room</div>
 
-        <div className="hero-nav-right">
-          <div className="map-legend-container" style={{ position: 'relative' }}>
-            <button 
-              className="map-legend-trigger hero-map-button"
-              aria-label="Interactive Map"
-              onClick={() => { setMapHovered(!mapHovered); onUiHoverChange(!mapHovered); }}
-            >
-              <MapIcon size={20} color="#171b2b" strokeWidth={1.8} />
-            </button>
-            
-            {/* Map Menu Dropdown */}
-            <div 
-              className="hero-map-dropdown"
-              style={{ 
-                opacity: mapHovered ? 1 : 0, 
-                transform: mapHovered ? 'translateY(0)' : 'translateY(-10px)',
-                pointerEvents: mapHovered ? 'auto' : 'none',
-              }}
-            >
-              <div className="hero-dropdown-heading">Explore Room</div>
-              <div className="hero-dropdown-list">
-                <button onClick={() => { setMapHovered(false); if (onKnowMeClick) onKnowMeClick(); if (onAction) onAction('mirror'); }} className="map-legend-item">
-                  <span>🪞 Mirror</span><span className="map-sub">About me</span>
-                </button>
-                <button onClick={() => { setMapHovered(false); if (onExploreClick) onExploreClick(); if (onNavigate) onNavigate('/projects'); }} className="map-legend-item">
-                  <span>💻 Laptop</span><span className="map-sub">My work</span>
-                </button>
-                <button onClick={() => { setMapHovered(false); if (onUnderstandClick) onUnderstandClick(); if (onAction) onAction('board'); }} className="map-legend-item">
-                  <span>📌 Pinboard</span><span className="map-sub">How I think</span>
-                </button>
-                <button onClick={() => { setMapHovered(false); if (onNavigate) onNavigate('/art'); }} className="map-legend-item">
-                  <span>🎨 Easel</span><span className="map-sub">My art</span>
-                </button>
-                <button onClick={() => { setMapHovered(false); if (onNavigate) onNavigate('/experience'); }} className="map-legend-item">
-                  <span>📚 Bookshelf</span><span className="map-sub">Experience</span>
-                </button>
-                <button onClick={() => { setMapHovered(false); if (onNavigate) onNavigate('/inspiration'); }} className="map-legend-item">
-                  <span>🪟 Window</span><span className="map-sub">What inspires me</span>
-                </button>
-                <button onClick={() => { setMapHovered(false); if (onNavigate) onNavigate('/contact'); }} className="map-legend-item">
-                  <span>🗄️ Drawer</span><span className="map-sub">Work with me</span>
-                </button>
+                {/* Recommended Next guidance (if intent is selected) */}
+                {recommendation && (
+                  <div className="hero-recommended-next-card">
+                    <div className="hero-recommended-label">
+                      <span>RECOMMENDED NEXT</span>
+                      {recommendation.intent && (
+                        <span className="hero-recommended-intent-tag">
+                          {recommendation.intent === 'hiring' ? 'Hiring' : recommendation.intent === 'designer' ? 'Designer' : 'Curious'}
+                        </span>
+                      )}
+                    </div>
+                    {recommendation.type === 'recommendation' ? (
+                      <button 
+                        type="button"
+                        onClick={() => handleNavigateToHotspot(recommendation.hotspot.id, recommendation.hotspot.path, recommendation.hotspot.viewState)}
+                        className="hero-recommended-button"
+                      >
+                        <span className="hero-recommended-text">
+                          <span className="hero-rec-emoji">{recommendation.hotspot.emoji}</span>
+                          <span className="hero-rec-action">{recommendation.hotspot.actionText}</span>
+                        </span>
+                        <span className="hero-rec-arrow">→</span>
+                      </button>
+                    ) : (
+                      <div className="hero-recommended-complete">
+                        ✓ You&apos;ve explored this journey.
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <div className="hero-dropdown-list">
+                  <button onClick={() => handleNavigateToHotspot('mirror', '/?view=mirror', 'mirror')} className="map-legend-item">
+                    <span className="map-item-left">
+                      <span className="map-emoji">🪞</span>
+                      <span className="map-title">Mirror</span>
+                    </span>
+                    <span className="map-sub">About me</span>
+                  </button>
+                  <button onClick={() => handleNavigateToHotspot('laptop', '/projects')} className="map-legend-item">
+                    <span className="map-item-left">
+                      <span className="map-emoji">💻</span>
+                      <span className="map-title">Laptop</span>
+                    </span>
+                    <span className="map-sub">My work</span>
+                  </button>
+                  <button onClick={() => handleNavigateToHotspot('board', '/understand-how-i-think', 'board')} className="map-legend-item">
+                    <span className="map-item-left">
+                      <span className="map-emoji">📌</span>
+                      <span className="map-title">Pinboard</span>
+                    </span>
+                    <span className="map-sub">How I think</span>
+                  </button>
+                  <button onClick={() => handleNavigateToHotspot('easel', '/art')} className="map-legend-item">
+                    <span className="map-item-left">
+                      <span className="map-emoji">🎨</span>
+                      <span className="map-title">Easel</span>
+                    </span>
+                    <span className="map-sub">My art</span>
+                  </button>
+                  <button onClick={() => handleNavigateToHotspot('bookshelf', '/experience')} className="map-legend-item">
+                    <span className="map-item-left">
+                      <span className="map-emoji">📚</span>
+                      <span className="map-title">Bookshelf</span>
+                    </span>
+                    <span className="map-sub">Experience</span>
+                  </button>
+                  <button onClick={() => handleNavigateToHotspot('window', '/inspiration')} className="map-legend-item">
+                    <span className="map-item-left">
+                      <span className="map-emoji">🪟</span>
+                      <span className="map-title">Window</span>
+                    </span>
+                    <span className="map-sub">What inspires me</span>
+                  </button>
+                  <button onClick={() => handleNavigateToHotspot('drawer', '/contact')} className="map-legend-item">
+                    <span className="map-item-left">
+                      <span className="map-emoji">🗄️</span>
+                      <span className="map-title">Drawer</span>
+                    </span>
+                    <span className="map-sub">Work with me</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {/* Main Room Viewport with Distinctive Concave Curve */}
       <section className="hero-room-container">
@@ -122,7 +227,7 @@ export default function RoomUI({
         <svg width="0" height="0" style={{ position: 'absolute' }}>
           <defs>
             <clipPath id="heroCurvedRoomClip" clipPathUnits="objectBoundingBox">
-              <path d="M 0,0.015 Q 0.5,0.07 1,0.015 L 1,0.97 Q 0.5,0.99 0,0.97 Z" />
+              <path d="M 0,0.02 Q 0.5,0.05 1,0.02 L 1,0.98 Q 0.5,0.95 0,0.98 Z" />
             </clipPath>
           </defs>
         </svg>
@@ -166,55 +271,39 @@ export default function RoomUI({
         </div>
       </section>
 
-      {/* Primary Navigation Dock */}
-      <nav 
-        className="hero-intent-nav" 
-        aria-label="Main portfolio navigation"
-        onMouseEnter={() => onUiHoverChange(true)}
-        onMouseLeave={() => onUiHoverChange(false)}
-      >
-        <button 
-          className="hero-intent-pill"
-          type="button"
-          onClick={() => onAction && onAction('mirror')}
+      {/* Primary Navigation Dock - Hidden in Full View */}
+      {isDefaultView && (
+        <nav 
+          className="hero-intent-nav" 
+          aria-label="Main portfolio navigation"
+          onMouseEnter={() => onUiHoverChange(true)}
+          onMouseLeave={() => onUiHoverChange(false)}
         >
-          <div className="pill-icon-box">
-            <Briefcase size={18} strokeWidth={2} />
-          </div>
-          <span className="pill-heading">I&apos;M HIRING</span>
-          <div className="pill-arrow-circle">
-            <ArrowRight size={15} className="pill-arrow" />
-          </div>
-        </button>
+          <button 
+            className="hero-intent-pill"
+            type="button"
+            onClick={() => handleSelectIntent('hiring')}
+          >
+            <span className="pill-heading">I&apos;M HIRING</span>
+          </button>
 
-        <button 
-          className="hero-intent-pill"
-          type="button"
-          onClick={() => { if (onNavigate) onNavigate('/projects'); }}
-        >
-          <div className="pill-icon-box">
-            <Laptop size={18} strokeWidth={2} />
-          </div>
-          <span className="pill-heading">DESIGNER</span>
-          <div className="pill-arrow-circle">
-            <ArrowRight size={15} className="pill-arrow" />
-          </div>
-        </button>
+          <button 
+            className="hero-intent-pill"
+            type="button"
+            onClick={() => handleSelectIntent('designer')}
+          >
+            <span className="pill-heading">DESIGNER</span>
+          </button>
 
-        <button 
-          className="hero-intent-pill"
-          type="button"
-          onClick={() => onAction && onAction('board')}
-        >
-          <div className="pill-icon-box">
-            <Compass size={18} strokeWidth={2} />
-          </div>
-          <span className="pill-heading">CURIOUS</span>
-          <div className="pill-arrow-circle">
-            <ArrowRight size={15} className="pill-arrow" />
-          </div>
-        </button>
-      </nav>
+          <button 
+            className="hero-intent-pill"
+            type="button"
+            onClick={() => handleSelectIntent('curious')}
+          >
+            <span className="pill-heading">CURIOUS</span>
+          </button>
+        </nav>
+      )}
     </div>
   );
 }

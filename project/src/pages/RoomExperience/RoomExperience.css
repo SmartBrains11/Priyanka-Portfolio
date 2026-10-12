@@ -24,14 +24,15 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  padding: 0.5rem 0 1rem 0;
+  padding: 0;
   box-sizing: border-box;
   position: relative;
   z-index: 10;
   max-width: 100vw;
   margin: 0;
+  overflow: hidden;
 }
 
 /* Background soft decorative shadows */
@@ -47,38 +48,17 @@
   align-items: center;
   position: relative;
   z-index: 20;
-  padding: 0 2.5rem;
+  padding: 1.2rem 2.5rem 0 2.5rem;
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .hero-brand-left {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  flex-wrap: wrap;
 }
 
-.brand-name-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.brand-author-tag {
-  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: #171b2b;
-  text-transform: uppercase;
-}
-
-.brand-author-dash {
-  font-size: 11px;
-  color: #999999;
-}
-
-.brand-roles-cycler {
+.brand-role-animated-container {
   display: inline-flex;
   align-items: center;
   min-height: 24px;
@@ -86,19 +66,18 @@
   position: relative;
 }
 
-.brand-role-item {
+.brand-role-animated-text {
   display: inline-block;
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   color: #171b2b;
-  background: rgba(23, 27, 43, 0.06);
-  border: 1px solid rgba(23, 27, 43, 0.08);
-  padding: 2px 8px;
-  border-radius: 4px;
   text-transform: uppercase;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
+  background: transparent;
+  padding: 0;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .role-fade-in {
@@ -117,25 +96,26 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding-top: 0.6rem;
 }
 
 .hero-main-title {
   font-family: 'Plus Jakarta Sans', 'Inter', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-size: clamp(2rem, 3.2vw, 2.7rem);
   font-weight: 700;
   color: #111111;
-  letter-spacing: -0.035em;
-  line-height: 1.05;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
   margin: 0;
 }
 
 .hero-tagline-quote {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: clamp(0.92rem, 1.2vw, 1.1rem);
+  font-size: clamp(0.88rem, 1.1vw, 1rem);
   font-style: normal;
   font-weight: 400;
   color: #555555;
-  margin: 0.35rem 0 0 0;
+  margin: 0.45rem 0 0 0;
   letter-spacing: 0.01em;
 }
 
@@ -170,49 +150,234 @@
   position: absolute;
   top: 100%;
   right: 0;
-  margin-top: 12px;
+  margin-top: 10px;
   background: #ffffff;
-  border-radius: 16px;
-  border: 1px solid #e8ebf1;
-  padding: 12px;
-  width: 220px;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 50;
+  border-radius: 18px;
+  border: 1px solid rgba(23, 27, 43, 0.08);
+  padding: 10px;
+  width: 255px;
+  box-shadow: 
+    0 18px 40px -8px rgba(0, 0, 0, 0.14),
+    0 6px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 60;
+  box-sizing: border-box;
 }
 
 .hero-dropdown-heading {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 11px;
-  font-weight: 600;
-  color: #8791a4;
-  letter-spacing: 1px;
+  font-weight: 700;
+  color: #8c96a8;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  padding: 6px 10px 8px 10px;
+  border-bottom: 1px solid rgba(23, 27, 43, 0.05);
+  margin-bottom: 6px;
+}
+
+/* Recommended Next card */
+.hero-recommended-next-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px 10px;
   margin-bottom: 8px;
-  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+.hero-recommended-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.hero-recommended-intent-tag {
+  font-size: 8.5px;
+  font-weight: 600;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.hero-recommended-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 7px 9px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  cursor: pointer;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.16s ease;
+  text-align: left;
+}
+
+.hero-recommended-button:hover {
+  background: #f0f7ff;
+  border-color: #2563eb;
+  transform: translateX(2px);
+}
+
+.hero-recommended-text {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #171b2b;
+}
+
+.hero-rec-emoji {
+  font-size: 14px;
+}
+
+.hero-rec-action {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-rec-arrow {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.hero-recommended-complete {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  padding: 3px 2px;
 }
 
 .hero-dropdown-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
+}
+
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.map-legend-item:hover {
+  background: rgba(23, 27, 43, 0.05);
+  transform: translateX(2px);
+}
+
+.map-item-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.map-emoji {
+  font-size: 15px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+}
+
+.map-title {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #171b2b;
+  line-height: 1.2;
+  transition: color 0.15s ease;
+}
+
+.map-legend-item:hover .map-title {
+  color: #000000;
 }
 
 .map-sub {
-  color: #8791a4;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 12px;
+  font-weight: 400;
+  color: #8c96a8;
+  line-height: 1.2;
+  text-align: right;
+  transition: color 0.15s ease;
 }
 
-/* Main Room Viewport Container */
+.map-legend-item:hover .map-sub {
+  color: #555e70;
+}
+
+/* Main Room Viewport Container - Shifted Higher Up */
 .hero-room-container {
   width: 100vw;
   flex: 1;
-  min-height: 400px;
-  max-height: 660px;
-  margin: 0.15rem 0 0.5rem 0;
+  min-height: 480px;
+  max-height: calc(100vh - 170px);
+  margin-top: -2.5rem;
+  margin-bottom: auto;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.5s ease;
+}
+
+/* Full Page Edge-to-Edge View (Triggered on I'M HIRING or non-default state) */
+.hero-editorial-wrapper.is-fullscreen-view {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.hero-editorial-wrapper.is-fullscreen-view .hero-room-container {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  min-height: 100vh;
+  margin: 0;
+  z-index: 10;
+}
+
+.hero-editorial-wrapper.is-fullscreen-view .hero-room-outer-frame {
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 100vw;
+  height: 100vh;
+}
+
+.hero-editorial-wrapper.is-fullscreen-view .hero-room-inner-frame {
+  width: 100vw;
+  height: 100vh;
 }
 
 /* Distinctive Concave Curve Outer Frame */
@@ -229,6 +394,7 @@
     0 4px 12px rgba(0, 0, 0, 0.02);
   background-color: #ffffff;
   overflow: hidden;
+  transition: clip-path 0.5s ease;
 }
 
 .hero-room-inner-frame {
@@ -320,19 +486,20 @@
   opacity: 0.6;
 }
 
-/* Primary Navigation Dock - Positioned Up Onto Frame */
+/* Primary Navigation Dock - Elevated with Room Frame */
 .hero-intent-nav {
+  position: absolute;
+  bottom: 4.6rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
-  width: 100%;
-  position: relative;
   z-index: 30;
   padding: 0 1rem;
   box-sizing: border-box;
-  margin-top: -3.8rem;
-  margin-bottom: 0.6rem;
+  margin: 0;
 }
 
 .hero-intent-pill {
@@ -343,90 +510,48 @@
   -webkit-backdrop-filter: blur(20px);
   border: 1.5px solid rgba(255, 255, 255, 0.95);
   border-radius: 9999px;
-  padding: 0.95rem 1.65rem 0.95rem 1.35rem;
+  padding: 1.1rem 2.6rem;
   color: #171b2b;
   cursor: pointer;
   box-shadow: 
     0 12px 32px rgba(0, 0, 0, 0.10),
     0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  min-width: 235px;
+  min-width: 180px;
   text-decoration: none;
-  gap: 1.15rem;
+  justify-content: center;
+  text-align: center;
 }
 
-/* LAPTOP / DESKTOP HOVER: TURNS SOLID BLACK WITH CRISP WHITE DETAILS */
+/* HOVER: TURNS SOLID BLACK WITH CRISP WHITE TEXT */
 .hero-intent-pill:hover {
   background: #111111 !important;
   border-color: #111111 !important;
-  transform: translateY(-4px) scale(1.03);
+  transform: translateY(-4px) scale(1.02);
   box-shadow: 
-    0 18px 40px rgba(0, 0, 0, 0.28),
-    0 4px 14px rgba(0, 0, 0, 0.14) !important;
-}
-
-.hero-intent-pill:hover .pill-icon-box {
-  background: rgba(255, 255, 255, 0.16) !important;
-  color: #ffffff !important;
-  transform: scale(1.08);
+    0 18px 40px rgba(0, 0, 0, 0.26),
+    0 4px 14px rgba(0, 0, 0, 0.12) !important;
 }
 
 .hero-intent-pill:hover .pill-heading {
   color: #ffffff !important;
 }
 
-.hero-intent-pill:hover .pill-arrow-circle {
-  background: #ffffff !important;
-  color: #111111 !important;
-  transform: translateX(3px);
-}
-
 .hero-intent-pill:active {
   transform: translateY(-1px) scale(0.99);
 }
 
-.pill-icon-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #f1f3f7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #171b2b;
-  flex-shrink: 0;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
 .pill-heading {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 14px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
   color: #171b2b;
   text-transform: uppercase;
   line-height: 1;
-  flex: 1;
-  text-align: left;
+  text-align: center;
   transition: color 0.25s ease;
-}
-
-.pill-arrow-circle {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #f1f3f7;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #171b2b;
-  flex-shrink: 0;
-  margin-left: 0.35rem;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.pill-arrow {
-  transition: transform 0.2s ease;
+  user-select: none;
 }
 
 /* Standard Canvas Container when fallback */
